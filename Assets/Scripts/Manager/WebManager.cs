@@ -45,4 +45,48 @@ public class WebManager : MonoBehaviour {
             Debug.Log("GetGameInfo error:" + w.text);
     }
 
+    public IEnumerator UserRegister(string firstName, string lastName, string email, string pw, ReceiveStringData getInfo)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("first_name", firstName);
+        form.AddField("last_name", lastName);
+        form.AddField("email", email);
+        form.AddField("password", pw);
+
+        WWW w = new WWW(Tags.UserRegUrl, form);
+        yield return w;
+        if (!string.IsNullOrEmpty(w.error))
+            Debug.Log("user register error: " + w.error);
+        else
+        {
+            Debug.Log("return: " + w.text);
+            getInfo(w.text);
+        }
+        //else if (w.text.StartsWith("ok"))
+        //{
+        //    getInfo(w.text.Substring(3));
+        //}
+        //else
+        //    Debug.Log("GetGameInfo error:" + w.text);
+    }
+
+    public IEnumerator UserLogin(string emailStr, string pw)
+    {
+        WWWForm form = new WWWForm();
+        //form.AddField("first_name", firstName);
+        //form.AddField("last_name", lastName);
+        //form.AddField("email", email);
+        //form.AddField("password", pw);
+
+        WWW w = new WWW(Tags.UserRegUrl, form);
+        yield return w;
+        //if (!string.IsNullOrEmpty(w.error))
+        //    Debug.Log("user register error: " + w.error);
+        //else
+        //{
+        //    Debug.Log("return: " + w.text);
+        //    getInfo(w.text);
+        //}
+    }
+
 }
