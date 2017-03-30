@@ -70,8 +70,9 @@ public class WebManager : MonoBehaviour {
         //    Debug.Log("GetGameInfo error:" + w.text);
     }
 
-    public IEnumerator UserLogin(string emailStr, string pw)
+    public IEnumerator UserLogin(string emailStr, string pw, ReceiveStringData getInfo)
     {
+        Debug.Log("login: " + emailStr + " ; " + pw);
         WWWForm form = new WWWForm();
         //form.AddField("first_name", firstName);
         //form.AddField("last_name", lastName);
