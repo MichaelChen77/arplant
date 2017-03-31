@@ -52,6 +52,8 @@ namespace IMAV.UI
         public void Clear()
         {
             input.text = "";
+            if (outline == null)
+                outline = input.GetComponent<Outline>();
             outline.enabled = false;
         }
     }

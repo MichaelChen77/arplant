@@ -48,6 +48,7 @@ namespace IMAV.UI
 
         void AfterLoginSubmit(string str)
         {
+            Debug.Log("login: " + str);
             PostLogin();
             Close();
         }
@@ -55,6 +56,7 @@ namespace IMAV.UI
         public void GotoSignUpPage()
         {
             Close();
+            signupForm.Open(PostLogin);
         }
 
         public void LoginByFacebook()

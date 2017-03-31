@@ -74,20 +74,18 @@ public class WebManager : MonoBehaviour {
     {
         Debug.Log("login: " + emailStr + " ; " + pw);
         WWWForm form = new WWWForm();
-        //form.AddField("first_name", firstName);
-        //form.AddField("last_name", lastName);
-        //form.AddField("email", email);
-        //form.AddField("password", pw);
+        form.AddField("email", emailStr);
+        form.AddField("password", pw);
 
-        WWW w = new WWW(Tags.UserRegUrl, form);
+        WWW w = new WWW(Tags.UserLoginUrl, form);
         yield return w;
-        //if (!string.IsNullOrEmpty(w.error))
-        //    Debug.Log("user register error: " + w.error);
-        //else
-        //{
-        //    Debug.Log("return: " + w.text);
-        //    getInfo(w.text);
-        //}
+        if (!string.IsNullOrEmpty(w.error))
+            Debug.Log("user register error: " + w.error);
+        else
+        {
+            Debug.Log("return: " + w.text);
+            getInfo(w.text);
+        }
     }
 
 }
