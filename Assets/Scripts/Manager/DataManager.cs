@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using System.Collections;
+using IMAV.UI;
 using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour {
@@ -14,6 +14,13 @@ public class DataManager : MonoBehaviour {
         get { return furnitureDict; }
     }
     Dictionary<string, bool> tempFiles = new Dictionary<string, bool>();
+
+    List<SceneData> scenes = new List<SceneData>();
+    public List<SceneData> Scenes
+    {
+        get { return scenes; }
+    }
+
     int loadedCount = 0;
     uint loadedModelID = 0;
 
@@ -220,10 +227,7 @@ public class DataManager : MonoBehaviour {
         furnitureDict[loadedModelID].model = obj;
         if (loadingImage != null)
             loadingImage.Hide();
-		ResourceManager.Singleton.AddMarkerlessObject (obj);
-//        MainCamCtrl cam = Camera.main.GetComponent<MainCamCtrl>();
-//        if (cam != null)
-//            cam.orbitPivot = obj.transform;
+		// cschen ResourceManager.Singleton.AddMarkerlessObject (obj);
     }
 
 //    public void Clear()

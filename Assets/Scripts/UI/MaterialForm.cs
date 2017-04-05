@@ -103,12 +103,11 @@ public class MaterialForm : MonoBehaviour {
         currentObj.ShowOutline(showOutlineBtn.TriggerFlag);
     }
 
-    public void SetRotate(GToggleButton btn)
+    public void SetRotateState(bool flag)
     {
-        btn.setTrigger();
-        SetRotate(render1, btn.TriggerFlag);
-        SetRotate(render2, btn.TriggerFlag);
-        SetRotate(render3, btn.TriggerFlag);
+        SetRotate(render1, flag);
+        SetRotate(render2, flag);
+        SetRotate(render3, flag);
     }
 
     public void ResetMaterial()

@@ -35,6 +35,7 @@ public class WebManager : MonoBehaviour {
 
         WWW w = new WWW(Tags.SearchUrl, form);
         yield return w;
+        Debug.Log("return: " + w.text);
         if (!string.IsNullOrEmpty(w.error))
             Debug.Log("Get Game Info error: " + w.error);
         else if (w.text.StartsWith("ok"))
@@ -86,6 +87,21 @@ public class WebManager : MonoBehaviour {
             Debug.Log("return: " + w.text);
             getInfo(w.text);
         }
+    }
+
+    public IEnumerator SaveScene()
+    {
+        yield return null;
+    }
+
+    public IEnumerator LoadScene()
+    {
+        yield return null;
+    }
+
+    public IEnumerator GetSceneList()
+    {
+        yield return null;
     }
 
 }
