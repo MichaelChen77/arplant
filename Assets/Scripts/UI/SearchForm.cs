@@ -32,7 +32,7 @@ namespace IMAV.UI
         }
 
         public void Close()
-        {
+        { 
             gameObject.SetActive(false);
         }
 
@@ -47,7 +47,7 @@ namespace IMAV.UI
             gameObject.SetActive(true);
             searcheResult.Clear();
             //string _cat = categoryDropdown.options[categoryDropdown.value].text;
-            DataManager.Singleton.Search("All", str);
+            DataManager.Singleton.Search(str);
         }
 
         public void Refresh()

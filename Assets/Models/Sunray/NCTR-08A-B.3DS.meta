@@ -1,0 +1,152 @@
+fileFormatVersion: 2
+guid: 5b196d6213109cc4b93d7df136a8d514
+timeCreated: 1491538537
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Joined S0'
+    100002: ' Joined S1'
+    100004: ' Joined S2'
+    100006: ' Joined S3'
+    100008: ' Joined S4'
+    100010: ' Joined So'
+    100012: Casework-0
+    100014: Casework-S
+    100016: CSW_Sunra0
+    100018: CSW_Sunra1
+    100020: CSW_Sunra2
+    100022: CSW_Sunra3
+    100024: CSW_Sunra4
+    100026: CSW_Sunray
+    100028: Generic-S0
+    100030: Generic-Su
+    100032: //RootNode
+    400000: ' Joined S0'
+    400002: ' Joined S1'
+    400004: ' Joined S2'
+    400006: ' Joined S3'
+    400008: ' Joined S4'
+    400010: ' Joined So'
+    400012: Casework-0
+    400014: Casework-S
+    400016: CSW_Sunra0
+    400018: CSW_Sunra1
+    400020: CSW_Sunra2
+    400022: CSW_Sunra3
+    400024: CSW_Sunra4
+    400026: CSW_Sunray
+    400028: Generic-S0
+    400030: Generic-Su
+    400032: //RootNode
+    2300000: ' Joined S0'
+    2300002: ' Joined S1'
+    2300004: ' Joined S2'
+    2300006: ' Joined S3'
+    2300008: ' Joined S4'
+    2300010: ' Joined So'
+    2300012: Casework-0
+    2300014: Casework-S
+    2300016: CSW_Sunra0
+    2300018: CSW_Sunra1
+    2300020: CSW_Sunra2
+    2300022: CSW_Sunra3
+    2300024: CSW_Sunra4
+    2300026: CSW_Sunray
+    2300028: Generic-S0
+    2300030: Generic-Su
+    3300000: ' Joined S0'
+    3300002: ' Joined S1'
+    3300004: ' Joined S2'
+    3300006: ' Joined S3'
+    3300008: ' Joined S4'
+    3300010: ' Joined So'
+    3300012: Casework-0
+    3300014: Casework-S
+    3300016: CSW_Sunra0
+    3300018: CSW_Sunra1
+    3300020: CSW_Sunra2
+    3300022: CSW_Sunra3
+    3300024: CSW_Sunra4
+    3300026: CSW_Sunray
+    3300028: Generic-S0
+    3300030: Generic-Su
+    4300000: ' Joined So'
+    4300002: ' Joined S0'
+    4300004: ' Joined S1'
+    4300006: ' Joined S2'
+    4300008: ' Joined S3'
+    4300010: ' Joined S4'
+    4300012: Casework-S
+    4300014: CSW_Sunray
+    4300016: CSW_Sunra0
+    4300018: CSW_Sunra3
+    4300020: Generic-Su
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

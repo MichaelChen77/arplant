@@ -58,7 +58,6 @@ namespace IMAV.UI
         public void Login()
         {
             Close();
-
         }
     }
 }

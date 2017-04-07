@@ -23,14 +23,14 @@ namespace IMAV.UI
             storeData = _data;
             if (_data != null)
             {
-                nameText.text = _data.Name;
-                categoryText.text = _data.Category;
-                brandText.text = _data.Brand;
-                manuText.text = _data.Manufacturer;
-                placeText.text = _data.ProductionSite;
-                dateText.text = _data.ProductionDate;
-                priceText.text = _data.Price.ToString();
-                Thumbnail.sprite = _data.thumbnail;
+                nameText.text = _data.name;
+                categoryText.text = _data.category_name;
+                brandText.text = _data.brand_name;
+                manuText.text = _data.manufacturer_name;
+                placeText.text = _data.production_site;
+                dateText.text = _data.production_date;
+                priceText.text = _data.price.ToString();
+                Thumbnail.sprite = _data.Thumbnail;
             }
         }
 

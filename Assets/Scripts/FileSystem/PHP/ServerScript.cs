@@ -8,7 +8,7 @@ using System.Xml;
 
 public class ServerScript : MonoBehaviour
 {
-    public string baseUrl = "http://155.69.150.59/IMAV/file_util.php";
+    public string baseUrl = Tags.basefileUrl;
     public string postUrl = "http://155.69.147.43/maze/upload_file.php";
 
     private Queue<PhpRequest> requests = new Queue<PhpRequest>();
@@ -97,6 +97,7 @@ public class ServerScript : MonoBehaviour
         if (request is PhpDownloadRequest)
         {
             myURL = request.ToString();
+            Debug.Log("url: " + myURL);
             www = new WWW(myURL);
             yield return www;
             if (www.error == null)

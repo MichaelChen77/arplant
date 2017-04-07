@@ -46,11 +46,25 @@ namespace IMAV.UI
             StartCoroutine(WebManager.Singleton.UserLogin(emailInput.text, pwInput.text, AfterLoginSubmit));
         }
 
-        void AfterLoginSubmit(string str)
+        void AfterLoginSubmit(MessageData data)
         {
-            Debug.Log("login: " + str);
-            PostLogin();
-            Close();
+            if (data != null)
+            {
+                if (data.status == 1)
+                {
+                    WebManager.CurrentUser.userKey = data.key;
+                    PostLogin();
+                    Close();
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+            }
         }
 
         public void GotoSignUpPage()

@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: 032a0d90dcbdf1d4f8ba9d67a856509d
+timeCreated: 1491538536
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusi10'
+    100002: ' Extrusi11'
+    100004: ' Extrusi12'
+    100006: ' Extrusi13'
+    100008: ' Extrusi14'
+    100010: ' Extrusi15'
+    100012: ' Extrusi16'
+    100014: ' Extrusi17'
+    100016: ' Extrusi18'
+    100018: ' Extrusi19'
+    100020: ' Extrusi20'
+    100022: ' Extrusi21'
+    100024: ' Extrusio0'
+    100026: ' Extrusio1'
+    100028: ' Extrusio2'
+    100030: ' Extrusio3'
+    100032: ' Extrusio4'
+    100034: ' Extrusio5'
+    100036: ' Extrusio6'
+    100038: ' Extrusio7'
+    100040: ' Extrusio8'
+    100042: ' Extrusio9'
+    100044: ' Extrusion'
+    100046: ' Joined S0'
+    100048: ' Joined S1'
+    100050: ' Joined S2'
+    100052: ' Joined So'
+    100054: ' Sweep [50'
+    100056: ' Sweep [56'
+    100058: Wardrobe 0
+    100060: Wardrobe D
+    100062: //RootNode
+    400000: ' Extrusi10'
+    400002: ' Extrusi11'
+    400004: ' Extrusi12'
+    400006: ' Extrusi13'
+    400008: ' Extrusi14'
+    400010: ' Extrusi15'
+    400012: ' Extrusi16'
+    400014: ' Extrusi17'
+    400016: ' Extrusi18'
+    400018: ' Extrusi19'
+    400020: ' Extrusi20'
+    400022: ' Extrusi21'
+    400024: ' Extrusio0'
+    400026: ' Extrusio1'
+    400028: ' Extrusio2'
+    400030: ' Extrusio3'
+    400032: ' Extrusio4'
+    400034: ' Extrusio5'
+    400036: ' Extrusio6'
+    400038: ' Extrusio7'
+    400040: ' Extrusio8'
+    400042: ' Extrusio9'
+    400044: ' Extrusion'
+    400046: ' Joined S0'
+    400048: ' Joined S1'
+    400050: ' Joined S2'
+    400052: ' Joined So'
+    400054: ' Sweep [50'
+    400056: ' Sweep [56'
+    400058: Wardrobe 0
+    400060: Wardrobe D
+    400062: //RootNode
+    2300000: ' Extrusi10'
+    2300002: ' Extrusi11'
+    2300004: ' Extrusi12'
+    2300006: ' Extrusi13'
+    2300008: ' Extrusi14'
+    2300010: ' Extrusi15'
+    2300012: ' Extrusi16'
+    2300014: ' Extrusi17'
+    2300016: ' Extrusi18'
+    2300018: ' Extrusi19'
+    2300020: ' Extrusi20'
+    2300022: ' Extrusi21'
+    2300024: ' Extrusio0'
+    2300026: ' Extrusio1'
+    2300028: ' Extrusio2'
+    2300030: ' Extrusio3'
+    2300032: ' Extrusio4'
+    2300034: ' Extrusio5'
+    2300036: ' Extrusio6'
+    2300038: ' Extrusio7'
+    2300040: ' Extrusio8'
+    2300042: ' Extrusio9'
+    2300044: ' Extrusion'
+    2300046: ' Joined S0'
+    2300048: ' Joined S1'
+    2300050: ' Joined S2'
+    2300052: ' Joined So'
+    2300054: ' Sweep [50'
+    2300056: ' Sweep [56'
+    2300058: Wardrobe 0
+    2300060: Wardrobe D
+    3300000: ' Extrusi10'
+    3300002: ' Extrusi11'
+    3300004: ' Extrusi12'
+    3300006: ' Extrusi13'
+    3300008: ' Extrusi14'
+    3300010: ' Extrusi15'
+    3300012: ' Extrusi16'
+    3300014: ' Extrusi17'
+    3300016: ' Extrusi18'
+    3300018: ' Extrusi19'
+    3300020: ' Extrusi20'
+    3300022: ' Extrusi21'
+    3300024: ' Extrusio0'
+    3300026: ' Extrusio1'
+    3300028: ' Extrusio2'
+    3300030: ' Extrusio3'
+    3300032: ' Extrusio4'
+    3300034: ' Extrusio5'
+    3300036: ' Extrusio6'
+    3300038: ' Extrusio7'
+    3300040: ' Extrusio8'
+    3300042: ' Extrusio9'
+    3300044: ' Extrusion'
+    3300046: ' Joined S0'
+    3300048: ' Joined S1'
+    3300050: ' Joined S2'
+    3300052: ' Joined So'
+    3300054: ' Sweep [50'
+    3300056: ' Sweep [56'
+    3300058: Wardrobe 0
+    3300060: Wardrobe D
+    4300000: ' Extrusion'
+    4300002: ' Extrusio0'
+    4300004: ' Joined So'
+    4300006: ' Joined S0'
+    4300008: ' Extrusio1'
+    4300010: ' Extrusio2'
+    4300012: ' Joined S1'
+    4300014: ' Joined S2'
+    4300016: ' Extrusio3'
+    4300018: ' Extrusio4'
+    4300020: ' Extrusio5'
+    4300022: ' Extrusio6'
+    4300024: ' Extrusio7'
+    4300026: Wardrobe D
+    4300028: ' Extrusio8'
+    4300030: ' Extrusio9'
+    4300032: ' Extrusi10'
+    4300034: ' Extrusi11'
+    4300036: ' Sweep [56'
+    4300038: ' Sweep [50'
+    4300040: Wardrobe 0
+    4300042: ' Extrusi12'
+    4300044: ' Extrusi13'
+    4300046: ' Extrusi14'
+    4300048: ' Extrusi15'
+    4300050: ' Extrusi16'
+    4300052: ' Extrusi17'
+    4300054: ' Extrusi18'
+    4300056: ' Extrusi19'
+    4300058: ' Extrusi20'
+    4300060: ' Extrusi21'
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

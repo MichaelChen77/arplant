@@ -2,64 +2,32 @@
 using System.IO;
 
 public class FurnitureData{
-    protected uint id = 0;
-    public uint ID
+    public int id;
+    public string name;
+    public string category_name;
+    public string brand_name;
+    public string manufacturer_name;
+    public string production_site;
+    public string production_date;
+    public float price;
+    public string thumbnail_path;
+    public string object_path;
+
+    public ModelData modeldata;
+    protected Sprite thumbnail;
+    public Sprite Thumbnail
     {
-        get { return id; }
+        get { return thumbnail; }
+        set { thumbnail = value; }
+    }
+    protected GameObject model;
+    public GameObject Model
+    {
+        get { return model; }
+        set { model = value; }
     }
 
-    protected string name;
-    public string Name
-    {
-        get { return name; }
-    }
-
-    protected string category;
-    public string Category
-    {
-        get { return category; }
-        set { category = value; }
-    }
-
-    protected string brand;
-    public string Brand
-    {
-        get { return brand; }
-        set { brand = value; }
-    }
-
-    protected string manufacturer;
-    public string Manufacturer
-    {
-        get { return manufacturer; }
-        set { manufacturer = value; }
-    }
-
-    protected string place;
-    public string ProductionSite
-    {
-        get { return place; }
-        set { place = value; }
-    }
-
-    protected string date;
-    public string ProductionDate
-    {
-        get { return date; }
-        set { date = value; }
-    }
-
-    protected float price;
-    public float Price
-    {
-        get { return price; }
-        set { price = value; }
-    }
-
-    public Sprite thumbnail;
-    public GameObject model;
-
-    public FurnitureData(uint _id, string _name)
+    public FurnitureData(int _id, string _name)
     {
         id = _id;
         name = _name;

@@ -2,14 +2,15 @@
 using System;
 using System.IO;
 using IMAV.UI;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour {
     public SearchForm searchform;
     public SpinUI loadingImage;
     //List<GameObject> sceneObjects = new List<GameObject>();
-    Dictionary<uint, FurnitureData> furnitureDict = new Dictionary<uint, FurnitureData>();
-    public Dictionary<uint, FurnitureData> FurnitureDatas
+    Dictionary<int, FurnitureData> furnitureDict = new Dictionary<int, FurnitureData>();
+    public Dictionary<int, FurnitureData> FurnitureDatas
     {
         get { return furnitureDict; }
     }
@@ -22,7 +23,7 @@ public class DataManager : MonoBehaviour {
     }
 
     int loadedCount = 0;
-    uint loadedModelID = 0;
+    int loadedModelID = 0;
 
     private static DataManager mSingleton;
     public static DataManager Singleton
@@ -49,50 +50,118 @@ public class DataManager : MonoBehaviour {
     {
         try
         {
-            string[] strs = str.Split(';');
-            foreach (string s in strs)
+            FurnitureSet fs = JsonConvert.DeserializeObject<FurnitureSet>(str);
+            foreach(FurnitureData f in fs.Data)
             {
-                if (s != "")
+                if(!furnitureDict.ContainsKey(f.id))
                 {
-                    string[] subs = s.Split('>');
-                    uint _id = Convert.ToUInt32(subs[0]);
-                    if (!furnitureDict.ContainsKey(_id))
-                    {
-                        FurnitureData _data = new FurnitureData(_id, subs[1]);
-                        _data.Category = subs[2];
-                        _data.Brand = subs[3];
-                        _data.Manufacturer = subs[4];
-                        _data.ProductionSite = subs[5];
-                        _data.ProductionDate = subs[6];
-                        _data.Price = Convert.ToSingle(subs[7]);
-                        ServerScriptUtil.DownloadImageFile(DataUtility.GetImagePath(_data), DownloadImageCallback);
-                        loadedCount++;
-                        furnitureDict[_id] = _data;
-                    }
-                    searchform.SearchResult.Add(furnitureDict[_id]);
+                    furnitureDict[f.id] = f;
+                    loadedCount++;
+                    StartCoroutine(WebManager.Singleton.DownloadBinary(f.id, Tags.basefileUrl + f.thumbnail_path, DownloadImageCallback));
+                    //ServerScriptUtil.DownloadImageFile(f.thumbnail_path, DownloadImageCallback);
                 }
+                searchform.SearchResult.Add(furnitureDict[f.id]);
             }
             ServerScript.Singleton.StartPHPRequests();
         }
-        catch(IndexOutOfRangeException ioex)
+        catch (IndexOutOfRangeException ioex)
         {
             Debug.Log("DataManager->Load Data->IndexOutofRange: " + ioex.Message);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.Log("DataManager->Load Data->Exception: " + ex.Message);
         }
     }
 
-    public void DownloadImageCallback(string path, byte[] content)
+    public void SaveScene()
+    {
+        if (!WebManager.CurrentUser.IsNull())
+        {
+            StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, "test string", PostSaveScene));
+        }
+        else
+        {
+            Debug.Log("null user");
+        }
+    }
+
+    public void PostSaveScene(string str)
+    {
+        Debug.Log("save: " + str);
+    }
+
+    public void LoadSceneList()
+    {
+        if (!WebManager.CurrentUser.IsNull())
+        {
+            StartCoroutine(WebManager.Singleton.GetSceneList(WebManager.CurrentUser.userKey, PostLoadScene));
+        }
+        else
+        {
+            Debug.Log("null user");
+        }
+    }
+
+    public void LoadScene()
+    {
+        if (WebManager.CurrentUser != null)
+        {
+            StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, "test string", PostSaveScene));
+        }
+    }
+
+    public void PostLoadScene(string str)
+    {
+
+    }
+
+    //void LoadData(string str)
+    //{
+    //    try
+    //    {
+    //        string[] strs = str.Split(';');
+    //        foreach (string s in strs)
+    //        {
+    //            if (s != "")
+    //            {
+    //                string[] subs = s.Split('>');
+    //                uint _id = Convert.ToUInt32(subs[0]);
+    //                if (!furnitureDict.ContainsKey(_id))
+    //                {
+    //                    FurnitureData _data = new FurnitureData(_id, subs[1]);
+    //                    _data.category_name = subs[2];
+    //                    _data.brand_name = subs[3];
+    //                    _data.manufacturer_name = subs[4];
+    //                    _data.production_site = subs[5];
+    //                    _data.production_date = subs[6];
+    //                    _data.price = Convert.ToSingle(subs[7]);
+    //                    ServerScriptUtil.DownloadImageFile(DataUtility.GetImagePath(_data), DownloadImageCallback);
+    //                    loadedCount++;
+    //                    furnitureDict[_id] = _data;
+    //                }
+    //                searchform.SearchResult.Add(furnitureDict[_id]);
+    //            }
+    //        }
+    //        ServerScript.Singleton.StartPHPRequests();
+    //    }
+    //    catch(IndexOutOfRangeException ioex)
+    //    {
+    //        Debug.Log("DataManager->Load Data->IndexOutofRange: " + ioex.Message);
+    //    }
+    //    catch(Exception ex)
+    //    {
+    //        Debug.Log("DataManager->Load Data->Exception: " + ex.Message);
+    //    }
+    //}
+
+    public void DownloadImageCallback(int _id, byte[] content)
     {
         try
         {
-            string[] strs = path.Split('/');
-            uint _id = Convert.ToUInt32(strs[1]);
             if (furnitureDict.ContainsKey(_id))
             {
-                furnitureDict[_id].thumbnail = DataUtility.CreateSprit(content);
+                furnitureDict[_id].Thumbnail = DataUtility.CreateSprit(content);
             }
             loadedCount--;
             if (loadedCount == 0)
@@ -106,63 +175,38 @@ public class DataManager : MonoBehaviour {
         }
     }
 
-    public void Search(string _type, string _name)
+    public void Search(string _name)
     {
-        StartCoroutine(WebManager.Singleton.SearchFurniture(_type, _name, LoadData));
+        StartCoroutine(WebManager.Singleton.SearchFurniture(_name, LoadData));
     }
 
     public void LoadDataModle(FurnitureData _data)
     {
         searchform.Close();
-        loadedModelID = _data.ID;
-        if (_data.model == null)
+        loadedModelID = _data.id;
+        if (_data.Model == null)
         {
-            if (_data.CheckModelExist())
-            {
-                StartLoadOBjFile(_data);
-            }
-            else
-            {
-                PhpDownloadRequest r = new PhpDownloadRequest("GetList", DataUtility.GetModelPath(_data), DownloadModelCallback, VirtualFile.FileType.String);
-                ServerScript.Singleton.AppendRequest(r);
-                ServerScript.Singleton.StartPHPRequests();
-            }
+            StartCoroutine(WebManager.Singleton.DownloadAssetBundle(_data.id, Tags.basefileUrl + _data.object_path, DownloadModelCallback));
         }
         else
         {
-            GameObject obj = Instantiate(_data.model);
-			ResourceManager.Singleton.AddMarkerlessObject (obj);
+            GameObject obj = Instantiate(_data.Model);
+            ResourceManager.Singleton.AddMarkerlessObject(obj);
         }
     }
 
-    public void DownloadModelCallback(string path, string content)
+    public void DownloadModelCallback(int _id, UnityEngine.Object[] content)
     {
         try
         {
-            string[] strs = path.Split('/');
-            uint _id = Convert.ToUInt32(strs[1]);
             loadedCount = 0;
             tempFiles.Clear();
-            if (furnitureDict.ContainsKey(_id))
+            if (furnitureDict.ContainsKey(_id) && content.Length>0)
             {
-                string[] files = content.Split(';');
-                //Debug.Log("data path: " + Application.dataPath + "; path2: " + Application.persistentDataPath + "; path3: " + Application.streamingAssetsPath + "; path4: " + Application.temporaryCachePath);
-                string mpath = DataUtility.GetLocalModelPath(furnitureDict[loadedModelID]);
-                if (!Directory.Exists(mpath))
-                {
-                    Directory.CreateDirectory(mpath);
-                }
-                foreach(string str in files)
-                {
-                    if (str != "")
-                    {
-                        string urlPath = DataUtility.GetModelPath(furnitureDict[loadedModelID]) + str;
-                        tempFiles[urlPath] = false;
-                        ServerScriptUtil.DownloadBinaryFile(urlPath, DownloadFileCallback);
-                        loadedCount++;
-                    }
-                }
-                ServerScript.Singleton.StartPHPRequests();
+                furnitureDict[_id].Model = (GameObject)content[0];
+                GameObject obj = Instantiate(furnitureDict[_id].Model);
+                obj.transform.position = Vector3.zero;
+                ResourceManager.Singleton.AddMarkerlessObject(obj);
             }
         }
         catch (Exception ex)
@@ -170,6 +214,40 @@ public class DataManager : MonoBehaviour {
             Debug.Log("DownloadModelCallback Exception: " + ex.Message);
         }
     }
+
+    //public void DownloadModelCallback(int _id, string content)
+    //{
+    //    try
+    //    {
+    //        loadedCount = 0;
+    //        tempFiles.Clear();
+    //        if (furnitureDict.ContainsKey(_id))
+    //        {
+    //            string[] files = content.Split(';');
+    //            //Debug.Log("data path: " + Application.dataPath + "; path2: " + Application.persistentDataPath + "; path3: " + Application.streamingAssetsPath + "; path4: " + Application.temporaryCachePath);
+    //            string mpath = DataUtility.GetLocalModelPath(furnitureDict[loadedModelID]);
+    //            if (!Directory.Exists(mpath))
+    //            {
+    //                Directory.CreateDirectory(mpath);
+    //            }
+    //            foreach(string str in files)
+    //            {
+    //                if (str != "")
+    //                {
+    //                    string urlPath = DataUtility.GetModelPath(furnitureDict[loadedModelID]) + str;
+    //                    tempFiles[urlPath] = false;
+    //                    ServerScriptUtil.DownloadBinaryFile(urlPath, DownloadFileCallback);
+    //                    loadedCount++;
+    //                }
+    //            }
+    //            ServerScript.Singleton.StartPHPRequests();
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.Log("DownloadModelCallback Exception: " + ex.Message);
+    //    }
+    //}
 
     public void DownloadFileCallback(string path, byte[] content)
     {
@@ -224,7 +302,7 @@ public class DataManager : MonoBehaviour {
 
     void AfterLoadOBJ(GameObject obj)
     {
-        furnitureDict[loadedModelID].model = obj;
+        furnitureDict[loadedModelID].Model = obj;
         if (loadingImage != null)
             loadingImage.Hide();
 		// cschen ResourceManager.Singleton.AddMarkerlessObject (obj);

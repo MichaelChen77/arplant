@@ -35,22 +35,22 @@ public class DataUtility{
 
     public static string GetModelPath(FurnitureData _data)
     {
-        return _data.Category + "/" + _data.ID + "/OBJ/";
+        return _data.category_name + "/" + _data.id + "/OBJ/";
     }
 
     public static string GetLocalModelPath(FurnitureData _data)
     {
-        return Application.persistentDataPath + "/Data/" + _data.Category + "/" + _data.ID + "/OBJ/";
+        return Application.persistentDataPath + "/Data/" + _data.category_name + "/" + _data.id + "/OBJ/";
     }
 
     public static string GetLocalModelFile(FurnitureData _data)
     {
-        return GetLocalModelPath(_data) + _data.Name + ".obj";
+        return GetLocalModelPath(_data) + _data.name + ".obj";
     }
 
     public static string GetImagePath(FurnitureData _data)
     {
-        return _data.Category + "/" + _data.ID + "/" + _data.Name;
+        return _data.category_name + "/" + _data.id + "/" + _data.name;
     }
 
 	public static string GetScreenShotPath()

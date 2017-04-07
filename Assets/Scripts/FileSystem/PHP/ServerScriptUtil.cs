@@ -47,7 +47,7 @@ public static class ServerScriptUtil
 
     public static void DownloadImageFile(string path, OnDownloadedBinary binaryFileCallback)
     {
-        PhpDownloadRequest r = new PhpDownloadRequest("GetImageFile", path, binaryFileCallback, VirtualFile.FileType.Binary);
+        PhpDownloadRequest r = new PhpDownloadRequest("path", path, binaryFileCallback, VirtualFile.FileType.Binary);
         ServerScript.Singleton.AppendRequest(r);
     }
 

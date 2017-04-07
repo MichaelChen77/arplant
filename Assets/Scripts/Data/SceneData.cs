@@ -46,6 +46,9 @@ public class SceneObjectData
 
 public class SceneData{
 
+    public int id { get; set; }
+    public int updated_at { get; set; }
+
     protected string name;
     public string Name
     {
