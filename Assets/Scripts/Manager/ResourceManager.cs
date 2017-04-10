@@ -94,23 +94,24 @@ public class ResourceManager : MonoBehaviour {
 
 	public void loadnextlevel()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene ("test");
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("MainAR");
 	}
 
 
     public void LoadGameObject(ResType _type, string str)
     {
         GameObject obj = GetGameObject(_type, str);
+        string _content = _type + "-" + str;
         if (obj != null)
         {
-            LoadGameObject(obj);
+            LoadGameObject(obj, _content);
         }
     }
 
-    public void LoadGameObject(GameObject obj)
+    public void LoadGameObject(GameObject obj, string str)
     {
         GameObject newObj = Instantiate(obj);
-		AddMarkerlessObject(newObj);
+        AddMarkerlessLocalObject(str, newObj, true);
         //newObj.transform.position = Vector3.zero;
 //        MainCamCtrl cam = Camera.main.GetComponent<MainCamCtrl>();
 //        if (cam != null)
@@ -222,23 +223,37 @@ public class ResourceManager : MonoBehaviour {
 		highlightObject ();
 	}
 
-	public void AddMarkerlessObject(GameObject obj, bool init = true)
+	public void AddMarkerlessObject(GameObject obj)
 	{
-		StartCoroutine (AddingMarkerlessObject (obj, init));
+		StartCoroutine (AddingMarkerlessObject (obj, false, false, 0, ""));
 	}
 
-	IEnumerator AddingMarkerlessObject(GameObject obj, bool init)
+    public void AddMarkerlessRemoteObject(int id, GameObject obj, bool init)
+    {
+        StartCoroutine(AddingMarkerlessObject(obj, init, false, id, ""));
+    }
+
+    public void AddMarkerlessLocalObject(string _content, GameObject obj, bool init)
+    {
+        StartCoroutine(AddingMarkerlessObject(obj, init, true, 0, _content));
+    }
+
+    IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, int _id, string _content)
 	{
-		if (!marker && !_kudanTracker.ArbiTrackIsTracking ()) {
-			StartPlaceObject ();
-			yield return new WaitUntil (_kudanTracker.ArbiTrackIsTracking);
-		}
-		DataUtility.SetAsMarkerlessObject (obj,init);
-		objlist.Add (obj);
-		if(init)
-			SetCurrentObject (obj);
-		ResetTouchMode ();
-	}
+        if (!marker && !_kudanTracker.ArbiTrackIsTracking())
+        {
+            StartPlaceObject();
+            yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+        }
+        DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
+        //yield return null;
+        //SceneObject sobj = obj.AddComponent<SceneObject>();
+        //sobj.Init(_islocal, _id, _content);
+        objlist.Add (obj);
+        if (init)
+            SetCurrentObject(obj);
+        ResetTouchMode();
+    }
 
 	void OnApplicationPause(bool isPause)
 	{
@@ -341,4 +356,19 @@ public class ResourceManager : MonoBehaviour {
 		objlist.Remove (currentObj);
 		currentObj = null;
 	}
+
+    #region scene
+
+    public string GetSceneString()
+    {
+        string str = "";
+        for (int i = 0; i < objlist.Count; i++)
+        {
+            SceneObject obj = objlist[i].GetComponent<SceneObject>();
+            if (obj != null)
+                str += obj.ToDataString();
+        }
+        return str;
+    }
+    #endregion
 }

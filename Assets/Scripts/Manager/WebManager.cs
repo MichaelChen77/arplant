@@ -156,7 +156,7 @@ public class WebManager : MonoBehaviour {
         yield return w;
         Debug.Log("text: " + w.text);
         if (w.error == null)
-            getInfo("ok");
+            getInfo(w.text);
         else
             getInfo("error" + w.error);
         yield return null;

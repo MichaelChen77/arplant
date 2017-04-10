@@ -42,24 +42,30 @@ public class SceneObjectData
         scale = sc;
         matID = _mat;
     }
+
+    public bool isLocal()
+    {
+        if (id.Contains("-"))
+            return true;
+        return false;
+    }
 }
 
 public class SceneData{
 
     public int id { get; set; }
     public int updated_at { get; set; }
+    string sceneValue;
+    public string raw_design
+    {
+        get { return sceneValue; }
+        set { sceneValue = value; LoadData(sceneValue); }
+    }
+    public int created_at { get; set; }
 
-    protected string name;
     public string Name
     {
-        get { return name; }
-    }
-
-    protected string datetime;
-    public string DateTime
-    {
-        get { return datetime; }
-        set { datetime = value; }
+        get { return "Scene - "+id; }
     }
 
     protected Sprite icon;
@@ -80,39 +86,20 @@ public class SceneData{
         get { return objects; }
     }
 
-    public SceneData(string _name, string _time)
-    {
-        name = _name;
-        datetime = _time;
-    }
-
-    public SceneData(string _name, string _time, Sprite _icon)
-    {
-        name = _name;
-        datetime = _time;
-        icon = _icon;
-    }
-
-    public SceneData(string _content)
-    {
-        LoadData(_content);
-    }
-
     public void LoadData(string content)
     {
         try
         {
+            objects.Clear();
             string[] strs = content.Split(';');
             if (strs.Length > 0)
             {
-                string[] ps1 = strs[0].Split(',');
-                name = ps1[0];
-                datetime = ps1[1];
-                for(int i=1; i< strs.Length; i++)
+                for(int i=0; i< strs.Length; i++)
                 {
                     if (strs[i] != "")
                     {
                         string[] subStr = strs[i].Split(',');
+                        
                         Vector3 pos = DataUtility.ConvertToVector3(subStr[1], subStr[2], subStr[3]);
                         Vector3 rot = DataUtility.ConvertToVector3(subStr[4], subStr[5], subStr[6]);
                         Vector3 sca = DataUtility.ConvertToVector3(subStr[7], subStr[8], subStr[9]);
@@ -129,13 +116,13 @@ public class SceneData{
         }
     }
 
-    public string ToDataString()
-    {
-        string str = string.Format("{0},{1};", name, datetime);
-        for(int i=0; i<objects.Count; i++)
-        {
-            str += string.Format("{0},{1},{2},{3},{4};", objects[i].ID, objects[i].position.ToString(), objects[i].rotation.ToString(), objects[i].scale.ToString(), objects[i].MaterialID);
-        }
-        return str;
-    }
+    //public string ToDataString()
+    //{
+    //    string str = string.Format("{0},{1};", name, datetime);
+    //    for(int i=0; i<objects.Count; i++)
+    //    {
+    //        str += string.Format("{0},{1},{2},{3},{4};", objects[i].ID, objects[i].position.ToString(), objects[i].rotation.ToString(), objects[i].scale.ToString(), objects[i].MaterialID);
+    //    }
+    //    return str;
+    //}
 }

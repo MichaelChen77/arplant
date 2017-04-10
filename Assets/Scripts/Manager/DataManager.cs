@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour {
     public SearchForm searchform;
+    public SceneForm sceneform;
     public SpinUI loadingImage;
     //List<GameObject> sceneObjects = new List<GameObject>();
     Dictionary<int, FurnitureData> furnitureDict = new Dictionary<int, FurnitureData>();
@@ -15,9 +16,8 @@ public class DataManager : MonoBehaviour {
         get { return furnitureDict; }
     }
     Dictionary<string, bool> tempFiles = new Dictionary<string, bool>();
-
-    List<SceneData> scenes = new List<SceneData>();
-    public List<SceneData> Scenes
+    SceneSet scenes;
+    public SceneSet Scenes
     {
         get { return scenes; }
     }
@@ -62,7 +62,7 @@ public class DataManager : MonoBehaviour {
                 }
                 searchform.SearchResult.Add(furnitureDict[f.id]);
             }
-            ServerScript.Singleton.StartPHPRequests();
+            //ServerScript.Singleton.StartPHPRequests();
         }
         catch (IndexOutOfRangeException ioex)
         {
@@ -78,7 +78,7 @@ public class DataManager : MonoBehaviour {
     {
         if (!WebManager.CurrentUser.IsNull())
         {
-            StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, "test string", PostSaveScene));
+            StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, ResourceManager.Singleton.GetSceneString(), PostSaveScene));
         }
         else
         {
@@ -103,17 +103,53 @@ public class DataManager : MonoBehaviour {
         }
     }
 
-    public void LoadScene()
+    public void PostLoadScene(string str)
     {
-        if (WebManager.CurrentUser != null)
+        try
         {
-            StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, "test string", PostSaveScene));
+            scenes = JsonConvert.DeserializeObject<SceneSet>(str);
+            sceneform.Refresh();
+            sceneform.Open();
+        }
+        catch(Exception ex)
+        {
+            Debug.Log("error: " + ex.Message);
         }
     }
 
-    public void PostLoadScene(string str)
+    public void LoadSceneItem(SceneData item)
     {
-
+        ResourceManager.Singleton.Clear();
+        foreach(SceneObjectData sd in item.Objects)
+        {
+            GameObject newObj = null;
+            if (sd.isLocal())
+            {
+                string[] strs = sd.ID.Split('-');
+                ResType rt = (ResType)Enum.Parse(typeof(ResType), strs[0]);
+                GameObject obj = ResourceManager.Singleton.GetGameObject(rt, strs[1]);
+                if (obj != null)
+                {
+                    newObj = Instantiate(obj);
+                    ResourceManager.Singleton.AddMarkerlessLocalObject(sd.ID, obj, true);
+                }
+            }
+            else
+            {
+                int _id = Convert.ToInt32(sd.ID);
+                if (furnitureDict.ContainsKey(_id))
+                {
+                    LoadDataModle(furnitureDict[_id]);
+                    newObj = ResourceManager.Singleton.CurrentObject;
+                }
+            }
+            if (newObj != null)
+            {
+                newObj.transform.position = sd.position;
+                newObj.transform.eulerAngles = sd.rotation;
+                newObj.transform.localScale = sd.scale;
+            }
+        }
     }
 
     //void LoadData(string str)
@@ -184,6 +220,8 @@ public class DataManager : MonoBehaviour {
     {
         searchform.Close();
         loadedModelID = _data.id;
+        if (loadingImage != null)
+            loadingImage.Show();
         if (_data.Model == null)
         {
             StartCoroutine(WebManager.Singleton.DownloadAssetBundle(_data.id, Tags.basefileUrl + _data.object_path, DownloadModelCallback));
@@ -191,7 +229,9 @@ public class DataManager : MonoBehaviour {
         else
         {
             GameObject obj = Instantiate(_data.Model);
-            ResourceManager.Singleton.AddMarkerlessObject(obj);
+            ResourceManager.Singleton.AddMarkerlessRemoteObject(_data.id, obj, true);
+            if (loadingImage != null)
+                loadingImage.Hide();
         }
     }
 
@@ -200,19 +240,21 @@ public class DataManager : MonoBehaviour {
         try
         {
             loadedCount = 0;
-            tempFiles.Clear();
+            //tempFiles.Clear();
             if (furnitureDict.ContainsKey(_id) && content.Length>0)
             {
                 furnitureDict[_id].Model = (GameObject)content[0];
                 GameObject obj = Instantiate(furnitureDict[_id].Model);
                 obj.transform.position = Vector3.zero;
-                ResourceManager.Singleton.AddMarkerlessObject(obj);
+                ResourceManager.Singleton.AddMarkerlessRemoteObject(_id, obj, true);
             }
         }
         catch (Exception ex)
         {
             Debug.Log("DownloadModelCallback Exception: " + ex.Message);
         }
+        if (loadingImage != null)
+            loadingImage.Hide();
     }
 
     //public void DownloadModelCallback(int _id, string content)

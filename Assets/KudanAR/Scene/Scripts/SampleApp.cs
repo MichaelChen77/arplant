@@ -230,7 +230,7 @@ namespace Kudan.AR.Samples
 				//tran.GetComponent<MarkerlessTouchControl> ().enabled = false;
 			}
 
-			SceneManager.LoadSceneAsync("OutlineEffect");
+			SceneManager.LoadSceneAsync("ShowDetails");
 		}
 
 		public void resetObject() {
@@ -244,7 +244,7 @@ namespace Kudan.AR.Samples
 			foreach(Transform tran in temp)
 			{
 				tran.gameObject.AddComponent<MarkerlessTouchControl> ();
-				ResourceManager.Singleton.AddMarkerlessObject (tran.gameObject, false);
+				ResourceManager.Singleton.AddMarkerlessObject (tran.gameObject);
 				//tran.GetComponent<MarkerlessTouchControl> ().enabled = true;
 				if(tran.GetComponent<ARObject> () != null){
 					tran.GetComponent<ARObject> ().enabled = false;

@@ -17,6 +17,6 @@ public class UIControl : MonoBehaviour {
 	public void back()
 	{
 		UIManager.Singleton.UnSelect ();
-		SceneManager.LoadScene("Kudan");
+		SceneManager.LoadScene("MainAR");
 	}
 }

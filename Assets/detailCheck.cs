@@ -11,6 +11,6 @@ public class detailCheck : MonoBehaviour {
 
 	// Update is called once per frame
 	void Onclick () {
-		SceneManager.LoadScene ("OutlineEffect", LoadSceneMode.Additive);
+		SceneManager.LoadScene ("ShowDetails", LoadSceneMode.Additive);
 	}
 }

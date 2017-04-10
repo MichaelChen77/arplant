@@ -30,7 +30,7 @@ namespace IMAV.UI
         public void Refresh()
         {
             Clear();
-            foreach(SceneData d in DataManager.Singleton.Scenes)
+            foreach(SceneData d in DataManager.Singleton.Scenes.data)
             {
                 AddItem(d);
             }
@@ -40,7 +40,8 @@ namespace IMAV.UI
         {
             GameObject obj = Instantiate(scenePrefab);
             SceneItem _item = obj.GetComponent<SceneItem>();
-            _item.SetValue(_data);
+            _item.SetValue(_data, ClickSceneItem);
+            obj.transform.SetParent(content);
         }
 
         public void Clear()
@@ -50,6 +51,13 @@ namespace IMAV.UI
                 Destroy(tran.gameObject);
             }
             content.DetachChildren();
+            items.Clear();
+        }
+
+        public void ClickSceneItem(SceneItem _item)
+        {
+            DataManager.Singleton.LoadSceneItem(_item.Data);
+            Close();
         }
     }
 }

@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour {
 
     public DataPresentForm nameForm;
-    public DataPresentForm brandForm;
-    public DataPresentForm sizeForm;
+    //public DataPresentForm brandForm;
+    //public DataPresentForm sizeForm;
     public MaterialForm mtForm;
     public MainCamCtrl camCtrl;
     public Transform target;
@@ -64,8 +64,8 @@ public class UIManager : MonoBehaviour {
             }
             selectedObj = obj;
             nameForm.Show(obj);
-            brandForm.Show(obj);
-            sizeForm.Show(obj);
+            //brandForm.Show(obj);
+            //sizeForm.Show(obj);
             mtForm.Open(obj);
         }
     }
@@ -85,8 +85,8 @@ public class UIManager : MonoBehaviour {
             {
                 selectedObj.Scatter();
                 nameForm.Hide();
-                brandForm.Hide();
-                sizeForm.Hide();
+                //brandForm.Hide();
+                //sizeForm.Hide();
             }
         }
         if(Input.GetKeyDown(KeyCode.G))
@@ -95,8 +95,8 @@ public class UIManager : MonoBehaviour {
             {
                 selectedObj.Gather();
                 nameForm.Show(selectedObj);
-                brandForm.Show(selectedObj);
-                sizeForm.Show(selectedObj);
+                //brandForm.Show(selectedObj);
+                //sizeForm.Show(selectedObj);
             }
         }
         if (Input.GetMouseButtonDown(0))

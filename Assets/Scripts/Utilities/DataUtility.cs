@@ -16,6 +16,13 @@ public class DataUtility{
         return newSprite;
     }
 
+    public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+    {
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+        return dtDateTime;
+    }
+
     public static Vector3 ConvertToVector3(string str1, string str2, string str3)
     {
         try
@@ -58,7 +65,7 @@ public class DataUtility{
 		return Application.persistentDataPath+"/ScreenShots/";
 	}
 
-	public static void SetAsMarkerlessObject(GameObject obj, bool init)
+	public static void SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, int id, string _content)
 	{
 		obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
 		if (init) {
@@ -77,6 +84,9 @@ public class DataUtility{
 			Debug.Log ("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + LayerMask.LayerToName (obj.layer));
 			//obj.transform.rotation = ResourceManager.Singleton.StartFloorOrientation;
 			obj.AddComponent<MarkerlessTouchControl> ();
+            SceneObject sobj = obj.AddComponent<SceneObject>();
+            sobj.Init(isLocal, id, _content);
+
 			//obj.AddComponent<Outline> ();
 			if (obj.GetComponent<BoxCollider> () == null) {
 				BoxCollider box = obj.AddComponent<BoxCollider> ();

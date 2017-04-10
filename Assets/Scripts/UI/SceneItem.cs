@@ -17,15 +17,16 @@ namespace IMAV.UI
             get { return sceneData; }
         }
         public delegate void SceneItemSelected(SceneItem _item);
-        public SceneItemSelected ItemClick;
+        SceneItemSelected ItemClick;
 
-        public void SetValue(SceneData data)
+        public void SetValue(SceneData data, SceneItemSelected _click)
         {
             sceneData = data;
             itemName.text = data.Name;
-            itemIcon.sprite = data.Icon;
-            itemTime.text = data.DateTime;
+            //itemIcon.sprite = data.Icon;
+            itemTime.text = DataUtility.UnixTimeStampToDateTime((double)data.created_at).ToString();
             itemNumber.text = data.ModelNum.ToString();
+            ItemClick = _click;
         }
 
         public void OnPointerClick(PointerEventData data)
