@@ -1,21 +1,20 @@
-﻿//#define NULL_PLUGIN
-using UnityEngine;
+﻿using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Runtime.InteropServices;
 
 namespace Kudan.AR
 {
-#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR_OSX
+#if UNITY_EDITOR_WIN || UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR_OSX
 	public class NativeInterface
 	{
-#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_EDITOR_OSX
-		private const string PLUGIN_FILE = "KudanPlugin";
-#elif UNITY_IOS
+    #if UNITY_EDITOR_WIN || UNITY_ANDROID || UNITY_EDITOR_OSX
+        private const string PLUGIN_FILE = "KudanPlugin";
+	#elif UNITY_IOS
 		private const string PLUGIN_FILE = "__Internal";
-#endif
+	#endif
 
-#if !NULL_PLUGIN
+	#if !NULL_PLUGIN
 		[DllImport(PLUGIN_FILE)]
 		/// <summary>
 		/// Initialises the plugin.
@@ -34,6 +33,9 @@ namespace Kudan.AR
 		/// </summary>
 		/// <returns>The plugin version.</returns>
 		public static extern float GetPluginVersion();
+
+		//[DllImport(PLUGIN_FILE)]
+		//public static extern bool AddTrackable (byte[] data, string id);
 
 		[DllImport(PLUGIN_FILE)]
 		/// <summary>
@@ -78,7 +80,8 @@ namespace Kudan.AR
 		/// <param name="result">Result.</param>
 		public static extern bool GetProjectionMatrix(float nearPlane, float farPlane, float[] result);
 
-		[DllImport(PLUGIN_FILE)]
+        #if UNITY_EDITOR_WIN || UNITY_ANDROID || UNITY_EDITOR_OSX
+        [DllImport(PLUGIN_FILE)]
 		/// <summary>
 		/// Gets a detected trackable with the specified parameters.
 		/// </summary>
@@ -90,7 +93,8 @@ namespace Kudan.AR
 		/// <param name="trackingMethod">Tracking method.</param>
 		/// <param name="name">Name.</param>
 		public static extern bool GetDetectedTrackable(int index, float[] result, ref int width, ref int height, ref int trackingMethod, StringBuilder name);
-
+		#endif
+		
 		[DllImport(PLUGIN_FILE)]
 		/// <summary>
 		/// Enables the given tracking method.
@@ -107,6 +111,52 @@ namespace Kudan.AR
 		/// <param name="trackingMethodId">Tracking method identifier.</param>
 		public static extern bool DisableTrackingMethod(int trackingMethodId);
 
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Gets the marker recovery status.
+		/// </summary>
+		/// <returns><c>true</c>, if marker recovery is enabled, <c>false</c> otherwise.</returns>
+		public static extern bool GetMarkerRecoveryStatus();
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Sets the marker recovery status.
+		/// Enabling this feature allows for quicker re-detection if a marker is lost as well as making it easier to re-detect the marker from shallower angles and greater distances.
+		/// This is a feature that we recommend everyone should generally enable.
+		/// N.B. Enabling this feature will use a fraction more CPU power.
+		/// </summary>
+		/// <param name="status">Marker recovery is enabled if set to <c>true</c>, otherwise flow recovery is disabled. Default is false.</param>
+		public static extern void SetMarkerRecoveryStatus(bool status);
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Sets the extensability for all of the markers being added after this flag has been changed
+		/// </summary>
+		/// <param name="status">If set to <c>true</c> status.</param>
+		public static extern void SetExtensibleMarkers(bool status);
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Gets the extensible markers status.
+		/// </summary>
+		/// <returns><c>true</c>, if extensible markers status was gotten, <c>false</c> otherwise.</returns>
+		public static extern bool GetExtensibleMarkersStatus();
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Sets AutoCrop for the newly added markers after this flag has been changed
+		/// </summary>
+		/// <param name="status">If set to <c>true</c> status.</param>
+		public static extern void SetAutoCropMarkers(bool status);
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Gets the auto crop marker status.
+		/// </summary>
+		/// <returns><c>true</c>, if auto crop marker status was gotten, <c>false</c> otherwise.</returns>
+		public static extern bool GetAutoCropMarkerStatus();
+
+
         [DllImport(PLUGIN_FILE)]
 		/// <summary>
 		/// Gets the current position and rotation of the markerless driver being tracked.
@@ -120,6 +170,12 @@ namespace Kudan.AR
 		/// </summary>
 		/// <param name="pose">Pose.</param>
         public static extern void ArbiTrackStart(float[] pose);
+
+		[DllImport(PLUGIN_FILE)]
+		/// <summary>
+		/// Stops ArbiTrack
+		/// </summary>
+		public static extern void ArbiTrackStop();
 
         [DllImport(PLUGIN_FILE)]
 		/// <summary>
@@ -136,7 +192,7 @@ namespace Kudan.AR
 		/// <param name="depth">Depth.</param>
         public static extern void FloorPlaceGetPose(float[] pose, float depth);
 
-	#if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
+		#if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
 		[DllImport(PLUGIN_FILE)]
 		/// <summary>
 		/// Sets the texture ID.
@@ -195,9 +251,9 @@ namespace Kudan.AR
 		/// <returns><c>true</c>, if unity editor API key was set, <c>false</c> otherwise.</returns>
 		/// <param name="apiKey">API key.</param>
 		public static extern bool SetUnityEditorApiKey(string apiKey);
-	#endif
+		#endif
 
-#elif NULL_PLUGIN
+	#elif NULL_PLUGIN
 		
 		public static bool Init()
 		{
@@ -240,7 +296,7 @@ namespace Kudan.AR
 		public static bool GetDetectedTrackable(float[] result, StringBuilder name, ref int width, ref int height)
 		{
 		}
-#endif
+	#endif
 	}
 #endif
 };

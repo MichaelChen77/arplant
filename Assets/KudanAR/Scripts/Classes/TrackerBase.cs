@@ -14,12 +14,12 @@ namespace Kudan.AR
 		/// <summary>
 		/// The version of the plugin (scripts etc).  This is different to the version of the NATIVE plugin.
 		/// </summary>
-		private const string PluginVersionNumber = "1.2.1";
+		private const string PluginVersionNumber = "1.5";
 
 		/// <summary>
 		/// List of trackables the user has loaded.
 		/// </summary>
-		protected List<Trackable> _trackables = new List<Trackable>(8);
+		protected List<Trackable> _trackables = new List<Trackable>();
 
 		/// <summary>
 		/// The default camera near plane value.
@@ -60,7 +60,7 @@ namespace Kudan.AR
 		/// <summary>
 		/// List of detected trackables.
 		/// </summary>
-		protected List<Trackable> _detected = new List<Trackable>(8);
+		protected List<Trackable> _detected = new List<Trackable>();
 
 		/// <summary>
 		/// The camera rate, number of times the camera feed refreshes each second.
@@ -219,13 +219,15 @@ namespace Kudan.AR
 		/// </summary>
 		public abstract void StopInput();
 
+		public abstract bool AddTrackable (byte[] data, string id, bool extensible, bool autocrop);
+
 		/// <summary>
 		/// Adds a trackable with a given set of data and ID.
 		/// </summary>
 		/// <returns><c>true</c>, if trackable was added, <c>false</c> otherwise.</returns>
 		/// <param name="data">Data.</param>
 		/// <param name="id">Identifier.</param>
-		public abstract bool AddTrackable(byte[] data, string id);
+		public abstract bool AddTrackableSet(byte[] data, string id);
 
 		/// <summary>
 		/// Updates tracking.
@@ -236,6 +238,8 @@ namespace Kudan.AR
 		/// Function called just after the current frame has been drawn.
 		/// </summary>
 		public abstract void PostRender();
+
+		public abstract void NativeRender();
 		
 		/// <summary>
 		/// Starts tracking.
@@ -262,6 +266,29 @@ namespace Kudan.AR
 		public abstract bool DisableTrackingMethod(int trackingMethodId);
 
 		/// <summary>
+		/// Gets the marker recovery status.
+		/// </summary>
+		/// <returns><c>true</c>, if marker recovery is enabled, <c>false</c> otherwise.</returns>
+		public abstract bool GetMarkerRecoveryStatus ();
+
+		/// <summary>
+		/// Sets the marker recovery status.
+		/// Enabling this feature allows for quicker re-detection if a marker is lost as well as making it easier to re-detect the marker from shallower angles and greater distances.
+		/// This is a feature that we recommend everyone should generally enable.
+		/// N.B. Enabling this feature will use a fraction more CPU power.
+		/// </summary>
+		/// <param name="status">Marker recovery is enabled if set to <c>true</c>, otherwise flow recovery is disabled. Default is false.</param>
+		public abstract void SetMarkerRecoveryStatus (bool status);
+
+		public abstract bool GetMarkerAutoCropStatus ();
+
+		public abstract void SetMarkerAutoCropStatus (bool status);
+
+		public abstract bool GetMarkerExtensibilityStatus ();
+
+		public abstract void SetMarkerExtensibilityStatus (bool status);
+
+		/// <summary>
 		/// Sets the API key.
 		/// </summary>
 		/// <param name="key">Key.</param>
@@ -274,6 +301,11 @@ namespace Kudan.AR
 		/// <param name="position">Position.</param>
 		/// <param name="orientation">Orientation.</param>
 		public abstract void ArbiTrackStart (Vector3 position, Quaternion orientation);
+
+		/// <summary>
+		/// Stops ArbiTrack and returns to placement mode
+		/// </summary>
+		public abstract void ArbiTrackStop ();
 
 		/// <summary>
 		/// Checks if arbitrary tracking is currently running.
@@ -306,19 +338,36 @@ namespace Kudan.AR
 			_cameraFarPlane = cameraFarPlane;
 		}
 
+		/*public bool AddTrackable(string path, string id)
+		{
+			bool result = false;
+
+			if (System.IO.File.Exists (path)) 
+			{
+				byte[] data = System.IO.File.ReadAllBytes (path);
+				result = AddTrackable (data, id);
+			}
+			else
+			{
+				Debug.LogError ("Failed to add Trackable");
+			}
+
+			return result;
+		}*/
+
 		/// <summary>
 		/// Adds the trackable from a given path with a given ID.
 		/// </summary>
 		/// <returns><c>true</c>, if trackable was added, <c>false</c> otherwise.</returns>
 		/// <param name="path">Path.</param>
 		/// <param name="id">Identifier.</param>
-		public bool AddTrackable(string path, string id)
+		public bool AddTrackableSet(string path, string id)
 		{
 			bool result = false;
 			if (System.IO.File.Exists(path))
 			{
 				byte[] data = System.IO.File.ReadAllBytes(path);
-				result = AddTrackable(data, id);
+				result = AddTrackableSet(data, id);
 			}
 			else
 			{

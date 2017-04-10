@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 
-public class SceneSet{
-    List<SceneData> m_data = new List<SceneData>();
-    public List<SceneData> data
+namespace IMAV
+{
+    public class SceneSet
     {
-        get { return m_data; }
-        set { m_data = value; }
-    }
+        List<SceneData> m_data = new List<SceneData>();
+        public List<SceneData> data
+        {
+            get { return m_data; }
+            set { m_data = value; }
+        }
 
-    public int status { get; set; }
+        public int status { get; set; }
+    }
 }

@@ -29,7 +29,7 @@ namespace IMAV
 
         public void GotoARScene()
         {
-            SceneManager.LoadSceneAsync("test");
+            SceneManager.LoadSceneAsync("MainAR");
         }
     }
 }

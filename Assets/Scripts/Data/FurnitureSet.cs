@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-
-public class FurnitureSet{
-    List<FurnitureData> data = new List<FurnitureData>();
-    public List<FurnitureData> Data
+namespace IMAV
+{
+    public class FurnitureSet
     {
-        get { return data; }
-        set { data = value; }
-    }
+        List<FurnitureData> data = new List<FurnitureData>();
+        public List<FurnitureData> Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
 
-    public int status { get; set; }
+        public int status { get; set; }
+    }
 }

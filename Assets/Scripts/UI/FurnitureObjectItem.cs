@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
+using IMAV;
 
 public class FurnitureObjectItem : MonoBehaviour, IPointerClickHandler {
 
