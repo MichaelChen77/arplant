@@ -7,6 +7,7 @@ namespace IMAV
     {
 
         public static bool firstobject = true;
+        public static GameObject CurrentObject = null;
 
         public static Sprite CreateSprit(byte[] bytes)
         {

@@ -3,6 +3,11 @@ using IMAV;
 using System.Collections;
 using Newtonsoft.Json;
 
+public enum InfoType
+{
+    Product, Scene
+}
+
 public class WebManager : MonoBehaviour {
 
     public delegate void ReceiveStringData(string str);
@@ -35,10 +40,11 @@ public class WebManager : MonoBehaviour {
     }
 
 
-    public IEnumerator SearchFurniture(string _name, ReceiveStringData getInfo)
+    public IEnumerator SearchFurniture(string _name, string _cat, ReceiveStringData getInfo)
     {
         WWWForm form = new WWWForm();
         form.AddField("q", _name);
+        form.AddField("category", _cat);
 
         WWW w = new WWW(Tags.SearchUrl, form);
         yield return w;
@@ -159,7 +165,25 @@ public class WebManager : MonoBehaviour {
             getInfo(w.text);
         else
             getInfo("error" + w.error);
-        yield return null;
+    }
+
+    public IEnumerator GetObjectInfo(int id, InfoType type, ReceiveStringData getInfo)
+    {
+        string url = "";
+        if (type == InfoType.Scene)
+            url = Tags.GetSceneUrl + id;
+        else if (type == InfoType.Product)
+            url = Tags.GetInfoUrl + id;
+        WWW www = new WWW(url);
+        yield return www;
+
+        Debug.Log("get: " + www.text);
+        if (www.error == null)
+        {
+            getInfo(www.text);
+        }
+        else
+            Debug.Log("Cannot download image from: " + url);
     }
 
 }

@@ -94,21 +94,24 @@ namespace IMAV
             try
             {
                 objects.Clear();
-                string[] strs = content.Split(';');
-                if (strs.Length > 0)
+                if (content != "")
                 {
-                    for (int i = 0; i < strs.Length; i++)
+                    string[] strs = content.Split(';');
+                    if (strs.Length > 0)
                     {
-                        if (strs[i] != "")
+                        for (int i = 0; i < strs.Length; i++)
                         {
-                            string[] subStr = strs[i].Split(',');
+                            if (strs[i] != "")
+                            {
+                                string[] subStr = strs[i].Split(',');
 
-                            Vector3 pos = DataUtility.ConvertToVector3(subStr[1], subStr[2], subStr[3]);
-                            Vector3 rot = DataUtility.ConvertToVector3(subStr[4], subStr[5], subStr[6]);
-                            Vector3 sca = DataUtility.ConvertToVector3(subStr[7], subStr[8], subStr[9]);
-                            int _id = Convert.ToInt32(subStr[10]);
-                            SceneObjectData obj = new SceneObjectData(subStr[0], pos, rot, sca, _id);
-                            objects.Add(obj);
+                                Vector3 pos = DataUtility.ConvertToVector3(subStr[1], subStr[2], subStr[3]);
+                                Vector3 rot = DataUtility.ConvertToVector3(subStr[4], subStr[5], subStr[6]);
+                                Vector3 sca = DataUtility.ConvertToVector3(subStr[7], subStr[8], subStr[9]);
+                                int _id = Convert.ToInt32(subStr[10]);
+                                SceneObjectData obj = new SceneObjectData(subStr[0], pos, rot, sca, _id);
+                                objects.Add(obj);
+                            }
                         }
                     }
                 }

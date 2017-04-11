@@ -218,15 +218,16 @@ namespace IMAV.UI
             foreach (Transform tran in temp)
             {
                 tran.parent = dontDestroy.transform;
-                if (tran.GetComponent<ARObject>() == null)
-                {
-                    tran.gameObject.AddComponent<ARObject>();
-                }
-                tran.GetComponent<ARObject>().enabled = true;
-                Destroy(tran.GetComponent<ObjectTouchControl>());
+                tran.gameObject.SetActive(false);
+                //if (tran.GetComponent<ARObject>() == null)
+                //{
+                //    tran.gameObject.AddComponent<ARObject>();
+                //}
+                //tran.GetComponent<ARObject>().enabled = true;
+                //Destroy(tran.GetComponent<ObjectTouchControl>());
                 //tran.GetComponent<MarkerlessTouchControl> ().enabled = false;
             }
-
+            DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             SceneManager.LoadSceneAsync("ShowDetails");
         }
 

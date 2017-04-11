@@ -98,7 +98,7 @@ namespace IMAV
         {
             if (!WebManager.CurrentUser.IsNull())
             {
-                StartCoroutine(WebManager.Singleton.GetSceneList(WebManager.CurrentUser.userKey, PostLoadScene));
+                StartCoroutine(WebManager.Singleton.GetSceneList(WebManager.CurrentUser.userKey, PostLoadSceneList));
             }
             else
             {
@@ -106,7 +106,17 @@ namespace IMAV
             }
         }
 
-        public void PostLoadScene(string str)
+        public void GetTest()
+        {
+            StartCoroutine(WebManager.Singleton.GetObjectInfo(13, InfoType.Product, PostLoadScene));
+        }
+
+        void PostLoadScene(string str)
+        {
+            Debug.Log("post load scene: " + str);
+        }
+
+        public void PostLoadSceneList(string str)
         {
             try
             {
@@ -216,7 +226,7 @@ namespace IMAV
 
         public void Search(string _name)
         {
-            StartCoroutine(WebManager.Singleton.SearchFurniture(_name, LoadData));
+            StartCoroutine(WebManager.Singleton.SearchFurniture(_name, "", LoadData));
         }
 
         public void LoadDataModle(FurnitureData _data)
