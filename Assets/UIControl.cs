@@ -18,6 +18,6 @@ public class UIControl : MonoBehaviour {
 	public void back()
 	{
 		UIManager.Singleton.UnSelect ();
-		SceneManager.LoadScene("MainAR");
+		SceneManager.LoadSceneAsync("MainAR");
 	}
 }

@@ -22,12 +22,15 @@ public class SceneObject : MonoBehaviour {
 
     public int materialID = -1;
     List<MeshRenderer> renders = new List<MeshRenderer>();
+    List<Material[]> originMt = new List<Material[]>();
 
     public void Init(bool _islocal, int _id, string str)
     {
         id = _id;
         isLocal = _islocal;
         localID = str;
+        InitObject();
+        InitCollider();
     }
 
     public string ToDataString()
@@ -42,6 +45,17 @@ public class SceneObject : MonoBehaviour {
         return vec.x + "," + vec.y + "," + vec.z;
     }
 
+    public void InitCollider()
+    {
+        if (gameObject.GetComponent<Collider>() == null)
+        {
+            foreach (MeshRenderer mr in renders)
+            {
+                mr.gameObject.AddComponent<BoxCollider>();
+            }
+        }
+    }
+
     public void SetMaterial(Material mt)
     {
         if (renders.Count == 0)
@@ -49,6 +63,14 @@ public class SceneObject : MonoBehaviour {
         foreach (MeshRenderer mr in renders)
         {
             mr.material = mt;
+        }
+    }
+
+    public void ResumeMaterial()
+    {
+        for(int i=0; i<renders.Count; i++)
+        {
+            renders[i].materials = originMt[i];
         }
     }
 
@@ -82,6 +104,7 @@ public class SceneObject : MonoBehaviour {
             foreach (MeshRenderer mr in childRenders)
             {
                 mr.gameObject.AddComponent<MeshCollider>();
+                originMt.Add(mr.materials);
                 renders.Add(mr);
             }
         }

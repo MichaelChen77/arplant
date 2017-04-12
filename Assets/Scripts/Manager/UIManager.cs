@@ -1,34 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using IMAV.UI;
 
 namespace IMAV
 {
     public class UIManager : MonoBehaviour {
-
-        public DataPresentForm nameForm;
-        //public DataPresentForm brandForm;
-        //public DataPresentForm sizeForm;
-        public MaterialForm mtForm;
+        //public MaterialForm mtForm;
         public MainCamCtrl camCtrl;
         public Transform room;
-        public Transform target;
+        //public Transform target;
+        public Text lightText;
+        public GameObject[] lights;
 
-        bool isLock = false;
-        public bool IsLock
-        {
-            get { return isLock; }
-            set {
-                isLock = value;
-                if (camCtrl != null)
-                {
-                    camCtrl.enabled = isLock;
-                    camCtrl.orbitPivot = selectedObj.transform;
-                }
-            }
-        }
-
+        //bool isLock = false;
+        //public bool IsLock
+        //{
+        //    get { return isLock; }
+        //    set {
+        //        isLock = value;
+        //        if (camCtrl != null)
+        //        {
+        //            camCtrl.enabled = isLock;
+        //            camCtrl.orbitPivot = selectedObj.transform;
+        //        }
+        //    }
+        //}
 
         private static UIManager mSingleton;
         public static UIManager Singleton
@@ -40,7 +38,12 @@ namespace IMAV
         }
 
         SceneObject selectedObj;
+        public SceneObject SelectedObj
+        {
+            get { return selectedObj; }
+        }
         SceneObject dragObj;
+        int lightIndex = 0;
 
         void Awake()
         {
@@ -61,27 +64,39 @@ namespace IMAV
             selectedObj = obj.GetComponent<SceneObject>();
             selectedObj.transform.localPosition = new Vector3(0, 1.4f, 0);
             selectedObj.transform.localEulerAngles = new Vector3(0, 210f, 0);
-            selectedObj.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+            //selectedObj.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
             camCtrl.orbitPivot = selectedObj.transform;
+            camCtrl.SetorbitDistance();
+            lightText.text = lights[0].name;
         }
 
-        public void SelectObject(ARObject obj)
+        public void SetNextLight()
         {
-            //if (selectedObj != obj)
-            //{
-            //    if (selectedObj != null)
-            //        selectedObj.Selected = false;
-            //    if (obj != null)
-            //    {
-            //        obj.Selected = true;
-            //    }
-            //    selectedObj = obj;
-            //    nameForm.Show(obj);
-            //    brandForm.Show(obj);
-            //    sizeForm.Show(obj);
-            //    mtForm.Open(obj);
-            //}
+            if(lightIndex < lights.Length)
+            {
+                lights[lightIndex].SetActive(false);
+                lightIndex++;
+                if (lightIndex >= lights.Length)
+                    lightIndex = 0;
+                lights[lightIndex].SetActive(true);
+                lightText.text = lights[lightIndex].name;
+            }
         }
+
+        public void SetPrevLight()
+        {
+            if (lightIndex > -1)
+            {
+                lights[lightIndex].SetActive(false);
+                lightIndex--;
+                if (lightIndex < 0)
+                    lightIndex = lights.Length - 1;
+                lights[lightIndex].SetActive(true);
+                lightText.text = lights[lightIndex].name;
+            }
+        }
+
+
 
         public void UnSelect()
         {

@@ -8,6 +8,7 @@ public class ToggleButton : MonoBehaviour, IPointerClickHandler {
 	public Sprite offSprite;
 	public Color ignoreColor;
 	Color originColor;
+    [SerializeField]
 	bool isOn = true;
 	public bool IsOn
 	{

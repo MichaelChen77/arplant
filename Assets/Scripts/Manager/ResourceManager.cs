@@ -220,12 +220,12 @@ namespace IMAV
                 return;
             if (currentObj != null) {
                 currentObj.GetComponent<ObjectTouchControl>().enabled = false;
-                disableHighlight();
+                //disableHighlight();
             }
             currentObj = obj;
             currentObj.GetComponent<ObjectTouchControl>().enabled = true;
             Debug.Log("Set current object : " + currentObj.name);
-            highlightObject();
+            //highlightObject();
         }
 
         public void AddMarkerlessObject(GameObject obj)

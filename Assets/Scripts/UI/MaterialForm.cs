@@ -11,33 +11,35 @@ namespace IMAV.UI
         public MeshRenderer render1;
         public MeshRenderer render2;
         public MeshRenderer render3;
+        public MeshRenderer render4;
         public Text nameText1;
         public Text nameText2;
         public Text nameText3;
-        public GToggleButton showOutlineBtn;
+        public Text nameText4;
         public Button NextButton;
         public Button PrevButton;
 
-        ARObject currentObj;
-        Material originMt;
+        SceneObject currentObj;
         int currentMtID = 0;
+        bool rotated = true;
 
         void Start()
         {
             render1.material = MaterialManager.Singleton.materails[currentMtID];
             render2.material = MaterialManager.Singleton.materails[currentMtID + 1];
             render3.material = MaterialManager.Singleton.materails[currentMtID + 2];
+            render4.material = MaterialManager.Singleton.materails[currentMtID + 3];
         }
 
-        public void Open(ARObject obj)
+        public void Open()
         {
-            if (obj != null)
+            if (UIManager.Singleton.SelectedObj != null)
             {
                 gameObject.SetActive(true);
-                showOutlineBtn.setTrigger(true);
-                currentObj = obj;
-                originMt = obj.GetMaterial();
+                currentObj = UIManager.Singleton.SelectedObj;
                 UpdateMoveBtnState();
+                SetRotateState(rotated);
+                GoNext();
             }
             else
                 Close();
@@ -50,14 +52,14 @@ namespace IMAV.UI
 
         public void GoNext()
         {
-            if (currentMtID < MaterialManager.Singleton.MaterialCount - 3)
+            if (currentMtID < MaterialManager.Singleton.MaterialCount-4)
             {
-                if (currentMtID < MaterialManager.Singleton.MaterialCount - 5)
-                    currentMtID += 3;
-                else if (currentMtID == MaterialManager.Singleton.MaterialCount - 5)
-                    currentMtID += 2;
+                Debug.Log("" + currentMtID + " ; " + MaterialManager.Singleton.MaterialCount);
+                if (currentMtID < MaterialManager.Singleton.MaterialCount - 8)
+                    currentMtID += 4;
                 else
-                    currentMtID += 1;
+                    currentMtID += MaterialManager.Singleton.MaterialCount - currentMtID - 4;
+                Debug.Log("after: " + currentMtID + " ; " + MaterialManager.Singleton.MaterialCount);
                 AssignMaterials();
             }
             UpdateMoveBtnState();
@@ -68,14 +70,16 @@ namespace IMAV.UI
             render1.material = MaterialManager.Singleton.materails[currentMtID];
             render2.material = MaterialManager.Singleton.materails[currentMtID + 1];
             render3.material = MaterialManager.Singleton.materails[currentMtID + 2];
+            render4.material = MaterialManager.Singleton.materails[currentMtID + 3];
             nameText1.text = render1.material.name;
-            nameText2.text = render3.material.name;
+            nameText2.text = render2.material.name;
             nameText3.text = render3.material.name;
+            nameText4.text = render4.material.name;
         }
 
         void UpdateMoveBtnState()
         {
-            if (currentMtID < MaterialManager.Singleton.MaterialCount - 3)
+            if (currentMtID < MaterialManager.Singleton.MaterialCount - 4)
                 NextButton.interactable = true;
             else
                 NextButton.interactable = false;
@@ -89,40 +93,39 @@ namespace IMAV.UI
         {
             if (currentMtID > 0)
             {
-                if (currentMtID > 2)
-                    currentMtID -= 3;
-                else if (currentMtID == 2)
-                    currentMtID -= 2;
+                if (currentMtID > 3)
+                    currentMtID -= 4;
                 else
-                    currentMtID--;
+                    currentMtID = 0;
                 AssignMaterials();
             }
             UpdateMoveBtnState();
         }
 
-        public void SetOutlineShow()
+        public void SetRotateState()
         {
-            showOutlineBtn.setTrigger();
-            currentObj.ShowOutline(showOutlineBtn.TriggerFlag);
+            rotated = !rotated;
+            SetRotateState(rotated);
         }
 
-        public void SetRotateState(bool flag)
+        void SetRotateState(bool flag)
         {
             SetRotate(render1, flag);
             SetRotate(render2, flag);
             SetRotate(render3, flag);
+            SetRotate(render4, flag);
         }
 
         public void ResetMaterial()
         {
-            currentObj.SetMaterial(originMt);
+            currentObj.ResumeMaterial();
         }
 
-        public void LockObject(GToggleButton btn)
-        {
-            btn.setTrigger();
-            UIManager.Singleton.IsLock = btn.TriggerFlag;
-        }
+        //public void LockObject(GToggleButton btn)
+        //{
+        //    btn.setTrigger();
+        //    UIManager.Singleton.IsLock = btn.TriggerFlag;
+        //}
 
         void SetRotate(MeshRenderer rend, bool flag)
         {
@@ -137,6 +140,7 @@ namespace IMAV.UI
             {
                 case 2: mt = render2.material; break;
                 case 3: mt = render3.material; break;
+                case 4: mt = render4.material; break;
             }
             if (currentObj != null)
                 currentObj.SetMaterial(mt);

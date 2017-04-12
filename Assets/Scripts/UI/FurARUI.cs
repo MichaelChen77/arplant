@@ -17,19 +17,18 @@ namespace IMAV.UI
         public Text markerHint;
         public CaptureAndSave snapShot;
         public ToggleButton touchBtn;
-        public ToggleButton showUnitBtn;
         public ToggleButton UIToggle;
         public StatusButton constraintBtn;
         public GameObject imageViewDlg;
         public ImageGallery imageGallery;
-        public Button insertBtn;
-        public Button deleteBtn;
-        public Button resetBtn;
-        public Button snapshotBtn;
-        public Button imagegalleryBtn;
-        public Button detailCheckBtn;
-        public Button heightInputBtn;
-        GameObject UnitObject;
+        public Animator ctrlBtnPanelAnim;
+        //public Button insertBtn;
+        //public Button deleteBtn;
+        //public Button resetBtn;
+        //public Button snapshotBtn;
+        //public Button imagegalleryBtn;
+        //public Button detailCheckBtn;
+        //public Button heightInputBtn;
 
         public void Init(ToggleButton markerBtn)
         {
@@ -40,23 +39,38 @@ namespace IMAV.UI
 
         void Start()
         {
-            touchBtn.SetToggle(ResourceManager.Singleton.touchMove);
-            touchBtn.onToggleClick = SetTouchMove;
-            constraintBtn.SetStatus(ResourceManager.Singleton.constraintID);
-            constraintBtn.onButtonClick = SetConstraintMode;
-            UnitObject = GameObject.FindGameObjectWithTag("MarkerlessUnit");
-            showUnitBtn.SetToggle(false);
-            showUnitBtn.onToggleClick = setUnitObjectShow;
-            UIToggle.SetToggle(true);
-            ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
-            ResourceManager.Singleton.Reset();
-            ResourceManager.Singleton.StartPlaceObject();
-
-            Invoke("resetObject", 0.1f);
+            try {
+                touchBtn.SetToggle(ResourceManager.Singleton.touchMove);
+                ResourceManager.Singleton.DebugString("1");
+                touchBtn.onToggleClick = SetTouchMove;
+                ResourceManager.Singleton.DebugString("2");
+                constraintBtn.SetStatus(ResourceManager.Singleton.constraintID);
+                ResourceManager.Singleton.DebugString("3");
+                constraintBtn.onButtonClick = SetConstraintMode;
+                ResourceManager.Singleton.DebugString("4");
+                UIToggle.onToggleClick = ShowControlButtons;
+                ResourceManager.Singleton.DebugString("5");
+                ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
+                ResourceManager.Singleton.DebugString("6");
+                ResourceManager.Singleton.Reset();
+                ResourceManager.Singleton.DebugString("7");
+                ResourceManager.Singleton.StartPlaceObject();
+                StartCoroutine(resetObject());
+            }
+            catch(System.Exception ex)
+            {
+                ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            }
+            //resetObject();
         }
 
-        void Update()
+        void ShowControlButtons(bool flag)
         {
+            ctrlBtnPanelAnim.SetBool("Show", flag);
+        }
+
+        //void Update()
+        //{
             //			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             //				if (IsFormActived () && !TouchOnUI ()) {
             //					Debug.Log ("close form");
@@ -65,33 +79,32 @@ namespace IMAV.UI
             //				}
             //			}
             //select ();
-            if (UIToggle.IsOn)
-            {
-                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                    RaycastHit hit;
+            //if (UIToggle.IsOn)
+            //{
+            //    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            //    {
+            //        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+            //        RaycastHit hit;
 
-                    if (!Physics.Raycast(ray, out hit))
-                    {
-                        if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-                        {
-                            touchBtn.gameObject.SetActive(!touchBtn.gameObject.activeSelf);
-                            showUnitBtn.gameObject.SetActive(!showUnitBtn.gameObject.activeSelf);
-                            constraintBtn.gameObject.SetActive(!constraintBtn.gameObject.activeSelf);
-                            insertBtn.gameObject.SetActive(!insertBtn.gameObject.activeSelf);
-                            deleteBtn.gameObject.SetActive(!deleteBtn.gameObject.activeSelf);
-                            resetBtn.gameObject.SetActive(!resetBtn.gameObject.activeSelf);
-                            snapshotBtn.gameObject.SetActive(!snapshotBtn.gameObject.activeSelf);
-                            imagegalleryBtn.gameObject.SetActive(!imagegalleryBtn.gameObject.activeSelf);
-                            UIToggle.gameObject.SetActive(!UIToggle.gameObject.activeSelf);
-                            detailCheckBtn.gameObject.SetActive(!detailCheckBtn.gameObject.activeSelf);
-                            heightInputBtn.gameObject.SetActive(!heightInputBtn.gameObject.activeSelf);
-                        }
-                    }
-                }
-            }
-        }
+            //        if (!Physics.Raycast(ray, out hit))
+            //        {
+            //            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            //            {
+            //                touchBtn.gameObject.SetActive(!touchBtn.gameObject.activeSelf);
+            //                constraintBtn.gameObject.SetActive(!constraintBtn.gameObject.activeSelf);
+            //                insertBtn.gameObject.SetActive(!insertBtn.gameObject.activeSelf);
+            //                deleteBtn.gameObject.SetActive(!deleteBtn.gameObject.activeSelf);
+            //                resetBtn.gameObject.SetActive(!resetBtn.gameObject.activeSelf);
+            //                snapshotBtn.gameObject.SetActive(!snapshotBtn.gameObject.activeSelf);
+            //                imagegalleryBtn.gameObject.SetActive(!imagegalleryBtn.gameObject.activeSelf);
+            //                UIToggle.gameObject.SetActive(!UIToggle.gameObject.activeSelf);
+            //                detailCheckBtn.gameObject.SetActive(!detailCheckBtn.gameObject.activeSelf);
+            //                heightInputBtn.gameObject.SetActive(!heightInputBtn.gameObject.activeSelf);
+            //            }
+            //        }
+            //    }
+            //}
+        //}
 
         void SetTouchMove(bool flag)
         {
@@ -99,12 +112,6 @@ namespace IMAV.UI
             constraintBtn.Switch(flag);
             constraintBtn.SetStatus(0);
             ResourceManager.Singleton.constraintID = 0;
-        }
-
-        void setUnitObjectShow(bool flag)
-        {
-            if (UnitObject != null)
-                UnitObject.SetActive(flag);
         }
 
         void SetConstraintMode(int _id)
@@ -207,17 +214,15 @@ namespace IMAV.UI
 
         public void OpenDetailMode()
         {
-            ResourceManager.Singleton.disableHighlight();
-            GameObject markless = GameObject.Find("Markerless");
-            GameObject dontDestroy = GameObject.Find("DontDestroyModels");
+            //ResourceManager.Singleton.disableHighlight();
             List<Transform> temp = new List<Transform>();
-            foreach (Transform tr in markless.transform)
+            foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
             {
                 temp.Add(tr);
             }
             foreach (Transform tran in temp)
             {
-                tran.parent = dontDestroy.transform;
+                tran.parent = DataUtility.dontdestroy.transform;
                 tran.gameObject.SetActive(false);
                 //if (tran.GetComponent<ARObject>() == null)
                 //{
@@ -231,25 +236,22 @@ namespace IMAV.UI
             SceneManager.LoadSceneAsync("ShowDetails");
         }
 
-        public void resetObject()
+        IEnumerator resetObject()
         {
-
-            GameObject markless = GameObject.Find("Markerless");
-            GameObject dontDestroy = GameObject.Find("DontDestroyModels");
+            if (!ResourceManager.Singleton.marker && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+                yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+            yield return new WaitForSeconds(0.1f);
             List<Transform> temp = new List<Transform>();
-            foreach (Transform tr in dontDestroy.transform)
+            ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
+            foreach (Transform tr in DataUtility.dontdestroy.transform)
             {
                 temp.Add(tr);
             }
             foreach (Transform tran in temp)
             {
-                tran.gameObject.AddComponent<ObjectTouchControl>();
+                tran.gameObject.SetActive(true);
                 ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
-                //tran.GetComponent<MarkerlessTouchControl> ().enabled = true;
-                if (tran.GetComponent<ARObject>() != null)
-                {
-                    tran.GetComponent<ARObject>().enabled = false;
-                }
+                ResourceManager.Singleton.DebugString("add object: " + tran.name);
             }
         }
 

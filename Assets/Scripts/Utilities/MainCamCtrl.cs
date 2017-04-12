@@ -59,10 +59,10 @@ public class MainCamCtrl : MonoBehaviour {
         {
             FreeCam();
 
-            if (Input.GetKey(KeyCode.F))
-            {
-                orbitCamera();
-            }
+            //if (Input.GetKey(KeyCode.F))
+            //{
+            //    orbitCamera();
+            //}
         }
 	}
 
@@ -77,49 +77,74 @@ public class MainCamCtrl : MonoBehaviour {
 
     void updateCamXYRot()
     {
-        camYRot += Input.GetAxis("Mouse X") * (Time.deltaTime * camPanSpeed);
+        camYRot += deltaVec.x * (Time.deltaTime * camPanSpeed);
+        //camYRot += deltaVec.y * (Time.deltaTime * camPanSpeed);
         camYRot = ClampAngle(camYRot, -360, 360);
-        camXRot -= Input.GetAxis("Mouse Y") * (Time.deltaTime * camPanSpeed);
+        camXRot -= deltaVec.y * (Time.deltaTime * camPanSpeed);
+        //camXRot -= deltaVec.x * (Time.deltaTime * camPanSpeed);
         camXRot = ClampAngle(camXRot, -90, 90);
+        //Debug.Log(Input.GetAxis("Mouse X") + " ; " + Input.GetAxis("Mouse Y"));
     }
 
+    public void SetorbitDistance()
+    {
+        if (orbitPivot != null && useOCD)
+        {
+            camTargetDistance = Vector3.Distance(orbitPivot.position, transform.position);
+        }
+    }
+
+    Vector2 deltaVec = Vector2.zero;
     void FreeCam()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.touchCount > 0)
         {
-            if(orbitPivot!=null && useOCD)
-                camTargetDistance = Vector3.Distance(orbitPivot.position, transform.position);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-        {
-            shiftUpSpeed();
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
-        {
-            shiftDownSpeed();
-        }
-        if (Input.GetMouseButton(0))
-        {
-            if (Input.GetKey(KeyCode.LeftAlt))
+            //Store inputs
+            Touch fing1 = Input.GetTouch(0);
+            //Touch fing2 = Input.GetTouch(1);
+            if (fing1.phase == TouchPhase.Moved) //If either finger has moved since the last frame
             {
+                deltaVec = fing1.deltaPosition*0.1f;
                 orbitCamera();
-            }
-            else if (Input.GetKey(KeyCode.LeftControl))
-            {
-                dragCamera();
+
             }
         }
-        if (Input.GetMouseButton(1))
-        {
-            if (Input.GetKey(KeyCode.LeftAlt))
-            {
-                zoomCamera();
-            }
-            else
-            {
-                rotatAndFlyCamera();
-            }
-        }
+
+        //if (Input.GetKeyDown(KeyCode.LeftAlt))
+        //{
+        //    if (orbitPivot != null && useOCD)
+        //        camTargetDistance = Vector3.Distance(orbitPivot.position, transform.position);
+        //}
+        //if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        //{
+        //    shiftUpSpeed();
+        //}
+        //if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        //{
+        //    shiftDownSpeed();
+        //}
+        //if (Input.GetMouseButton(0))
+        //{
+        //    if (Input.GetKey(KeyCode.LeftAlt))
+        //    {
+        //        orbitCamera();
+        //    }
+        //    else if (Input.GetKey(KeyCode.LeftControl))
+        //    {
+        //        dragCamera();
+        //    }
+        //}
+        //if (Input.GetMouseButton(1))
+        //{
+        //    if (Input.GetKey(KeyCode.LeftAlt))
+        //    {
+        //        zoomCamera();
+        //    }
+        //    else
+        //    {
+        //        rotatAndFlyCamera();
+        //    }
+        //}
         updateCursor();
         if(Input.GetMouseButtonUp(0)||Input.GetMouseButtonUp(1))
         {

@@ -8,6 +8,7 @@ namespace IMAV
 
         public static bool firstobject = true;
         public static GameObject CurrentObject = null;
+        public static DontDestroy dontdestroy = null;
 
         public static Sprite CreateSprit(byte[] bytes)
         {
@@ -76,16 +77,16 @@ namespace IMAV
             {
                 obj.layer = 8;
                 obj.transform.localScale = obj.transform.localScale * 100;
-                if (firstobject)
-                {
+                //if (firstobject)
+                //{
                     obj.transform.localPosition = new Vector3(0, 0, 0);
                     firstobject = false;
-            }
-            else {
-                GameObject arrow = GameObject.Find("Arrow");
-                Vector3 relativePoint = ResourceManager.Singleton.markerlessTransform.InverseTransformPoint(arrow.transform.localPosition.x, arrow.transform.localPosition.y, arrow.transform.localPosition.z);
-                obj.transform.localPosition = relativePoint;
-            }
+            //}
+            //else {
+            //    GameObject arrow = GameObject.Find("Arrow");
+            //    Vector3 relativePoint = ResourceManager.Singleton.markerlessTransform.InverseTransformPoint(arrow.transform.localPosition.x, arrow.transform.localPosition.y, arrow.transform.localPosition.z);
+            //    obj.transform.localPosition = relativePoint;
+            //}
             Quaternion quat = obj.transform.rotation;
                 obj.transform.localRotation = quat;
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + LayerMask.LayerToName(obj.layer));
@@ -95,11 +96,6 @@ namespace IMAV
                 sobj.Init(isLocal, id, _content);
 
                 //obj.AddComponent<Outline> ();
-                if (obj.GetComponent<BoxCollider>() == null)
-                {
-                    BoxCollider box = obj.AddComponent<BoxCollider>();
-                    box.isTrigger = false;
-                }
                 ResourceManager.Singleton.SetDefaultSize(obj);
             }
         }

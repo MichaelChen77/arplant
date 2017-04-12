@@ -105,9 +105,9 @@ namespace IMAV
         {
             originPos = transform.position;
             originScale = transform.localScale.x;
-            Vector3 targetpos = UIManager.Singleton.target.position;
-            float target = transform.localScale.x * 4 / GetComponent<BoxCollider>().bounds.size.magnitude;
-            StartCoroutine(moveObjectTo(transform, targetpos, originScale, target, moveFrame, StartRotateObject));
+            //Vector3 targetpos = UIManager.Singleton.target.position;
+            //float target = transform.localScale.x * 4 / GetComponent<BoxCollider>().bounds.size.magnitude;
+            //StartCoroutine(moveObjectTo(transform, targetpos, originScale, target, moveFrame, StartRotateObject));
         }
 
         void StartRotateObject()
