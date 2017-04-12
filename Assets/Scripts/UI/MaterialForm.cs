@@ -54,12 +54,10 @@ namespace IMAV.UI
         {
             if (currentMtID < MaterialManager.Singleton.MaterialCount-4)
             {
-                Debug.Log("" + currentMtID + " ; " + MaterialManager.Singleton.MaterialCount);
                 if (currentMtID < MaterialManager.Singleton.MaterialCount - 8)
                     currentMtID += 4;
                 else
                     currentMtID += MaterialManager.Singleton.MaterialCount - currentMtID - 4;
-                Debug.Log("after: " + currentMtID + " ; " + MaterialManager.Singleton.MaterialCount);
                 AssignMaterials();
             }
             UpdateMoveBtnState();
@@ -121,12 +119,6 @@ namespace IMAV.UI
             currentObj.ResumeMaterial();
         }
 
-        //public void LockObject(GToggleButton btn)
-        //{
-        //    btn.setTrigger();
-        //    UIManager.Singleton.IsLock = btn.TriggerFlag;
-        //}
-
         void SetRotate(MeshRenderer rend, bool flag)
         {
             Rotate rot1 = rend.GetComponent<Rotate>();
@@ -135,15 +127,16 @@ namespace IMAV.UI
 
         public void SelectMaterial(int index)
         {
+            int id = currentMtID;
             Material mt = render1.material;
             switch (index)
             {
-                case 2: mt = render2.material; break;
-                case 3: mt = render3.material; break;
-                case 4: mt = render4.material; break;
+                case 2: mt = render2.material; id = currentMtID + 1; break;
+                case 3: mt = render3.material; id = currentMtID + 2; break;
+                case 4: mt = render4.material; id = currentMtID + 3; break;
             }
             if (currentObj != null)
-                currentObj.SetMaterial(mt);
+                currentObj.SetMaterial(id, mt);
         }
     }
 }

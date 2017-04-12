@@ -85,7 +85,8 @@ namespace IMAV
 
         public void DebugString(string str)
         {
-            debugview.AppendTextLog(str);
+            if (debugview != null)
+                debugview.AppendTextLog(str);
         }
 
         public GameObject GetGameObject(ResType _type, string str)

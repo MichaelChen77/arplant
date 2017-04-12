@@ -56,7 +56,7 @@ public class SceneObject : MonoBehaviour {
         }
     }
 
-    public void SetMaterial(Material mt)
+    public void SetMaterial(int ID, Material mt)
     {
         if (renders.Count == 0)
             InitObject();
@@ -64,6 +64,7 @@ public class SceneObject : MonoBehaviour {
         {
             mr.material = mt;
         }
+        materialID = ID;
     }
 
     public void ResumeMaterial()
@@ -72,6 +73,7 @@ public class SceneObject : MonoBehaviour {
         {
             renders[i].materials = originMt[i];
         }
+        materialID = -1;
     }
 
     public Material GetMaterial()

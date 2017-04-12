@@ -10,25 +10,17 @@ namespace IMAV.UI
 {
     public class FurARUI : MonoBehaviour
     {
-
         public InsertForm insertform;
         public SearchForm searchform;
-        //public Text objText;
         public Text markerHint;
         public CaptureAndSave snapShot;
         public ToggleButton touchBtn;
         public ToggleButton UIToggle;
         public StatusButton constraintBtn;
+        public Button detailsBtn;
         public GameObject imageViewDlg;
         public ImageGallery imageGallery;
         public Animator ctrlBtnPanelAnim;
-        //public Button insertBtn;
-        //public Button deleteBtn;
-        //public Button resetBtn;
-        //public Button snapshotBtn;
-        //public Button imagegalleryBtn;
-        //public Button detailCheckBtn;
-        //public Button heightInputBtn;
 
         public void Init(ToggleButton markerBtn)
         {
@@ -41,19 +33,12 @@ namespace IMAV.UI
         {
             try {
                 touchBtn.SetToggle(ResourceManager.Singleton.touchMove);
-                ResourceManager.Singleton.DebugString("1");
                 touchBtn.onToggleClick = SetTouchMove;
-                ResourceManager.Singleton.DebugString("2");
                 constraintBtn.SetStatus(ResourceManager.Singleton.constraintID);
-                ResourceManager.Singleton.DebugString("3");
                 constraintBtn.onButtonClick = SetConstraintMode;
-                ResourceManager.Singleton.DebugString("4");
                 UIToggle.onToggleClick = ShowControlButtons;
-                ResourceManager.Singleton.DebugString("5");
                 ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
-                ResourceManager.Singleton.DebugString("6");
                 ResourceManager.Singleton.Reset();
-                ResourceManager.Singleton.DebugString("7");
                 ResourceManager.Singleton.StartPlaceObject();
                 StartCoroutine(resetObject());
             }
@@ -61,7 +46,6 @@ namespace IMAV.UI
             {
                 ResourceManager.Singleton.DebugString("error: " + ex.Message);
             }
-            //resetObject();
         }
 
         void ShowControlButtons(bool flag)
@@ -69,8 +53,10 @@ namespace IMAV.UI
             ctrlBtnPanelAnim.SetBool("Show", flag);
         }
 
-        //void Update()
-        //{
+        void Update()
+        {
+            if (detailsBtn.interactable == (ResourceManager.Singleton.CurrentObject == null))
+                detailsBtn.interactable = !detailsBtn.interactable;
             //			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             //				if (IsFormActived () && !TouchOnUI ()) {
             //					Debug.Log ("close form");
@@ -104,7 +90,7 @@ namespace IMAV.UI
             //        }
             //    }
             //}
-        //}
+        }
 
         void SetTouchMove(bool flag)
         {
@@ -215,32 +201,31 @@ namespace IMAV.UI
         public void OpenDetailMode()
         {
             //ResourceManager.Singleton.disableHighlight();
-            List<Transform> temp = new List<Transform>();
-            foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
-            {
-                temp.Add(tr);
-            }
-            foreach (Transform tran in temp)
-            {
-                tran.parent = DataUtility.dontdestroy.transform;
-                tran.gameObject.SetActive(false);
-                //if (tran.GetComponent<ARObject>() == null)
-                //{
-                //    tran.gameObject.AddComponent<ARObject>();
-                //}
-                //tran.GetComponent<ARObject>().enabled = true;
-                //Destroy(tran.GetComponent<ObjectTouchControl>());
-                //tran.GetComponent<MarkerlessTouchControl> ().enabled = false;
-            }
             DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
-            SceneManager.LoadSceneAsync("ShowDetails");
+            //if (ResourceManager.Singleton.CurrentObject == null && ResourceManager.Singleton.ObjList.Count > 0)
+            //    DataUtility.CurrentObject = ResourceManager.Singleton.ObjList[0];
+            if (DataUtility.CurrentObject != null)
+            {
+                List<Transform> temp = new List<Transform>();
+                foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
+                {
+                    temp.Add(tr);
+                }
+                foreach (Transform tran in temp)
+                {
+                    tran.parent = DataUtility.dontdestroy.transform;
+                    tran.gameObject.SetActive(false);
+                }
+
+                SceneManager.LoadSceneAsync("ShowDetails");
+            }
         }
 
         IEnumerator resetObject()
         {
             if (!ResourceManager.Singleton.marker && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
                 yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(1f);
             List<Transform> temp = new List<Transform>();
             ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
             foreach (Transform tr in DataUtility.dontdestroy.transform)
@@ -253,6 +238,7 @@ namespace IMAV.UI
                 ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
                 ResourceManager.Singleton.DebugString("add object: " + tran.name);
             }
+            DataUtility.CurrentObject = null;
         }
 
         //		bool TouchOnUI()

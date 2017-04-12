@@ -27,6 +27,11 @@ namespace IMAV.UI
             gameObject.SetActive(true);
         }
 
+        public void Open()
+        {
+            gameObject.SetActive(true);
+        }
+
         public void Close()
         {
             PostLogin = null;
@@ -60,10 +65,6 @@ namespace IMAV.UI
                 {
 
                 }
-            }
-            else
-            {
-
             }
         }
 

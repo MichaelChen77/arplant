@@ -44,11 +44,11 @@ public class WebManager : MonoBehaviour {
     {
         WWWForm form = new WWWForm();
         form.AddField("q", _name);
-        form.AddField("category", _cat);
+        //form.AddField("category", _cat);
 
         WWW w = new WWW(Tags.SearchUrl, form);
         yield return w;
-        Debug.Log("return: " + w.text);
+        //Debug.Log("return: " + w.text);
         if (!string.IsNullOrEmpty(w.error))
             Debug.Log("Get Game Info error: " + w.error);
         else
@@ -70,15 +70,8 @@ public class WebManager : MonoBehaviour {
         else
         {
             Debug.Log("text: " + w.text);
-            //returnData = (MessageData)JsonUtility.FromJson(w.text, typeof(MessageData));
             getInfo(w.text);
         }
-        //else if (w.text.StartsWith("ok"))
-        //{
-        //    getInfo(w.text.Substring(3));
-        //}
-        //else
-        //    Debug.Log("GetGameInfo error:" + w.text);
     }
 
     public IEnumerator UserLogin(string emailStr, string pw, ReceiveData getInfo)
