@@ -49,6 +49,20 @@ namespace IMAV
             }
         }
 
+        public void Init(int id, ResObject resobj)
+        {
+            FurnitureData fd = new FurnitureData(id, resobj.name);
+            fd.Model = resobj.resource;
+            fd.Thumbnail = resobj.thumbnail;
+            fd.brand_name = resobj.type.ToString();
+            fd.category_name = "Case Work";
+            fd.manufacturer_name = resobj.type.ToString();
+            fd.production_date = "04/11/2017";
+            fd.production_site = "China";
+            fd.price = 1200;
+            furnitureDict[id] = fd;
+        }
+
         void LoadData(string str)
         {
             try
@@ -79,13 +93,30 @@ namespace IMAV
 
         public void SaveScene()
         {
-            if (!WebManager.CurrentUser.IsNull())
+            if (DataUtility.WorkOnLocal)
             {
-                StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, ResourceManager.Singleton.GetSceneString(), PostSaveScene));
+                if (scenes == null)
+                {
+                    scenes = new SceneSet();
+                    scenes.status = 1;
+                }
+                SceneData sd = new SceneData();
+                sd.id = scenes.data.Count;
+                sd.raw_design = ResourceManager.Singleton.GetSceneString();
+                sd.updated_at = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                Debug.Log("Save: " + sd.raw_design);
+                scenes.data.Add(sd);
             }
             else
             {
-                Debug.Log("null user");
+                if (!WebManager.CurrentUser.IsNull())
+                {
+                    StartCoroutine(WebManager.Singleton.SaveScene(WebManager.CurrentUser.userKey, ResourceManager.Singleton.GetSceneString(), PostSaveScene));
+                }
+                else
+                {
+                    Debug.Log("null user");
+                }
             }
         }
 
@@ -96,24 +127,22 @@ namespace IMAV
 
         public void LoadSceneList()
         {
-            if (!WebManager.CurrentUser.IsNull())
+            if (DataUtility.WorkOnLocal)
             {
-                StartCoroutine(WebManager.Singleton.GetSceneList(WebManager.CurrentUser.userKey, PostLoadSceneList));
+                sceneform.Refresh();
+                sceneform.Open();
             }
             else
-            {
-                Debug.Log("null user");
+            { 
+                if (!WebManager.CurrentUser.IsNull())
+                {
+                    StartCoroutine(WebManager.Singleton.GetSceneList(WebManager.CurrentUser.userKey, PostLoadSceneList));
+                }
+                else
+                {
+                    Debug.Log("null user");
+                }
             }
-        }
-
-        public void GetTest()
-        {
-            StartCoroutine(WebManager.Singleton.GetObjectInfo(13, InfoType.Product, PostLoadScene));
-        }
-
-        void PostLoadScene(string str)
-        {
-            Debug.Log("post load scene: " + str);
         }
 
         public void PostLoadSceneList(string str)
@@ -132,7 +161,6 @@ namespace IMAV
 
         public void LoadSceneItem(SceneData item)
         {
-            ResourceManager.Singleton.Clear();
             foreach (SceneObjectData sd in item.Objects)
             {
                 GameObject newObj = null;
@@ -144,7 +172,7 @@ namespace IMAV
                     if (obj != null)
                     {
                         newObj = Instantiate(obj);
-                        ResourceManager.Singleton.AddMarkerlessLocalObject(sd.ID, obj, true);
+                        ResourceManager.Singleton.AddMarkerlessLocalObject(sd.ID, newObj, true);
                     }
                 }
                 else
@@ -158,8 +186,8 @@ namespace IMAV
                 }
                 if (newObj != null)
                 {
-                    newObj.transform.position = sd.position;
-                    newObj.transform.eulerAngles = sd.rotation;
+                    newObj.transform.localPosition = sd.position;
+                    newObj.transform.localEulerAngles = sd.rotation;
                     newObj.transform.localScale = sd.scale;
                 }
             }
@@ -226,7 +254,21 @@ namespace IMAV
 
         public void Search(string _name)
         {
-            StartCoroutine(WebManager.Singleton.SearchFurniture(_name, "", LoadData));
+            if (DataUtility.WorkOnLocal)
+            {
+                Debug.Log("Search: " + _name);
+                foreach(KeyValuePair<int, FurnitureData> pair in furnitureDict)
+                {
+                    if(pair.Value.name.Contains(_name))
+                    {
+                        searchform.SearchResult.Add(pair.Value);
+                    }
+                }
+                Debug.Log("Search result: " + searchform.SearchResult.Count);
+                searchform.Refresh();
+            }
+            else
+                StartCoroutine(WebManager.Singleton.SearchFurniture(_name, "", LoadData));
         }
 
         public void LoadDataModle(FurnitureData _data)

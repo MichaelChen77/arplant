@@ -30,9 +30,12 @@ namespace IMAV.UI
         public void Refresh()
         {
             Clear();
-            foreach(SceneData d in DataManager.Singleton.Scenes.data)
+            if (DataManager.Singleton.Scenes != null)
             {
-                AddItem(d);
+                foreach (SceneData d in DataManager.Singleton.Scenes.data)
+                {
+                    AddItem(d);
+                }
             }
         }
 

@@ -9,6 +9,7 @@ namespace IMAV
         public static bool firstobject = true;
         public static GameObject CurrentObject = null;
         public static DontDestroy dontdestroy = null;
+        public static bool WorkOnLocal = false;
 
         public static Sprite CreateSprit(byte[] bytes)
         {
@@ -77,26 +78,19 @@ namespace IMAV
             {
                 obj.layer = 8;
                 obj.transform.localScale = obj.transform.localScale * 100;
-                //if (firstobject)
-                //{
-                    obj.transform.localPosition = new Vector3(0, 0, 0);
-                    firstobject = false;
-            //}
-            //else {
-            //    GameObject arrow = GameObject.Find("Arrow");
-            //    Vector3 relativePoint = ResourceManager.Singleton.markerlessTransform.InverseTransformPoint(arrow.transform.localPosition.x, arrow.transform.localPosition.y, arrow.transform.localPosition.z);
-            //    obj.transform.localPosition = relativePoint;
-            //}
-            Quaternion quat = obj.transform.rotation;
+                obj.transform.position = ResourceManager.Singleton.TrackPos;
+                Quaternion quat = obj.transform.rotation;
                 obj.transform.localRotation = quat;
-                ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + LayerMask.LayerToName(obj.layer));
-                //obj.transform.rotation = ResourceManager.Singleton.StartFloorOrientation;
-                obj.AddComponent<ObjectTouchControl>();
-                SceneObject sobj = obj.AddComponent<SceneObject>();
-                sobj.Init(isLocal, id, _content);
+                //else {
+                //    GameObject arrow = GameObject.Find("Arrow");
+                //    Vector3 relativePoint = ResourceManager.Singleton.markerlessTransform.InverseTransformPoint(arrow.transform.localPosition.x, arrow.transform.localPosition.y, arrow.transform.localPosition.z);
+                //    obj.transform.localPosition = relativePoint;
+                //}
 
-                //obj.AddComponent<Outline> ();
-                ResourceManager.Singleton.SetDefaultSize(obj);
+                ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
+                obj.AddComponent<ObjectTouchControl>();
+                Debug.Log("add2: " + obj.name + " ; " + init + " ; " + isLocal + " ; " + id + " ; " + _content);
+                //ResourceManager.Singleton.SetDefaultSize(obj);
             }
         }
     }

@@ -28,6 +28,8 @@ namespace Kudan.AR
 		/// </summary>
 		public GameObject target;
 
+        public bool targetAwaysOn = true;
+
 		void Update()
 		{
 			Vector3 pos;
@@ -35,10 +37,15 @@ namespace Kudan.AR
 
 			target.gameObject.SetActive (false);
 
-			if (tracker.CurrentTrackingMethod == markerless && !activeObj.activeInHierarchy) 
-			{
-				target.gameObject.SetActive (true);
-			}
+			if (tracker.CurrentTrackingMethod == markerless)
+            {
+                if (targetAwaysOn)
+                {
+                    target.gameObject.SetActive(true);
+                }
+                else if (!activeObj.activeInHierarchy)
+                    target.gameObject.SetActive(true);
+            }
 
 			if (target.gameObject.activeSelf) 
 			{

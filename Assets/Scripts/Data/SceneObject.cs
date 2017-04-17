@@ -9,11 +9,13 @@ public class SceneObject : MonoBehaviour {
     {
         get { return id; }
     }
+    [SerializeField]
     bool isLocal = false;
     public bool IsLocal
     {
         get { return isLocal; }
     }
+    [SerializeField]
     string localID = "";
     public string LocalID
     {
@@ -24,6 +26,11 @@ public class SceneObject : MonoBehaviour {
     List<MeshRenderer> renders = new List<MeshRenderer>();
     List<Material[]> originMt = new List<Material[]>();
 
+    [SerializeField]
+    Vector3 originScale = Vector3.one;
+    [SerializeField]
+    Quaternion originRotation = Quaternion.identity;
+
     public void Init(bool _islocal, int _id, string str)
     {
         id = _id;
@@ -33,10 +40,17 @@ public class SceneObject : MonoBehaviour {
         InitCollider();
     }
 
+    public void ResumeTransform()
+    {
+        transform.localScale = originScale;
+        transform.localRotation = originRotation;
+    }
+
     public string ToDataString()
     {
         string idstr = isLocal ? localID : id.ToString();
-        string str = string.Format("{0},{1},{2},{3},{4};", idstr, VectorToString(transform.position), VectorToString(transform.eulerAngles), VectorToString(transform.localScale), materialID);
+        Debug.Log("init: " + name + " ; " + isLocal + " ; " + localID+" ; "+id);
+        string str = string.Format("{0},{1},{2},{3},{4};", idstr, VectorToString(transform.localPosition), VectorToString(transform.localEulerAngles), VectorToString(transform.localScale), materialID);
         return str;
     }
 
@@ -49,10 +63,15 @@ public class SceneObject : MonoBehaviour {
     {
         if (gameObject.GetComponent<Collider>() == null)
         {
-            foreach (MeshRenderer mr in renders)
+            if (gameObject.GetComponent<MeshRenderer>() == null)
             {
-                mr.gameObject.AddComponent<BoxCollider>();
+                foreach (MeshRenderer mr in renders)
+                {
+                    mr.gameObject.AddComponent<MeshCollider>();
+                }
             }
+            else
+                gameObject.AddComponent<MeshCollider>();
         }
     }
 
@@ -90,16 +109,9 @@ public class SceneObject : MonoBehaviour {
 
     void InitObject()
     {
+        originScale = transform.localScale;
+        originRotation = transform.rotation;
         renders.Clear();
-        //        MeshRenderer render = GetComponent<MeshRenderer>();
-        //        if (render != null)
-        //        {
-        //            Outline ot = render.gameObject.AddComponent<Outline>();
-        //            ot.enabled = false;
-        //            render.gameObject.AddComponent<MeshCollider>();
-        //            OutlineRender outRender = new OutlineRender(ot, render, render.transform.position);
-        //            renders.Add(outRender);
-        //        }
         MeshRenderer[] childRenders = GetComponentsInChildren<MeshRenderer>();
         if (childRenders != null)
         {

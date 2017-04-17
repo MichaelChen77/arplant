@@ -46,8 +46,6 @@ namespace IMAV
             GameObject obj = null;
             if (DataUtility.CurrentObject != null)
                 obj = Instantiate(DataUtility.CurrentObject);
-            //if (obj == null)
-            //    obj = tempobj.gameObject;
             if (obj != null)
             {
                 obj.SetActive(true);
@@ -55,9 +53,7 @@ namespace IMAV
                 obj.transform.parent = room;
                 selectedObj = obj.GetComponent<SceneObject>();
                 selectedObj.transform.localPosition = new Vector3(0, 1.4f, 0);
-                selectedObj.transform.localEulerAngles = new Vector3(0, 210f, 0);
-                //selectedObj.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-                camCtrl.orbitPivot = selectedObj.transform;
+                selectedObj.ResumeTransform();
                 camCtrl.SetorbitDistance();
             }
             GameObject lobj = lights.GetCurrentObject();

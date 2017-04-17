@@ -7,7 +7,7 @@ using IMAV.UI;
 
 public enum ResType
 {
-    Bed, Bath, Statue, Desk, Decoration, Other
+    Bed, Bath, Statue, Desk, Decoration, Other, Sunray
 }
 
 [System.Serializable]
@@ -24,6 +24,7 @@ namespace IMAV
     public class ResourceManager : MonoBehaviour {
 
         public ResObject[] PresetObjects;
+        public ResObject[] LocalObjects;
         public FurARUI appui;
         public DebugView debugview;
         public bool marker = true;
@@ -37,17 +38,19 @@ namespace IMAV
         public float defaultMaxSize;
         public bool touchMove = true;
         public int constraintID = 0;
+        public GameObject hlightPrefab;
         Shader oringin;
 
-        Vector3 startFloorPos;
-        Quaternion startFloorRot;
-        public Vector3 StartFloorPos {
-            get { return startFloorPos; }
+        GameObject hightlightAuro;
+        Vector3 trackPos;
+        Quaternion trackRot;
+        public Vector3 TrackPos {
+            get { return trackPos; }
         }
 
-        public Quaternion StartFloorOrientation
+        public Quaternion TrackRotation
         {
-            get { return startFloorRot; }
+            get { return trackRot; }
         }
 
         GameObject currentObj;
@@ -83,6 +86,18 @@ namespace IMAV
             }
         }
 
+        void Start()
+        {
+            if(DataUtility.WorkOnLocal)
+            {
+                DataManager.Singleton.FurnitureDatas.Clear();
+                for(int i=0; i<LocalObjects.Length; i++)
+                {
+                    DataManager.Singleton.Init(i, LocalObjects[i]);
+                }
+            }
+        }
+
         public void DebugString(string str)
         {
             if (debugview != null)
@@ -106,7 +121,6 @@ namespace IMAV
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainAR");
         }
 
-
         public void LoadGameObject(ResType _type, string str)
         {
             GameObject obj = GetGameObject(_type, str);
@@ -120,15 +134,7 @@ namespace IMAV
         public void LoadGameObject(GameObject obj, string str)
         {
             GameObject newObj = Instantiate(obj);
-            if (obj != null)
-                DebugString("load obj: " + obj.name + " ; " + str);
-            else
-                DebugString("load null obj");
             AddMarkerlessLocalObject(str, newObj, true);
-            //newObj.transform.position = Vector3.zero;
-            //        MainCamCtrl cam = Camera.main.GetComponent<MainCamCtrl>();
-            //        if (cam != null)
-            //            cam.orbitPivot = obj.transform;
         }
 
         void ResetTouchMode()
@@ -183,35 +189,43 @@ namespace IMAV
         public void disableHighlight()
         {
             if (currentObj != null) {
-                if (currentObj.GetComponent<Renderer>() != null) {
-                    currentObj.GetComponent<Renderer>().material.shader = oringin;
-                } else {
-                    for (int i = 1; i < currentObj.transform.childCount; ++i) {
-                        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
-                            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = oringin;
-                        }
-                    }
-                }
+                DestroyImmediate(hightlightAuro);
+                hightlightAuro = null;
+                //if (currentObj.GetComponent<Renderer>() != null) {
+                //    currentObj.GetComponent<Renderer>().material.shader = oringin;
+                //} else {
+                //    for (int i = 1; i < currentObj.transform.childCount; ++i) {
+                //        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
+                //            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = oringin;
+                //        }
+                //    }
+                //}
             }
         }
 
         public void highlightObject()
         {
-            if (currentObj != null) {
-                if (currentObj.GetComponent<Renderer>() != null) {
-                    oringin = currentObj.GetComponent<Renderer>().material.shader;
-                    currentObj.GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                } else {
-                    if (currentObj.transform.GetChild(1).GetComponent<Renderer>() != null) {
-                        oringin = currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader;
-                        currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                    }
-                    for (int i = 2; i < currentObj.transform.childCount; ++i) {
-                        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
-                            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                        }
-                    }
-                }
+            if (currentObj != null)
+            {
+                hightlightAuro = Instantiate(hlightPrefab);
+                hightlightAuro.transform.parent = currentObj.transform;
+                hightlightAuro.transform.localPosition = Vector3.zero;
+                hightlightAuro.transform.localScale = Vector3.one;
+                //if (currentObj.GetComponent<Renderer>() != null) {
+                //    oringin = currentObj.GetComponent<Renderer>().material.shader;
+                //    currentObj.GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
+                //} else {
+                //    if (currentObj.transform.GetChild(1).GetComponent<Renderer>() != null) {
+                //        oringin = currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader;
+                //        currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
+                //    }
+                //    for (int i = 2; i < currentObj.transform.childCount; ++i) {
+                //        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
+                //            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
+                //        }
+                //    }
+                //}
+                
             }
         }
 
@@ -221,12 +235,11 @@ namespace IMAV
                 return;
             if (currentObj != null) {
                 currentObj.GetComponent<ObjectTouchControl>().enabled = false;
-                //disableHighlight();
+                disableHighlight();
             }
             currentObj = obj;
             currentObj.GetComponent<ObjectTouchControl>().enabled = true;
-            Debug.Log("Set current object : " + currentObj.name);
-            //highlightObject();
+            highlightObject();
         }
 
         public void AddMarkerlessObject(GameObject obj)
@@ -246,22 +259,35 @@ namespace IMAV
 
         IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, int _id, string _content)
         {
+            objlist.Add(obj);
             if (!marker && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
             }
-            DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
-            objlist.Add(obj);
-            if (init)
+            try
+            {
+                _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                if (init)
+                {
+                    SceneObject sobj = obj.AddComponent<SceneObject>();
+                    sobj.Init(_islocal, _id, _content);
+                }
+                DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
                 SetCurrentObject(obj);
-            ResetTouchMode();
+                ResetTouchMode();
+            }
+            catch (System.Exception ex)
+            {
+                DebugString("error: " + ex.Message);
+            }
         }
 
         void OnApplicationPause(bool isPause)
         {
             if (isPause)
             {
+                DebugString("pausing "+markerlessTransform.gameObject.activeSelf);
                 Reset();
             }
         }
@@ -309,11 +335,7 @@ namespace IMAV
             Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
 
             _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
-            startFloorPos = floorPosition;
-            startFloorRot = floorOrientation;
-            _kudanTracker.ArbiTrackStart(startFloorPos, startFloorRot);
-            //StartMarkerlessTracker ();
-            //StartCoroutine (recreator ());
+            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
         }
 
         //	public void ReInit()
@@ -321,21 +343,21 @@ namespace IMAV
         //		StartCoroutine (recreator ());
         //	}
         //
-        //	IEnumerator recreator()
-        //	{
-        //		yield return new WaitForSeconds (0.2f);
-        //		GameObject obj = new GameObject ();
-        //		DataUtility.SetAsMarkerlessObject (obj);
-        //		StartMarkerlessTracker ();
-        //		yield return new WaitForSeconds (0.1f);
-        //		Destroy (obj);
-        //	}
+        //IEnumerator recreator()
+        //{
+        //    yield return new WaitForSeconds(0.2f);
+        //    GameObject obj = new GameObject();
+        //    DataUtility.SetAsMarkerlessObject(obj, false, false, );
+        //    StartMarkerlessTracker();
+        //    yield return new WaitForSeconds(0.1f);
+        //    Destroy(obj);
+        //}
 
         public void Clear()
         {
             foreach (GameObject obj in objlist)
             {
-                Destroy(obj);
+                DestroyImmediate(obj);
             }
             objlist.Clear();
         }
@@ -344,16 +366,25 @@ namespace IMAV
         {
             Clear();
             ResetTouchMode();
-            //StartPlaceObject ();
+            StartPlaceObject();
         }
+
+        //IEnumerator WaitToStartArbiTracking()
+        //{
+        //    DebugString("reset 0");
+        //    yield return new WaitWhile(_kudanTracker.ArbiTrackIsTracking);
+        //    yield return new WaitForEndOfFrame();
+        //    DebugString("reset 1");
+
+        //}
 
         public void DeleteCurrentObject()
         {
             if (currentObj != null) {
                 Destroy(currentObj);
+                objlist.Remove(currentObj);
+                currentObj = null;
             }
-            objlist.Remove(currentObj);
-            currentObj = null;
         }
 
         #region scene

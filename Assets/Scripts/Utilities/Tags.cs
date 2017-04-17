@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Tags{
     public const string baseUrl = "http://155.69.151.176/imav/";
-    //public const string SearchUrl = "http://155.69.150.59/IMAV/Search.php";
     public const string basefileUrl = "http://155.69.151.176/imav/admin/file/index?path=";
     public const string GetInfoUrl = baseUrl + "product/m/get-product-info?id=";
 

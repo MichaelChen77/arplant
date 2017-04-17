@@ -58,7 +58,8 @@ namespace IMAV.UI
                 if (data.status == 1)
                 {
                     WebManager.CurrentUser.userKey = data.key;
-                    PostLogin();
+                    if (PostLogin != null)
+                        PostLogin();
                     Close();
                 }
                 else

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Kudan.AR;
 
 namespace IMAV.UI
 {
@@ -21,6 +22,7 @@ namespace IMAV.UI
         public GameObject imageViewDlg;
         public ImageGallery imageGallery;
         public Animator ctrlBtnPanelAnim;
+        public TargetNode targetNode;
 
         public void Init(ToggleButton markerBtn)
         {
@@ -39,7 +41,6 @@ namespace IMAV.UI
                 UIToggle.onToggleClick = ShowControlButtons;
                 ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
                 ResourceManager.Singleton.Reset();
-                ResourceManager.Singleton.StartPlaceObject();
                 StartCoroutine(resetObject());
             }
             catch(System.Exception ex)
@@ -51,6 +52,11 @@ namespace IMAV.UI
         void ShowControlButtons(bool flag)
         {
             ctrlBtnPanelAnim.SetBool("Show", flag);
+        }
+
+        public void ShowMarlessArrow()
+        {
+            targetNode.targetAwaysOn = !targetNode.targetAwaysOn;
         }
 
         void Update()
@@ -105,24 +111,6 @@ namespace IMAV.UI
             ResourceManager.Singleton.constraintID = _id;
         }
 
-        //		public void PrintTest()
-        //		{
-        //			GameObject unitObj = GameObject.FindGameObjectWithTag ("MarkerlessUnit");
-        //			if (unitObj != null)
-        //			{
-        //				Transform unit = unitObj.transform;
-        //				Debug.Log ("# unit: " + unit.position + " ; " + unit.rotation.eulerAngles + " ; " + unit.localPosition + " ; " + unit.localEulerAngles + " . ");
-        //			}
-        //			else
-        //				Debug.Log ("# null unit");
-        //			if (ResourceManager.Singleton.CurrentObject != null) {
-        //				Transform cur = ResourceManager.Singleton.CurrentObject.transform;
-        //				Debug.Log ("# object: " + cur.position + " ; " + cur.eulerAngles + " ; " + cur.localPosition + " ; " + cur.localEulerAngles);
-        //			}
-        //			else
-        //				Debug.Log ("# null current Object");
-        //		}
-
         string currentfile = "";
         public void CaptureScreen()
         {
@@ -130,30 +118,84 @@ namespace IMAV.UI
             {
                 Directory.CreateDirectory(DataUtility.GetScreenShotPath());
             }
-            currentfile = string.Format("ScreenShot_{0}_{1}_{2}({3}:{4}:{5}).png", System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, System.DateTime.Now.Hour,
-                System.DateTime.Now.Minute, System.DateTime.Now.Second);
+            StartCoroutine(Screenshot());
 
-            //ResourceManager.Singleton.disableHighlight ();
-            //snapShot.SetAlbumPath (DataUtility.GetScreenShotPath ());
-            StartCoroutine(StartCaptureScreen());
-            //ResourceManager.Singleton.highlightObject ();
-            //snapShot.CaptureAndSaveToAlbum(ImageType.PNG);
-            //imageViewDlg.SetActive (true);
+            //cschen
+            //currentfile = string.Format("ScreenShot_{0}_{1}_{2}({3}:{4}:{5}).png", System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, System.DateTime.Now.Hour,
+            //    System.DateTime.Now.Minute, System.DateTime.Now.Second);
+
+            //StartCoroutine(StartCaptureScreen());
         }
 
+        #region Screenshot methods
         IEnumerator StartCaptureScreen()
         {
-            snapShot.CaptureAndSaveAtPath(DataUtility.GetScreenShotPath() + currentfile, ImageType.PNG);
-            snapShot.SetAlbumPath(DataUtility.GetScreenShotPath());
-            snapShot.CaptureAndSaveToAlbum(ImageType.PNG);
+            //cschen
+            //snapShot.CaptureAndSaveAtPath(DataUtility.GetScreenShotPath() + currentfile, ImageType.PNG);
+            //snapShot.SetAlbumPath(DataUtility.GetScreenShotPath());
+            //snapShot.CaptureAndSaveToAlbum(ImageType.PNG);
 
-            //			Texture2D tex = snapShot.GetScreenShot (Screen.width, Screen.height, Camera.main, ImageType.PNG);
-            //			byte[] bytes = tex.EncodeToPNG();
-            //			Object.Destroy(tex);
-            //			File.WriteAllBytes(DataUtility.GetScreenShotPath()+currentfile, bytes);
+            snapShot.CaptureAndSaveToAlbum(ImageType.JPG);
             yield return new WaitForSeconds(0.5f);
             imageViewDlg.SetActive(true);
         }
+
+        IEnumerator Screenshot()
+        {
+            List<GameObject> uiObjects = FindGameObjectsInUILayer();
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(false);
+            }
+            yield return new WaitForEndOfFrame();
+
+            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
+
+            GetComponent<Camera>().targetTexture = RT;
+
+            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
+            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
+
+            byte[] bytes = screen.EncodeToJPG();
+
+            //string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".jpg";
+            string filePath = DataUtility.GetScreenShotPath() + "/Screenshot - " + Time.unscaledTime + ".jpg";
+            System.IO.File.WriteAllBytes(filePath, bytes);
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(true);
+            }
+
+            GetComponent<Camera>().targetTexture = null;
+            Destroy(RT);
+            yield return new WaitForSeconds(0.3f);
+            imageViewDlg.SetActive(true);
+        }
+
+        List<GameObject> FindGameObjectsInUILayer()
+        {
+            GameObject[] goArray = FindObjectsOfType<GameObject>();
+
+            List<GameObject> uiList = new List<GameObject>();
+
+            for (var i = 0; i < goArray.Length; i++)
+            {
+                if (goArray[i].layer == 5)
+                {
+                    uiList.Add(goArray[i]);
+                }
+            }
+
+            if (uiList.Count == 0)
+            {
+                return null;
+            }
+
+            return uiList;
+        }
+        #endregion
 
         public void ViewImage()
         {
@@ -202,8 +244,6 @@ namespace IMAV.UI
         {
             //ResourceManager.Singleton.disableHighlight();
             DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
-            //if (ResourceManager.Singleton.CurrentObject == null && ResourceManager.Singleton.ObjList.Count > 0)
-            //    DataUtility.CurrentObject = ResourceManager.Singleton.ObjList[0];
             if (DataUtility.CurrentObject != null)
             {
                 List<Transform> temp = new List<Transform>();
@@ -286,121 +326,7 @@ namespace IMAV.UI
         //            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);	// Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
         //            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);				// Starts markerless tracking based upon the given floor position and orientations
         //        }
-        //
-        //
-        //
-        //
-        //		public void button2Clicked()
-        //		{
-        //			if (marker) {
-        //				GameObject obj1 = GameObject.Find ("object1");
-        //				GameObject obj2 = GameObject.Find ("object2");
-        //				GameObject obj3 = GameObject.Find ("object3");
-        //				obj1.GetComponent<MarkerTouchControl> ().enabled = false;
-        //				obj2.GetComponent<MarkerTouchControl> ().enabled = true;
-        //				obj3.GetComponent<MarkerTouchControl> ().enabled = false;
-        //			} else {
-        //				GameObject mobj1 = GameObject.Find("MLobject1");
-        //				GameObject mobj2 = GameObject.Find("MLobject2");
-        //				GameObject mobj3 = GameObject.Find("MLobject3");
-        //				mobj1.GetComponent<MarkerlessTouchControl>().enabled = false;
-        //				mobj2.GetComponent<MarkerlessTouchControl>().enabled = true;
-        //				if (mobj3 != null) {
-        //					mobj3.GetComponent<MarkerlessTouchControl>().enabled = false;
-        //				}
-        //			}
-        //		}
-        //
-        //		public void button3Clicked()
-        //		{
-        //			if (marker) {
-        //				GameObject obj1 = GameObject.Find ("object1");
-        //				GameObject obj2 = GameObject.Find ("object2");
-        //				GameObject obj3 = GameObject.Find ("object3");
-        //				obj1.GetComponent<MarkerTouchControl> ().enabled = false;
-        //				obj2.GetComponent<MarkerTouchControl> ().enabled = false;
-        //				obj3.GetComponent<MarkerTouchControl> ().enabled = true;
-        //			} else {
-        //				GameObject mobj1 = GameObject.Find("MLobject1");
-        //				GameObject mobj2 = GameObject.Find("MLobject2");
-        //				GameObject mobj3 = GameObject.Find("MLobject3");
-        //				mobj1.GetComponent<MarkerlessTouchControl>().enabled = false;
-        //				mobj2.GetComponent<MarkerlessTouchControl>().enabled = false;
-        //				if (mobj3 != null) {
-        //					mobj3.GetComponent<MarkerlessTouchControl>().enabled = true;
-        //				}
-        //			}
-        //		}
-
-        //		public void reset()
-        //		{
-        //			GameObject obj1 = GameObject.Find("object1");
-        //			GameObject obj2 = GameObject.Find("object2");
-        //			GameObject obj3 = GameObject.Find("object3");
-        //			GameObject mobj1 = GameObject.Find("MLobject1");
-        //			GameObject mobj2 = GameObject.Find("MLobject2");
-        //			GameObject mobj3 = GameObject.Find("MLobject3");
-        //			if (marker) {
-        //				if (obj1.GetComponent<MarkerTouchControl> ().enabled == true) {
-        //					obj1.transform.localPosition = new Vector3 (0, 0, 0);
-        //					obj1.transform.localScale = new Vector3 (1000F, 1000F, 1000F);
-        //					obj1.transform.localRotation = Quaternion.Euler (-90, 0, 0);
-        //				} else if (obj2.GetComponent<MarkerTouchControl> ().enabled == true) {
-        //					obj2.transform.localPosition = new Vector3 (0, 0, -800F);
-        //					obj2.transform.localScale = new Vector3 (1000F, 1000F, 1000F);
-        //					obj2.transform.localRotation = Quaternion.Euler (-90, 0, 0);
-        //				} else if (obj3.GetComponent<MarkerTouchControl> ().enabled == true) {
-        //					obj3.transform.localPosition = new Vector3 (0, 0, 800F);
-        //					obj3.transform.localScale = new Vector3 (1000F, 1000F, 1000F);
-        //					obj3.transform.localRotation = Quaternion.Euler (-90, 180, 0);
-        //				}
-        //			} else {
-        //				if (mobj1.GetComponent<MarkerlessTouchControl> ().enabled == true) {
-        //					mobj1.transform.localPosition = new Vector3 (0, 0, 0);
-        //					mobj1.transform.localScale = new Vector3 (50F, 50F, 50F);
-        //					mobj1.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        //				} else if (mobj2.GetComponent<MarkerlessTouchControl> ().enabled == true) {
-        //					mobj2.transform.localPosition = new Vector3 (300F, 0, 0);
-        //					mobj2.transform.localScale = new Vector3 (200F, 200F, 200F);
-        //					mobj2.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-        //				} else {
-        //					if(mobj3 != null){
-        //						mobj3.transform.localPosition = new Vector3 (600F, 0, 0);
-        //						mobj3.transform.localScale = new Vector3 (200F, 200F, 200F);
-        //						mobj3.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        //					}
-        //				}
-        //			}
-        //		}
-
-        public void object1Toggle()
-        {
-            GameObject mobj1 = GameObject.Find("MLobject1");
-            mobj1.GetComponent<Renderer>().enabled = GameObject.Find("object1Toggle").GetComponent<Toggle>().isOn;
-        }
-        //
-        //		public void object2Toggle()
-        //		{
-        //			if (marker) {
-        //				GameObject obj2 = GameObject.Find ("object2");
-        //				obj2.GetComponent<Renderer> ().enabled = GameObject.Find ("object2Toggle").GetComponent<Toggle> ().isOn;
-        //			} else {
-        //				GameObject mobj2 = GameObject.Find ("MLobject2");
-        //				mobj2.GetComponent<Renderer> ().enabled = GameObject.Find ("object2Toggle").GetComponent<Toggle> ().isOn;
-        //			}
-        //		}
-        //
-        //		public void object3Toggle()
-        //		{
-        //			if (marker) {
-        //				GameObject obj3 = GameObject.Find ("object3");
-        //				obj3.GetComponent<Renderer> ().enabled = GameObject.Find ("object3Toggle").GetComponent<Toggle> ().isOn;
-        //			} else {
-        //				GameObject mobj3 = GameObject.Find ("MLobject3");
-        //				mobj3.GetComponent<Renderer> ().enabled = GameObject.Find ("object3Toggle").GetComponent<Toggle> ().isOn;
-        //			}
-        //		}
-
+        
         public void autoAdjust()
         {
             GameObject current = ResourceManager.Singleton.CurrentObject;

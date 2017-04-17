@@ -19,6 +19,7 @@ namespace IMAV
 
         public void Play()
         {
+            DataUtility.WorkOnLocal = true;
             GotoARScene();
         }
 
