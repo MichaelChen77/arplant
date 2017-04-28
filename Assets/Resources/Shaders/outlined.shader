@@ -1,4 +1,6 @@
-﻿Shader "Outlined/highlighted" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Outlined/highlighted" {
 Properties {
 	_Color ("Main Color", Color) = (1,1,1,1)
 	_OutlineColor ("Outline Color", Color) = (0,0,0,1)
@@ -33,7 +35,7 @@ fixed _Cutoff;
 
 v2f vert(appdata v) {
 	v2f o;
-	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
     o.uv = v.texcoord;
  
 	float3 norm   = mul ((float3x3)UNITY_MATRIX_IT_MV, v.normal);
