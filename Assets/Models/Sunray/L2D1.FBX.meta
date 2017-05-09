@@ -1,0 +1,129 @@
+fileFormatVersion: 2
+guid: 76cd76057a83cad439748504cacc63c7
+timeCreated: 1494320104
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [7673607]'
+    100002: ' Extrusion [7673629]'
+    100004: ' Extrusion [7673686]'
+    100006: ' Extrusion [7673902]'
+    100008: ' Extrusion [7673965]'
+    100010: Casework-Sunray_Cabinet_Base.0001 Cabinet_Base [7673458]
+    100012: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [7673486]
+    100014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
+    100016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
+    100018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    100020: //RootNode
+    400000: ' Extrusion [7673607]'
+    400002: ' Extrusion [7673629]'
+    400004: ' Extrusion [7673686]'
+    400006: ' Extrusion [7673902]'
+    400008: ' Extrusion [7673965]'
+    400010: Casework-Sunray_Cabinet_Base.0001 Cabinet_Base [7673458]
+    400012: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [7673486]
+    400014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
+    400016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
+    400018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    400020: //RootNode
+    2300000: ' Extrusion [7673607]'
+    2300002: ' Extrusion [7673629]'
+    2300004: ' Extrusion [7673686]'
+    2300006: ' Extrusion [7673902]'
+    2300008: ' Extrusion [7673965]'
+    2300010: Casework-Sunray_Cabinet_Base.0001 Cabinet_Base [7673458]
+    2300012: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [7673486]
+    2300014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
+    2300016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
+    2300018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    3300000: ' Extrusion [7673607]'
+    3300002: ' Extrusion [7673629]'
+    3300004: ' Extrusion [7673686]'
+    3300006: ' Extrusion [7673902]'
+    3300008: ' Extrusion [7673965]'
+    3300010: Casework-Sunray_Cabinet_Base.0001 Cabinet_Base [7673458]
+    3300012: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [7673486]
+    3300014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
+    3300016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
+    3300018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    4300000: ' Extrusion [7673607]'
+    4300002: ' Extrusion [7673629]'
+    4300004: ' Extrusion [7673686]'
+    4300006: ' Extrusion [7673902]'
+    4300008: ' Extrusion [7673965]'
+    4300010: Casework-Sunray_Cabinet_Base.0001 Cabinet_Base [7673458]
+    4300012: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [7673486]
+    4300014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
+    4300016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
+    4300018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

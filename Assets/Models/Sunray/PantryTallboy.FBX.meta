@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: 2b0aa0b805c442142bd8ada099238d0c
+timeCreated: 1494320089
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [14360]'
+    100002: ' Extrusion [17660]'
+    100004: ' Extrusion [31264]'
+    100006: ' Extrusion [7806]'
+    100008: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33309]
+    100010: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33624]
+    100012: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
+      [7592]
+    100014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
+    100016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
+    100018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    100020: //RootNode
+    400000: ' Extrusion [14360]'
+    400002: ' Extrusion [17660]'
+    400004: ' Extrusion [31264]'
+    400006: ' Extrusion [7806]'
+    400008: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33309]
+    400010: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33624]
+    400012: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
+      [7592]
+    400014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
+    400016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
+    400018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    400020: //RootNode
+    2300000: ' Extrusion [14360]'
+    2300002: ' Extrusion [17660]'
+    2300004: ' Extrusion [31264]'
+    2300006: ' Extrusion [7806]'
+    2300008: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33309]
+    2300010: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33624]
+    2300012: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
+      [7592]
+    2300014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
+    2300016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
+    2300018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    3300000: ' Extrusion [14360]'
+    3300002: ' Extrusion [17660]'
+    3300004: ' Extrusion [31264]'
+    3300006: ' Extrusion [7806]'
+    3300008: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33309]
+    3300010: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33624]
+    3300012: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
+      [7592]
+    3300014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
+    3300016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
+    3300018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    4300000: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
+      [7592]
+    4300002: ' Extrusion [7806]'
+    4300004: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    4300006: ' Extrusion [14360]'
+    4300008: ' Extrusion [17660]'
+    4300010: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
+    4300012: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
+    4300014: ' Extrusion [31264]'
+    4300016: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33309]
+    4300018: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
+      [33624]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,204 @@
+fileFormatVersion: 2
+guid: 157d6228758b0a742b81fdf5813fba8e
+timeCreated: 1494320086
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [8859829]'
+    100002: ' Extrusion [8860179]'
+    100004: ' Joined Solid Geometry [8859361]'
+    100006: ' Joined Solid Geometry [8859526]'
+    100008: ' Joined Solid Geometry [8869598]'
+    100010: ' Joined Solid Geometry [8869815]'
+    100012: ' Joined Solid Geometry [8869918]'
+    100014: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859546]
+    100016: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859550]
+    100018: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859551]
+    100020: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860164]
+    100022: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860165]
+    100024: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860166]
+    100026: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868026]
+    100028: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868059]
+    100030: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868076]
+    100032: CSW_Sunray_Counter_Carcass CSW_Sunray_Counter_Carcass [8859345]
+    100034: CSW_Sunray_pedestal pedestal [8859377]
+    100036: CSW_Sunray_pedestal pedestal [8859378]
+    100038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859994]
+    100040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859995]
+    100042: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859996]
+    100044: //RootNode
+    400000: ' Extrusion [8859829]'
+    400002: ' Extrusion [8860179]'
+    400004: ' Joined Solid Geometry [8859361]'
+    400006: ' Joined Solid Geometry [8859526]'
+    400008: ' Joined Solid Geometry [8869598]'
+    400010: ' Joined Solid Geometry [8869815]'
+    400012: ' Joined Solid Geometry [8869918]'
+    400014: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859546]
+    400016: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859550]
+    400018: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859551]
+    400020: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860164]
+    400022: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860165]
+    400024: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860166]
+    400026: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868026]
+    400028: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868059]
+    400030: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868076]
+    400032: CSW_Sunray_Counter_Carcass CSW_Sunray_Counter_Carcass [8859345]
+    400034: CSW_Sunray_pedestal pedestal [8859377]
+    400036: CSW_Sunray_pedestal pedestal [8859378]
+    400038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859994]
+    400040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859995]
+    400042: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859996]
+    400044: //RootNode
+    2300000: ' Extrusion [8859829]'
+    2300002: ' Extrusion [8860179]'
+    2300004: ' Joined Solid Geometry [8859361]'
+    2300006: ' Joined Solid Geometry [8859526]'
+    2300008: ' Joined Solid Geometry [8869598]'
+    2300010: ' Joined Solid Geometry [8869815]'
+    2300012: ' Joined Solid Geometry [8869918]'
+    2300014: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859546]
+    2300016: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859550]
+    2300018: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859551]
+    2300020: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860164]
+    2300022: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860165]
+    2300024: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860166]
+    2300026: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868026]
+    2300028: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868059]
+    2300030: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868076]
+    2300032: CSW_Sunray_Counter_Carcass CSW_Sunray_Counter_Carcass [8859345]
+    2300034: CSW_Sunray_pedestal pedestal [8859377]
+    2300036: CSW_Sunray_pedestal pedestal [8859378]
+    2300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859994]
+    2300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859995]
+    2300042: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859996]
+    3300000: ' Extrusion [8859829]'
+    3300002: ' Extrusion [8860179]'
+    3300004: ' Joined Solid Geometry [8859361]'
+    3300006: ' Joined Solid Geometry [8859526]'
+    3300008: ' Joined Solid Geometry [8869598]'
+    3300010: ' Joined Solid Geometry [8869815]'
+    3300012: ' Joined Solid Geometry [8869918]'
+    3300014: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859546]
+    3300016: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859550]
+    3300018: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859551]
+    3300020: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860164]
+    3300022: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860165]
+    3300024: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860166]
+    3300026: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868026]
+    3300028: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868059]
+    3300030: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868076]
+    3300032: CSW_Sunray_Counter_Carcass CSW_Sunray_Counter_Carcass [8859345]
+    3300034: CSW_Sunray_pedestal pedestal [8859377]
+    3300036: CSW_Sunray_pedestal pedestal [8859378]
+    3300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859994]
+    3300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859995]
+    3300042: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859996]
+    4300000: ' Extrusion [8859829]'
+    4300002: ' Extrusion [8860179]'
+    4300004: ' Joined Solid Geometry [8859361]'
+    4300006: ' Joined Solid Geometry [8859526]'
+    4300008: ' Joined Solid Geometry [8869598]'
+    4300010: ' Joined Solid Geometry [8869815]'
+    4300012: ' Joined Solid Geometry [8869918]'
+    4300014: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859546]
+    4300016: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859550]
+    4300018: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [8859551]
+    4300020: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860164]
+    4300022: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860165]
+    4300024: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8860166]
+    4300026: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868026]
+    4300028: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868059]
+    4300030: CSW_Sunray_Cabinet_Magnetic-Door_Sgl Door_Sgl [8868076]
+    4300032: CSW_Sunray_Counter_Carcass CSW_Sunray_Counter_Carcass [8859345]
+    4300034: CSW_Sunray_pedestal pedestal [8859377]
+    4300036: CSW_Sunray_pedestal pedestal [8859378]
+    4300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859994]
+    4300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859995]
+    4300042: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [8859996]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

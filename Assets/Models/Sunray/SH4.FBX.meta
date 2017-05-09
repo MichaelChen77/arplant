@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: 8e0792253c90e264483737024c9592aa
+timeCreated: 1494320105
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [6949075]'
+    100002: ' Extrusion [6949093]'
+    100004: ' Extrusion [6949110]'
+    100006: ' Extrusion [6949127]'
+    100008: ' Extrusion [6949138]'
+    100010: ' Extrusion [6949149]'
+    100012: ' Extrusion [6949160]'
+    100014: ' Extrusion [6949171]'
+    100016: ' Extrusion [6949182]'
+    100018: ' Extrusion [6949193]'
+    100020: ' Extrusion [6949253]'
+    100022: ' Extrusion [6949497]'
+    100024: Casework-Sunray_Cabinet_Base Cabinet_Base [6948983]
+    100026: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [6949013]
+    100028: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [6949729]
+    100030: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
+      [6950019]
+    100032: //RootNode
+    400000: ' Extrusion [6949075]'
+    400002: ' Extrusion [6949093]'
+    400004: ' Extrusion [6949110]'
+    400006: ' Extrusion [6949127]'
+    400008: ' Extrusion [6949138]'
+    400010: ' Extrusion [6949149]'
+    400012: ' Extrusion [6949160]'
+    400014: ' Extrusion [6949171]'
+    400016: ' Extrusion [6949182]'
+    400018: ' Extrusion [6949193]'
+    400020: ' Extrusion [6949253]'
+    400022: ' Extrusion [6949497]'
+    400024: Casework-Sunray_Cabinet_Base Cabinet_Base [6948983]
+    400026: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [6949013]
+    400028: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [6949729]
+    400030: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
+      [6950019]
+    400032: //RootNode
+    2300000: ' Extrusion [6949075]'
+    2300002: ' Extrusion [6949093]'
+    2300004: ' Extrusion [6949110]'
+    2300006: ' Extrusion [6949127]'
+    2300008: ' Extrusion [6949138]'
+    2300010: ' Extrusion [6949149]'
+    2300012: ' Extrusion [6949160]'
+    2300014: ' Extrusion [6949171]'
+    2300016: ' Extrusion [6949182]'
+    2300018: ' Extrusion [6949193]'
+    2300020: ' Extrusion [6949253]'
+    2300022: ' Extrusion [6949497]'
+    2300024: Casework-Sunray_Cabinet_Base Cabinet_Base [6948983]
+    2300026: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [6949013]
+    2300028: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [6949729]
+    2300030: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
+      [6950019]
+    3300000: ' Extrusion [6949075]'
+    3300002: ' Extrusion [6949093]'
+    3300004: ' Extrusion [6949110]'
+    3300006: ' Extrusion [6949127]'
+    3300008: ' Extrusion [6949138]'
+    3300010: ' Extrusion [6949149]'
+    3300012: ' Extrusion [6949160]'
+    3300014: ' Extrusion [6949171]'
+    3300016: ' Extrusion [6949182]'
+    3300018: ' Extrusion [6949193]'
+    3300020: ' Extrusion [6949253]'
+    3300022: ' Extrusion [6949497]'
+    3300024: Casework-Sunray_Cabinet_Base Cabinet_Base [6948983]
+    3300026: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [6949013]
+    3300028: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [6949729]
+    3300030: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
+      [6950019]
+    4300000: ' Extrusion [6949075]'
+    4300002: ' Extrusion [6949093]'
+    4300004: ' Extrusion [6949110]'
+    4300006: ' Extrusion [6949127]'
+    4300008: ' Extrusion [6949138]'
+    4300010: ' Extrusion [6949149]'
+    4300012: ' Extrusion [6949160]'
+    4300014: ' Extrusion [6949171]'
+    4300016: ' Extrusion [6949182]'
+    4300018: ' Extrusion [6949193]'
+    4300020: ' Extrusion [6949253]'
+    4300022: ' Extrusion [6949497]'
+    4300024: Casework-Sunray_Cabinet_Base Cabinet_Base [6948983]
+    4300026: Casework-Sunray_Cabinet_Carcass Cabinet_Carcass [6949013]
+    4300028: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [6949729]
+    4300030: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
+      [6950019]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

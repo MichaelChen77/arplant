@@ -1,0 +1,194 @@
+fileFormatVersion: 2
+guid: f88437506808b6c4aac7873f9a25baa1
+timeCreated: 1494320107
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [5499609]'
+    100002: ' Extrusion [5499637]'
+    100004: ' Extrusion [5499663]'
+    100006: ' Extrusion [5499926]'
+    100008: ' Extrusion [5499969]'
+    100010: ' Extrusion [5500002]'
+    100012: ' Joined Solid Geometry [5500099]'
+    100014: ' Joined Solid Geometry [5500124]'
+    100016: Casework-Sunray_Cabinet_Base Cabinet_Base [5499695]
+    100018: Casework-Sunray_Cabinet_Base Cabinet_Base [5499976]
+    100020: Casework-Sunray_Cabinet_Base Cabinet_Base [5499992]
+    100022: Casework-Sunray_OS_01 OS_single [5499884]
+    100024: Casework_Sunray_HangingCabinet_Single_Module Right [5500867]
+    100026: CSW-Sunray_OC1D OC1D2 500W 350D 800H [5499738]
+    100028: CSW-Sunray_OC2D 1000W 350D 800H [5499721]
+    100030: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499656]
+    100032: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499962]
+    100034: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5500016]
+    100036: CSW_Sunray_Cab-Dbl-Microwave-cabinet CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499990]
+    100038: //RootNode
+    400000: ' Extrusion [5499609]'
+    400002: ' Extrusion [5499637]'
+    400004: ' Extrusion [5499663]'
+    400006: ' Extrusion [5499926]'
+    400008: ' Extrusion [5499969]'
+    400010: ' Extrusion [5500002]'
+    400012: ' Joined Solid Geometry [5500099]'
+    400014: ' Joined Solid Geometry [5500124]'
+    400016: Casework-Sunray_Cabinet_Base Cabinet_Base [5499695]
+    400018: Casework-Sunray_Cabinet_Base Cabinet_Base [5499976]
+    400020: Casework-Sunray_Cabinet_Base Cabinet_Base [5499992]
+    400022: Casework-Sunray_OS_01 OS_single [5499884]
+    400024: Casework_Sunray_HangingCabinet_Single_Module Right [5500867]
+    400026: CSW-Sunray_OC1D OC1D2 500W 350D 800H [5499738]
+    400028: CSW-Sunray_OC2D 1000W 350D 800H [5499721]
+    400030: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499656]
+    400032: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499962]
+    400034: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5500016]
+    400036: CSW_Sunray_Cab-Dbl-Microwave-cabinet CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499990]
+    400038: //RootNode
+    2300000: ' Extrusion [5499609]'
+    2300002: ' Extrusion [5499637]'
+    2300004: ' Extrusion [5499663]'
+    2300006: ' Extrusion [5499926]'
+    2300008: ' Extrusion [5499969]'
+    2300010: ' Extrusion [5500002]'
+    2300012: ' Joined Solid Geometry [5500099]'
+    2300014: ' Joined Solid Geometry [5500124]'
+    2300016: Casework-Sunray_Cabinet_Base Cabinet_Base [5499695]
+    2300018: Casework-Sunray_Cabinet_Base Cabinet_Base [5499976]
+    2300020: Casework-Sunray_Cabinet_Base Cabinet_Base [5499992]
+    2300022: Casework-Sunray_OS_01 OS_single [5499884]
+    2300024: Casework_Sunray_HangingCabinet_Single_Module Right [5500867]
+    2300026: CSW-Sunray_OC1D OC1D2 500W 350D 800H [5499738]
+    2300028: CSW-Sunray_OC2D 1000W 350D 800H [5499721]
+    2300030: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499656]
+    2300032: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499962]
+    2300034: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5500016]
+    2300036: CSW_Sunray_Cab-Dbl-Microwave-cabinet CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499990]
+    3300000: ' Extrusion [5499609]'
+    3300002: ' Extrusion [5499637]'
+    3300004: ' Extrusion [5499663]'
+    3300006: ' Extrusion [5499926]'
+    3300008: ' Extrusion [5499969]'
+    3300010: ' Extrusion [5500002]'
+    3300012: ' Joined Solid Geometry [5500099]'
+    3300014: ' Joined Solid Geometry [5500124]'
+    3300016: Casework-Sunray_Cabinet_Base Cabinet_Base [5499695]
+    3300018: Casework-Sunray_Cabinet_Base Cabinet_Base [5499976]
+    3300020: Casework-Sunray_Cabinet_Base Cabinet_Base [5499992]
+    3300022: Casework-Sunray_OS_01 OS_single [5499884]
+    3300024: Casework_Sunray_HangingCabinet_Single_Module Right [5500867]
+    3300026: CSW-Sunray_OC1D OC1D2 500W 350D 800H [5499738]
+    3300028: CSW-Sunray_OC2D 1000W 350D 800H [5499721]
+    3300030: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499656]
+    3300032: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499962]
+    3300034: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5500016]
+    3300036: CSW_Sunray_Cab-Dbl-Microwave-cabinet CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499990]
+    4300000: ' Extrusion [5499609]'
+    4300002: ' Extrusion [5499637]'
+    4300004: ' Extrusion [5499663]'
+    4300006: ' Extrusion [5499926]'
+    4300008: ' Extrusion [5499969]'
+    4300010: ' Extrusion [5500002]'
+    4300012: ' Joined Solid Geometry [5500099]'
+    4300014: ' Joined Solid Geometry [5500124]'
+    4300016: Casework_Sunray_HangingCabinet_Single_Module Right [5500867]
+    4300018: Casework-Sunray_Cabinet_Base Cabinet_Base [5499695]
+    4300020: Casework-Sunray_Cabinet_Base Cabinet_Base [5499976]
+    4300022: Casework-Sunray_Cabinet_Base Cabinet_Base [5499992]
+    4300024: Casework-Sunray_OS_01 OS_single [5499884]
+    4300026: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499656]
+    4300028: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499962]
+    4300030: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5500016]
+    4300032: CSW_Sunray_Cab-Dbl-Microwave-cabinet CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
+      3 [5499990]
+    4300034: CSW-Sunray_OC1D OC1D2 500W 350D 800H [5499738]
+    4300036: CSW-Sunray_OC2D 1000W 350D 800H [5499721]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

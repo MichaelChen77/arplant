@@ -1,0 +1,224 @@
+fileFormatVersion: 2
+guid: b0e126b611e5b6045ab36f4d02a4b808
+timeCreated: 1494320105
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [1507179]'
+    100002: CSW-Sunray_Casework_PHR-01_Carcass CSW-Sunray_Casework_PHR-01_Carcass
+      [1507367]
+    100004: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507165]
+    100006: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507167]
+    100008: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507169]
+    100010: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507359]
+    100012: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507160]
+    100014: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507164]
+    100016: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507166]
+    100018: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507168]
+    100020: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507267]
+    100022: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507363]
+    100024: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507139]
+    100026: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507364]
+    100028: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507197]
+    100030: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507300]
+    100032: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507302]
+    100034: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507304]
+    100036: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507306]
+    100038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507348]
+    100040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507360]
+    100042: //RootNode
+    400000: ' Extrusion [1507179]'
+    400002: CSW-Sunray_Casework_PHR-01_Carcass CSW-Sunray_Casework_PHR-01_Carcass
+      [1507367]
+    400004: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507165]
+    400006: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507167]
+    400008: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507169]
+    400010: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507359]
+    400012: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507160]
+    400014: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507164]
+    400016: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507166]
+    400018: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507168]
+    400020: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507267]
+    400022: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507363]
+    400024: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507139]
+    400026: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507364]
+    400028: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507197]
+    400030: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507300]
+    400032: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507302]
+    400034: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507304]
+    400036: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507306]
+    400038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507348]
+    400040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507360]
+    400042: //RootNode
+    2300000: ' Extrusion [1507179]'
+    2300002: CSW-Sunray_Casework_PHR-01_Carcass CSW-Sunray_Casework_PHR-01_Carcass
+      [1507367]
+    2300004: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507165]
+    2300006: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507167]
+    2300008: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507169]
+    2300010: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507359]
+    2300012: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507160]
+    2300014: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507164]
+    2300016: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507166]
+    2300018: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507168]
+    2300020: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507267]
+    2300022: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507363]
+    2300024: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507139]
+    2300026: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507364]
+    2300028: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507197]
+    2300030: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507300]
+    2300032: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507302]
+    2300034: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507304]
+    2300036: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507306]
+    2300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507348]
+    2300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507360]
+    3300000: ' Extrusion [1507179]'
+    3300002: CSW-Sunray_Casework_PHR-01_Carcass CSW-Sunray_Casework_PHR-01_Carcass
+      [1507367]
+    3300004: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507165]
+    3300006: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507167]
+    3300008: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507169]
+    3300010: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507359]
+    3300012: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507160]
+    3300014: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507164]
+    3300016: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507166]
+    3300018: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507168]
+    3300020: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507267]
+    3300022: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507363]
+    3300024: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507139]
+    3300026: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507364]
+    3300028: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507197]
+    3300030: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507300]
+    3300032: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507302]
+    3300034: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507304]
+    3300036: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507306]
+    3300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507348]
+    3300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507360]
+    4300000: ' Extrusion [1507179]'
+    4300002: CSW-Sunray_Casework_PHR-01_Carcass CSW-Sunray_Casework_PHR-01_Carcass
+      [1507367]
+    4300004: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507165]
+    4300006: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507167]
+    4300008: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507169]
+    4300010: CSW-Sunray_Casework_PHR-01_Carcass Left no leg [1507359]
+    4300012: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507160]
+    4300014: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507164]
+    4300016: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507166]
+    4300018: CSW-Sunray_Casework_PHR-01_Carcass Right no leg [1507168]
+    4300020: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507267]
+    4300022: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Left
+      [1507363]
+    4300024: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507139]
+    4300026: CSW-Sunray_Casework_PHR-01_Carcass_2 CSW-Sunray_Casework_PHR-01_Carcass_End-Right
+      [1507364]
+    4300028: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507197]
+    4300030: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507300]
+    4300032: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507302]
+    4300034: CSW-Sunray_Casework_Template3 CSW-Sunray_Casework_Template3 [1507304]
+    4300036: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507306]
+    4300038: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507348]
+    4300040: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
+      [1507360]
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

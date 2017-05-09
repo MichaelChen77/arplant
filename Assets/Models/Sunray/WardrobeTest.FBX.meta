@@ -1,0 +1,234 @@
+fileFormatVersion: 2
+guid: 2e779658832d5bc4c8615f66dfd84e7c
+timeCreated: 1494320096
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ' Extrusion [13829]'
+    100002: ' Extrusion [14138]'
+    100004: ' Extrusion [17191]'
+    100006: ' Extrusion [6106]'
+    100008: ' Extrusion [69316]'
+    100010: ' Extrusion [7007]'
+    100012: ' Extrusion [7040]'
+    100014: ' Extrusion [70547]'
+    100016: ' Extrusion [71123]'
+    100018: ' Extrusion [7169]'
+    100020: ' Extrusion [7215]'
+    100022: ' Extrusion [7269]'
+    100024: ' Extrusion [72872]'
+    100026: ' Extrusion [76607]'
+    100028: ' Extrusion [77418]'
+    100030: ' Extrusion [77429]'
+    100032: ' Extrusion [77439]'
+    100034: ' Extrusion [78820]'
+    100036: ' Extrusion [80179]'
+    100038: ' Extrusion [81256]'
+    100040: ' Extrusion [90143]'
+    100042: ' Extrusion [91194]'
+    100044: ' Extrusion [9158]'
+    100046: ' Joined Solid Geometry [80050]'
+    100048: ' Joined Solid Geometry [80051]'
+    100050: ' Joined Solid Geometry [88838]'
+    100052: ' Joined Solid Geometry [89453]'
+    100054: ' Sweep [56061]'
+    100056: ' Sweep [56382]'
+    100058: Wardrobe Door Wardrobe Door [75090]
+    100060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    100062: //RootNode
+    400000: ' Extrusion [13829]'
+    400002: ' Extrusion [14138]'
+    400004: ' Extrusion [17191]'
+    400006: ' Extrusion [6106]'
+    400008: ' Extrusion [69316]'
+    400010: ' Extrusion [7007]'
+    400012: ' Extrusion [7040]'
+    400014: ' Extrusion [70547]'
+    400016: ' Extrusion [71123]'
+    400018: ' Extrusion [7169]'
+    400020: ' Extrusion [7215]'
+    400022: ' Extrusion [7269]'
+    400024: ' Extrusion [72872]'
+    400026: ' Extrusion [76607]'
+    400028: ' Extrusion [77418]'
+    400030: ' Extrusion [77429]'
+    400032: ' Extrusion [77439]'
+    400034: ' Extrusion [78820]'
+    400036: ' Extrusion [80179]'
+    400038: ' Extrusion [81256]'
+    400040: ' Extrusion [90143]'
+    400042: ' Extrusion [91194]'
+    400044: ' Extrusion [9158]'
+    400046: ' Joined Solid Geometry [80050]'
+    400048: ' Joined Solid Geometry [80051]'
+    400050: ' Joined Solid Geometry [88838]'
+    400052: ' Joined Solid Geometry [89453]'
+    400054: ' Sweep [56061]'
+    400056: ' Sweep [56382]'
+    400058: Wardrobe Door Wardrobe Door [75090]
+    400060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    400062: //RootNode
+    2300000: ' Extrusion [13829]'
+    2300002: ' Extrusion [14138]'
+    2300004: ' Extrusion [17191]'
+    2300006: ' Extrusion [6106]'
+    2300008: ' Extrusion [69316]'
+    2300010: ' Extrusion [7007]'
+    2300012: ' Extrusion [7040]'
+    2300014: ' Extrusion [70547]'
+    2300016: ' Extrusion [71123]'
+    2300018: ' Extrusion [7169]'
+    2300020: ' Extrusion [7215]'
+    2300022: ' Extrusion [7269]'
+    2300024: ' Extrusion [72872]'
+    2300026: ' Extrusion [76607]'
+    2300028: ' Extrusion [77418]'
+    2300030: ' Extrusion [77429]'
+    2300032: ' Extrusion [77439]'
+    2300034: ' Extrusion [78820]'
+    2300036: ' Extrusion [80179]'
+    2300038: ' Extrusion [81256]'
+    2300040: ' Extrusion [90143]'
+    2300042: ' Extrusion [91194]'
+    2300044: ' Extrusion [9158]'
+    2300046: ' Joined Solid Geometry [80050]'
+    2300048: ' Joined Solid Geometry [80051]'
+    2300050: ' Joined Solid Geometry [88838]'
+    2300052: ' Joined Solid Geometry [89453]'
+    2300054: ' Sweep [56061]'
+    2300056: ' Sweep [56382]'
+    2300058: Wardrobe Door Wardrobe Door [75090]
+    2300060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    3300000: ' Extrusion [13829]'
+    3300002: ' Extrusion [14138]'
+    3300004: ' Extrusion [17191]'
+    3300006: ' Extrusion [6106]'
+    3300008: ' Extrusion [69316]'
+    3300010: ' Extrusion [7007]'
+    3300012: ' Extrusion [7040]'
+    3300014: ' Extrusion [70547]'
+    3300016: ' Extrusion [71123]'
+    3300018: ' Extrusion [7169]'
+    3300020: ' Extrusion [7215]'
+    3300022: ' Extrusion [7269]'
+    3300024: ' Extrusion [72872]'
+    3300026: ' Extrusion [76607]'
+    3300028: ' Extrusion [77418]'
+    3300030: ' Extrusion [77429]'
+    3300032: ' Extrusion [77439]'
+    3300034: ' Extrusion [78820]'
+    3300036: ' Extrusion [80179]'
+    3300038: ' Extrusion [81256]'
+    3300040: ' Extrusion [90143]'
+    3300042: ' Extrusion [91194]'
+    3300044: ' Extrusion [9158]'
+    3300046: ' Joined Solid Geometry [80050]'
+    3300048: ' Joined Solid Geometry [80051]'
+    3300050: ' Joined Solid Geometry [88838]'
+    3300052: ' Joined Solid Geometry [89453]'
+    3300054: ' Sweep [56061]'
+    3300056: ' Sweep [56382]'
+    3300058: Wardrobe Door Wardrobe Door [75090]
+    3300060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    4300000: ' Extrusion [91194]'
+    4300002: ' Extrusion [90143]'
+    4300004: ' Joined Solid Geometry [89453]'
+    4300006: ' Joined Solid Geometry [88838]'
+    4300008: ' Extrusion [81256]'
+    4300010: ' Extrusion [80179]'
+    4300012: ' Joined Solid Geometry [80051]'
+    4300014: ' Joined Solid Geometry [80050]'
+    4300016: ' Extrusion [78820]'
+    4300018: ' Extrusion [77439]'
+    4300020: ' Extrusion [77429]'
+    4300022: ' Extrusion [77418]'
+    4300024: ' Extrusion [76607]'
+    4300026: Wardrobe Door Wardrobe Door [75090]
+    4300028: ' Extrusion [72872]'
+    4300030: ' Extrusion [71123]'
+    4300032: ' Extrusion [70547]'
+    4300034: ' Extrusion [69316]'
+    4300036: ' Sweep [56382]'
+    4300038: ' Sweep [56061]'
+    4300040: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    4300042: ' Extrusion [17191]'
+    4300044: ' Extrusion [14138]'
+    4300046: ' Extrusion [13829]'
+    4300048: ' Extrusion [9158]'
+    4300050: ' Extrusion [7269]'
+    4300052: ' Extrusion [7215]'
+    4300054: ' Extrusion [7169]'
+    4300056: ' Extrusion [7040]'
+    4300058: ' Extrusion [7007]'
+    4300060: ' Extrusion [6106]'
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
