@@ -87,6 +87,14 @@ namespace IMAV
                 //    obj.transform.localPosition = relativePoint;
                 //}
 
+                MeshRenderer[] childRenders = obj.GetComponentsInChildren<MeshRenderer>();
+                if (childRenders != null)
+                {
+                    foreach (MeshRenderer mr in childRenders)
+                    {
+                        mr.gameObject.AddComponent<BoxCollider>();
+                    }
+                }
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
                 obj.AddComponent<ObjectTouchControl>();
                 Debug.Log("add2: " + obj.name + " ; " + init + " ; " + isLocal + " ; " + id + " ; " + _content);

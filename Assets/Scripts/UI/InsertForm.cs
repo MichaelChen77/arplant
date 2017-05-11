@@ -28,31 +28,30 @@ namespace IMAV.UI
 
         public void ShowObjects(string str)
         {
-            ResType _type = (ResType)System.Enum.Parse(typeof(ResType), str);
             int i = 0;
-            foreach (ResObject obj in ResourceManager.Singleton.PresetObjects)
-            {
-                if (obj.type == _type)
-                {
-                    if (objItems.Count > i)
-                        objItems[i].Init(obj, Close);
-                    else
-                        AddObjectItems(obj, -objListContent.sizeDelta.y);
-                    i++;
-                }
-            }
-            if (objItems.Count > i)
-            {
-                for (int t = objItems.Count - 1; t >= i; t--)
-                {
-                    Destroy(objItems[t].gameObject);
-                    objItems.RemoveAt(t);
-                    AddContentHeight(-ObjectItemHeight - spacing);
-                }
-            }
-            anim.SetBool("Show", true);
-            backBtn.SetActive(true);
-            formText.text = str;
+            //foreach (ResObject obj in ResourceManager.Singleton.PresetObjects)
+            //{
+            //    if (obj.Category == str)
+            //    {
+            //        if (objItems.Count > i)
+            //            objItems[i].Init(obj, Close);
+            //        else
+            //            AddObjectItems(obj, -objListContent.sizeDelta.y);
+            //        i++;
+            //    }
+            //}
+            //if (objItems.Count > i)
+            //{
+            //    for (int t = objItems.Count - 1; t >= i; t--)
+            //    {
+            //        Destroy(objItems[t].gameObject);
+            //        objItems.RemoveAt(t);
+            //        AddContentHeight(-ObjectItemHeight - spacing);
+            //    }
+            //}
+            //anim.SetBool("Show", true);
+            //backBtn.SetActive(true);
+            //formText.text = str;
         }
 
         void AddObjectItems(ResObject res, float height)

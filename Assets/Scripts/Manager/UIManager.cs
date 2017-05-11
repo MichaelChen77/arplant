@@ -86,7 +86,7 @@ namespace IMAV
                     obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
                 }
             }
-            SceneManager.LoadScene("MainAR");
+            SceneManager.LoadScene("ARScene");
         }
 
     }

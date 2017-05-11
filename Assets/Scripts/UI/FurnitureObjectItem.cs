@@ -20,7 +20,7 @@ public class FurnitureObjectItem : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData data)
     {
-        string str = currentObj.type + "-" + currentObj.name;
+        string str = currentObj.Category + "-" + currentObj.name;
         ResourceManager.Singleton.LoadGameObject(currentObj.resource, str);
         if (OnItemClick != null)
             OnItemClick();

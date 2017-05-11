@@ -5,26 +5,54 @@ using Kudan.AR;
 using System.Linq;
 using IMAV.UI;
 
-public enum ResType
+[System.Serializable]
+public class FurCategory
 {
-    Bed, Bath, Statue, Desk, Decoration, Other, Sunray
+    public string name;
+    public Sprite thumbnail;
+    List<ResObject> furObjects = new List<ResObject>();
+    public List<ResObject> Furnitures
+    {
+        get
+        {
+            if (furObjects == null)
+                furObjects = new List<ResObject>();
+            return furObjects;
+        }
+    }
+
+    public FurCategory(string _name, Sprite sp)
+    {
+        name = _name;
+        thumbnail = sp;
+    }
 }
 
-[System.Serializable]
-public struct ResObject
+public class ResObject
 {
     public GameObject resource;
     public string name;
     public Sprite thumbnail;
-    public ResType type;
+    string cat;
+    public string Category
+    {
+        get { return cat; }
+        set { cat = value; }
+    }
+
+    public ResObject(string _cat, string _name)
+    {
+        cat = _cat;
+        name = _name;
+    }
 }
 
 namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
-
-        public ResObject[] PresetObjects;
-        public ResObject[] LocalObjects;
+        public FurCategory[] FurCategories;
+        //public ResObject[] PresetObjects;
+        //public ResObject[] LocalObjects;
         public FurARUI appui;
         public DebugView debugview;
         public bool marker = true;
@@ -88,12 +116,37 @@ namespace IMAV
 
         void Start()
         {
-            if(DataUtility.WorkOnLocal)
+            LoadResources();
+            if (DataUtility.WorkOnLocal)
             {
                 DataManager.Singleton.FurnitureDatas.Clear();
-                for(int i=0; i<LocalObjects.Length; i++)
+                int k = 0;
+                for(int i=0; i<FurCategories.Length; i++)
                 {
-                    DataManager.Singleton.Init(i, LocalObjects[i]);
+                    for (int j = 0; j < FurCategories[i].Furnitures.Count; j++)
+                    {
+                        DataManager.Singleton.Init(k, FurCategories[i].Furnitures[j]);
+                        k++;
+                    }
+                }
+            }
+        }
+
+        void LoadResources()
+        {
+            foreach (FurCategory cat in FurCategories)
+            {
+                Object[] objs = Resources.LoadAll("Furnitures/" + cat.name);
+                cat.Furnitures.Clear();
+                if (objs != null)
+                {
+                    for (int i = 0; i < objs.Length; i++)
+                    {
+                        ResObject o = new ResObject(cat.name, objs[i].name);
+                        o.resource = (GameObject)objs[i];
+                        o.thumbnail = Resources.Load<Sprite>("FurImages/" + cat.name + "/" + objs[i].name);
+                        cat.Furnitures.Add(o);
+                    }
                 }
             }
         }
@@ -104,24 +157,36 @@ namespace IMAV
                 debugview.AppendTextLog(str);
         }
 
-        public GameObject GetGameObject(ResType _type, string str)
+        public GameObject GetGameObject(string _type, string str)
         {
-            foreach (ResObject obj in PresetObjects)
+            FurCategory cat = GetCategory(_type);
+            if (cat != null)
             {
-                if (obj.type == _type && obj.name == str)
+                foreach (ResObject obj in cat.Furnitures)
                 {
-                    return obj.resource;
+                    if (obj.name == str)
+                        return obj.resource;
                 }
+            }
+            return null;
+        }
+
+        public FurCategory GetCategory(string _type)
+        {
+            foreach(FurCategory cat in FurCategories)
+            {
+                if (cat.name == _type)
+                    return cat;
             }
             return null;
         }
 
         public void loadnextlevel()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainAR");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("ARScene");
         }
 
-        public void LoadGameObject(ResType _type, string str)
+        public void LoadGameObject(string _type, string str)
         {
             GameObject obj = GetGameObject(_type, str);
             string _content = _type + "-" + str;

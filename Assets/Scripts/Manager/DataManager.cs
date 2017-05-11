@@ -54,9 +54,9 @@ namespace IMAV
             FurnitureData fd = new FurnitureData(id, resobj.name);
             fd.Model = resobj.resource;
             fd.Thumbnail = resobj.thumbnail;
-            fd.brand_name = resobj.type.ToString();
+            fd.brand_name = resobj.Category;;
             fd.category_name = "Case Work";
-            fd.manufacturer_name = resobj.type.ToString();
+            fd.manufacturer_name = resobj.Category;
             fd.production_date = "04/11/2017";
             fd.production_site = "China";
             fd.price = 1200;
@@ -167,8 +167,7 @@ namespace IMAV
                 if (sd.isLocal())
                 {
                     string[] strs = sd.ID.Split('-');
-                    ResType rt = (ResType)Enum.Parse(typeof(ResType), strs[0]);
-                    GameObject obj = ResourceManager.Singleton.GetGameObject(rt, strs[1]);
+                    GameObject obj = ResourceManager.Singleton.GetGameObject(strs[0], strs[1]);
                     if (obj != null)
                     {
                         newObj = Instantiate(obj);
