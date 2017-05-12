@@ -56,7 +56,7 @@ namespace IMAV.UI
 
         public void ShowMarlessArrow()
         {
-            targetNode.targetAwaysOn = !targetNode.targetAwaysOn;
+            //targetNode.targetAwaysOn = !targetNode.targetAwaysOn;
         }
 
         void Update()
