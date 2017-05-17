@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_IOS
+#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_IOS ||UNITY_STANDALONE_OSX
 using System.IO;
 #endif
 

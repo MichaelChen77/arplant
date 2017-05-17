@@ -13,7 +13,6 @@ public class MainCamCtrl : MonoBehaviour {
         move, orbit, rotate, zoom, flythrough
     }
 
-    public bool enabled = true;
     public CameraMode currentMode = CameraMode.free;
     public float camMoveSpeed = 50f;
     public float camPanSpeed = 75f;

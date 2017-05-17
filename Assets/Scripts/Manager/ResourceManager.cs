@@ -51,8 +51,6 @@ namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
         public FurCategory[] FurCategories;
-        //public ResObject[] PresetObjects;
-        //public ResObject[] LocalObjects;
         public FurARUI appui;
         public DebugView debugview;
         public bool marker = true;
@@ -294,18 +292,38 @@ namespace IMAV
             }
         }
 
-        public void SetCurrentObject(GameObject obj)
-        {
-            if (currentObj == obj)
-                return;
-            if (currentObj != null) {
-                currentObj.GetComponent<ObjectTouchControl>().enabled = false;
-                disableHighlight();
-            }
-            currentObj = obj;
-            currentObj.GetComponent<ObjectTouchControl>().enabled = true;
-            highlightObject();
-        }
+		public void SetCurrentObject(GameObject obj, SelectState st = SelectState.Actived)
+		{
+			if (currentObj != null) {
+				ObjectTouchControl otc = currentObj.GetComponent<ObjectTouchControl> ();
+				if (otc != null) {
+					if (currentObj == obj) {
+						otc.Selected = st;
+						return;
+					} else
+						otc.Selected = SelectState.None;
+					disableHighlight ();
+				}
+			}
+			ObjectTouchControl tc = obj.GetComponent<ObjectTouchControl> ();
+			if (tc != null) {
+				tc.Selected = st;
+				currentObj = obj;
+				highlightObject ();
+			} else {
+				currentObj = null;
+			}
+		}
+
+		public void SetCurrentObjectState(SelectState st)
+		{
+			if(currentObj != null)
+			{
+				ObjectTouchControl tc = currentObj.GetComponent<ObjectTouchControl> ();
+				if(tc != null)
+					tc.Selected = st;
+			}
+		}
 
         public void AddMarkerlessObject(GameObject obj)
         {
@@ -339,7 +357,7 @@ namespace IMAV
                     sobj.Init(_islocal, _id, _content);
                 }
                 DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
-                SetCurrentObject(obj);
+				SetCurrentObject(obj);
                 ResetTouchMode();
             }
             catch (System.Exception ex)

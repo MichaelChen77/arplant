@@ -63,40 +63,32 @@ namespace IMAV.UI
         {
             if (detailsBtn.interactable == (ResourceManager.Singleton.CurrentObject == null))
                 detailsBtn.interactable = !detailsBtn.interactable;
-            //			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
-            //				if (IsFormActived () && !TouchOnUI ()) {
-            //					Debug.Log ("close form");
-            //					insertform.Close ();
-            //					searchform.Close ();
-            //				}
-            //			}
-            //select ();
-            //if (UIToggle.IsOn)
-            //{
-            //    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            //    {
-            //        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            //        RaycastHit hit;
-
-            //        if (!Physics.Raycast(ray, out hit))
-            //        {
-            //            if (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-            //            {
-            //                touchBtn.gameObject.SetActive(!touchBtn.gameObject.activeSelf);
-            //                constraintBtn.gameObject.SetActive(!constraintBtn.gameObject.activeSelf);
-            //                insertBtn.gameObject.SetActive(!insertBtn.gameObject.activeSelf);
-            //                deleteBtn.gameObject.SetActive(!deleteBtn.gameObject.activeSelf);
-            //                resetBtn.gameObject.SetActive(!resetBtn.gameObject.activeSelf);
-            //                snapshotBtn.gameObject.SetActive(!snapshotBtn.gameObject.activeSelf);
-            //                imagegalleryBtn.gameObject.SetActive(!imagegalleryBtn.gameObject.activeSelf);
-            //                UIToggle.gameObject.SetActive(!UIToggle.gameObject.activeSelf);
-            //                detailCheckBtn.gameObject.SetActive(!detailCheckBtn.gameObject.activeSelf);
-            //                heightInputBtn.gameObject.SetActive(!heightInputBtn.gameObject.activeSelf);
-            //            }
-            //        }
-            //    }
-            //}
+			CheckTouch ();
         }
+
+		void CheckTouch()
+		{
+			if (Input.touchCount > 0) {
+				foreach (Touch touch in Input.touches) {
+					int id = touch.fingerId;
+					if (EventSystem.current.IsPointerOverGameObject (id)) {
+						ResourceManager.Singleton.SetCurrentObjectState(SelectState.Pause);
+						return;
+					}
+				}
+
+				if (Input.GetTouch (0).phase == TouchPhase.Began) {
+					Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
+					RaycastHit hit;
+					if (Physics.Raycast (ray, out hit)) {
+						GameObject touchedObject = hit.transform.gameObject;
+						if (touchedObject != null) {
+							ResourceManager.Singleton.SetCurrentObject(hit.transform.gameObject);
+						}
+					}
+				}
+			}
+		}
 
         void SetTouchMove(bool flag)
         {
@@ -242,7 +234,6 @@ namespace IMAV.UI
 
         public void OpenDetailMode()
         {
-            //ResourceManager.Singleton.disableHighlight();
             DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             if (DataUtility.CurrentObject != null)
             {
@@ -259,6 +250,7 @@ namespace IMAV.UI
 
                 SceneManager.LoadSceneAsync("VRRoom");
             }
+			SceneManager.LoadSceneAsync("VRRoom");
         }
 
         IEnumerator resetObject()

@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 
-#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_IOS
+#if UNITY_STANDALONE_WIN || UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX
 public class UnityWinFileSystem : IMLFileSystem
 {
     #region IMLFileSystem Members

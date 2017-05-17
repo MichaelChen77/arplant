@@ -77,15 +77,15 @@ namespace IMAV
 
         public void GoToMainScene()
         {
-            if(selectedObj.materialID != -1)
-            {
-                DataUtility.CurrentObject.SetActive(true);
-                SceneObject obj = DataUtility.CurrentObject.GetComponent<SceneObject>();
-                if(obj != null)
-                {
-                    obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
-                }
-            }
+//            if(selectedObj.materialID != -1)
+//            {
+//                DataUtility.CurrentObject.SetActive(true);
+//                SceneObject obj = DataUtility.CurrentObject.GetComponent<SceneObject>();
+//                if(obj != null)
+//                {
+//                    obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
+//                }
+//            }
             SceneManager.LoadScene("ARScene");
         }
 
