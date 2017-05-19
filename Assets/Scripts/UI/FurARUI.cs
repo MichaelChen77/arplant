@@ -11,7 +11,7 @@ namespace IMAV.UI
 {
     public class FurARUI : MonoBehaviour
     {
-        public InsertForm insertform;
+		public FurnitureForm furform;
         public SearchForm searchform;
         public Text markerHint;
         public CaptureAndSave snapShot;
@@ -23,6 +23,7 @@ namespace IMAV.UI
         public ImageGallery imageGallery;
         public Animator ctrlBtnPanelAnim;
         public TargetNode targetNode;
+		public DisableSelf imageSaved;
 
         public void Init(ToggleButton markerBtn)
         {
@@ -77,17 +78,25 @@ namespace IMAV.UI
 					}
 				}
 
-				if (Input.GetTouch (0).phase == TouchPhase.Began) {
+				if (Input.touchCount == 1 && Input.GetTouch (0).phase == TouchPhase.Began) {
 					Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
 					RaycastHit hit;
 					if (Physics.Raycast (ray, out hit)) {
 						GameObject touchedObject = hit.transform.gameObject;
 						if (touchedObject != null) {
-							ResourceManager.Singleton.SetCurrentObject(hit.transform.gameObject);
+							ResourceManager.Singleton.SetCurrentObject (touchedObject.GetComponent<ARModel> ());
+						} else {
+							ResourceManager.Singleton.SetCurrentObjectState (SelectState.None);
 						}
 					}
+					HideUI ();
 				}
 			}
+		}
+
+		void HideUI()
+		{
+			furform.Close ();
 		}
 
         void SetTouchMove(bool flag)
@@ -110,84 +119,17 @@ namespace IMAV.UI
             {
                 Directory.CreateDirectory(DataUtility.GetScreenShotPath());
             }
-            StartCoroutine(Screenshot());
 
-            //cschen
-            //currentfile = string.Format("ScreenShot_{0}_{1}_{2}({3}:{4}:{5}).png", System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, System.DateTime.Now.Hour,
-            //    System.DateTime.Now.Minute, System.DateTime.Now.Second);
-
-            //StartCoroutine(StartCaptureScreen());
+			System.DateTime dt = System.DateTime.Now.ToLocalTime ();
+			string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
+			ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, PostScreenShot);
         }
 
-        #region Screenshot methods
-        IEnumerator StartCaptureScreen()
-        {
-            //cschen
-            //snapShot.CaptureAndSaveAtPath(DataUtility.GetScreenShotPath() + currentfile, ImageType.PNG);
-            //snapShot.SetAlbumPath(DataUtility.GetScreenShotPath());
-            //snapShot.CaptureAndSaveToAlbum(ImageType.PNG);
-
-            snapShot.CaptureAndSaveToAlbum(ImageType.JPG);
-            yield return new WaitForSeconds(0.5f);
-            imageViewDlg.SetActive(true);
-        }
-
-        IEnumerator Screenshot()
-        {
-            List<GameObject> uiObjects = FindGameObjectsInUILayer();
-
-            for (int i = 0; i < uiObjects.Count; i++)
-            {
-                uiObjects[i].SetActive(false);
-            }
-            yield return new WaitForEndOfFrame();
-
-            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
-
-            GetComponent<Camera>().targetTexture = RT;
-
-            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
-            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
-
-            byte[] bytes = screen.EncodeToJPG();
-
-            //string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".jpg";
-            string filePath = DataUtility.GetScreenShotPath() + "/Screenshot - " + Time.unscaledTime + ".jpg";
-            System.IO.File.WriteAllBytes(filePath, bytes);
-
-            for (int i = 0; i < uiObjects.Count; i++)
-            {
-                uiObjects[i].SetActive(true);
-            }
-
-            GetComponent<Camera>().targetTexture = null;
-            Destroy(RT);
-            yield return new WaitForSeconds(0.3f);
-            imageViewDlg.SetActive(true);
-        }
-
-        List<GameObject> FindGameObjectsInUILayer()
-        {
-            GameObject[] goArray = FindObjectsOfType<GameObject>();
-
-            List<GameObject> uiList = new List<GameObject>();
-
-            for (var i = 0; i < goArray.Length; i++)
-            {
-                if (goArray[i].layer == 5)
-                {
-                    uiList.Add(goArray[i]);
-                }
-            }
-
-            if (uiList.Count == 0)
-            {
-                return null;
-            }
-
-            return uiList;
-        }
-        #endregion
+		void PostScreenShot(Texture2D tex)
+		{
+			snapShot.SaveTextureToGallery (tex, ImageType.JPG);
+			imageSaved.Open ();
+		}
 
         public void ViewImage()
         {
@@ -213,7 +155,6 @@ namespace IMAV.UI
         void SetMarkerHint()
         {
             markerHint.gameObject.SetActive(true);
-            Animator anim = markerHint.GetComponent<Animator>();
             if (ResourceManager.Singleton.marker)
                 markerHint.text = "Marker On";
             else
@@ -227,14 +168,9 @@ namespace IMAV.UI
             markerHint.gameObject.SetActive(false);
         }
 
-        bool IsFormActived()
-        {
-            return insertform.gameObject.activeSelf || searchform.gameObject.activeSelf;
-        }
-
         public void OpenDetailMode()
         {
-            DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
+			DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject.gameObject;
             if (DataUtility.CurrentObject != null)
             {
                 List<Transform> temp = new List<Transform>();
@@ -250,7 +186,6 @@ namespace IMAV.UI
 
                 SceneManager.LoadSceneAsync("VRRoom");
             }
-			SceneManager.LoadSceneAsync("VRRoom");
         }
 
         IEnumerator resetObject()
@@ -321,7 +256,7 @@ namespace IMAV.UI
         
         public void autoAdjust()
         {
-            GameObject current = ResourceManager.Singleton.CurrentObject;
+			GameObject current = ResourceManager.Singleton.CurrentObject.gameObject;
             float posChangeX;
             float posChangeY;
             float posChangeZ;

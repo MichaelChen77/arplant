@@ -12,7 +12,6 @@ namespace IMAV
         public SearchForm searchform;
         public SceneForm sceneform;
         public SpinUI loadingImage;
-        //List<GameObject> sceneObjects = new List<GameObject>();
         Dictionary<int, FurnitureData> furnitureDict = new Dictionary<int, FurnitureData>();
         public Dictionary<int, FurnitureData> FurnitureDatas
         {
@@ -180,7 +179,7 @@ namespace IMAV
                     if (furnitureDict.ContainsKey(_id))
                     {
                         LoadDataModle(furnitureDict[_id]);
-                        newObj = ResourceManager.Singleton.CurrentObject;
+						newObj = ResourceManager.Singleton.CurrentObject.gameObject;
                     }
                 }
                 if (newObj != null)
@@ -191,45 +190,6 @@ namespace IMAV
                 }
             }
         }
-
-        //void LoadData(string str)
-        //{
-        //    try
-        //    {
-        //        string[] strs = str.Split(';');
-        //        foreach (string s in strs)
-        //        {
-        //            if (s != "")
-        //            {
-        //                string[] subs = s.Split('>');
-        //                uint _id = Convert.ToUInt32(subs[0]);
-        //                if (!furnitureDict.ContainsKey(_id))
-        //                {
-        //                    FurnitureData _data = new FurnitureData(_id, subs[1]);
-        //                    _data.category_name = subs[2];
-        //                    _data.brand_name = subs[3];
-        //                    _data.manufacturer_name = subs[4];
-        //                    _data.production_site = subs[5];
-        //                    _data.production_date = subs[6];
-        //                    _data.price = Convert.ToSingle(subs[7]);
-        //                    ServerScriptUtil.DownloadImageFile(DataUtility.GetImagePath(_data), DownloadImageCallback);
-        //                    loadedCount++;
-        //                    furnitureDict[_id] = _data;
-        //                }
-        //                searchform.SearchResult.Add(furnitureDict[_id]);
-        //            }
-        //        }
-        //        ServerScript.Singleton.StartPHPRequests();
-        //    }
-        //    catch(IndexOutOfRangeException ioex)
-        //    {
-        //        Debug.Log("DataManager->Load Data->IndexOutofRange: " + ioex.Message);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Debug.Log("DataManager->Load Data->Exception: " + ex.Message);
-        //    }
-        //}
 
         public void DownloadImageCallback(int _id, byte[] content)
         {
@@ -294,7 +254,6 @@ namespace IMAV
             try
             {
                 loadedCount = 0;
-                //tempFiles.Clear();
                 if (furnitureDict.ContainsKey(_id) && content.Length > 0)
                 {
                     furnitureDict[_id].Model = (GameObject)content[0];

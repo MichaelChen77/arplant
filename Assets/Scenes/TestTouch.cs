@@ -12,7 +12,7 @@ public class TestTouch : MonoBehaviour {
 
 	Quaternion originalRot;
 
-	ObjectTouchControl currentTc;
+	ARModel currentTc;
 	// Use this for initialization
 	void Start () {
 		originalRot = transform.localRotation;
@@ -21,13 +21,6 @@ public class TestTouch : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		CheckTouch ();
-//		TouchModeUpdate ();
-//		if (Input.touchCount == 1) {
-//			//Store input
-//			Touch fing = Input.GetTouch (0);
-//			Drag (fing, constraint);
-//		}
-//		processZoomAndRotate ();
 	}
 
 	void CheckTouch()
@@ -36,34 +29,34 @@ public class TestTouch : MonoBehaviour {
 			foreach (Touch touch in Input.touches) {
 				int id = touch.fingerId;
 				if (EventSystem.current.IsPointerOverGameObject (id)) {
-					if (currentTc != null)
-						currentTc.Selected = SelectState.Pause;
+					ResourceManager.Singleton.SetCurrentObjectState(SelectState.Pause);
 					return;
 				}
 			}
 
-			if (Input.GetTouch (0).phase == TouchPhase.Began) {
+			if (Input.touchCount == 1 && Input.GetTouch (0).phase == TouchPhase.Began) {
 				Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
 				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit)) {
 					GameObject touchedObject = hit.transform.gameObject;
 					if (touchedObject != null) {
-						currentTc = touchedObject.GetComponent<ObjectTouchControl> ();
-						currentTc.Selected = SelectState.Actived;
+						ResourceManager.Singleton.SetCurrentObject (touchedObject.GetComponent<ARModel> ());
+					} else {
+						ResourceManager.Singleton.SetCurrentObjectState (SelectState.None);
 					}
-					Debug.Log ("Touched " + touchedObject.transform.name);
 				}
+				Debug.Log ("Hide UI");
 			}
 		}
 	}
 
-	void click(Touch fing)
-	{
-		Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, 250);
-		Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);
-		pos1.z = transform.position.z;
-		transform.position = pos1;
-	}
+//	void click(Touch fing)
+//	{
+//		Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, 250);
+//		Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);
+//		pos1.z = transform.position.z;
+//		transform.position = pos1;
+//	}
 
 	void Drag(Touch fing, int constrainted)
 	{

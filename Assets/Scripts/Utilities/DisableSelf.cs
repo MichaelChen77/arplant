@@ -9,6 +9,7 @@ namespace IMAV
         public float duration = 1f;
         public void Open()
         {
+			gameObject.SetActive (true);
             Invoke("Close", duration);
         }
 

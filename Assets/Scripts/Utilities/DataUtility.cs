@@ -71,35 +71,24 @@ namespace IMAV
             return Application.persistentDataPath + "/ScreenShots/";
         }
 
-        public static void SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, int id, string _content)
+		public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, int id, string _content)
         {
             obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
             if (init)
             {
                 obj.layer = 8;
-                obj.transform.localScale = obj.transform.localScale * 100;
-                obj.transform.position = ResourceManager.Singleton.TrackPos;
-                Quaternion quat = obj.transform.rotation;
-                obj.transform.localRotation = quat;
-                //else {
-                //    GameObject arrow = GameObject.Find("Arrow");
-                //    Vector3 relativePoint = ResourceManager.Singleton.markerlessTransform.InverseTransformPoint(arrow.transform.localPosition.x, arrow.transform.localPosition.y, arrow.transform.localPosition.z);
-                //    obj.transform.localPosition = relativePoint;
-                //}
+                obj.transform.localScale = obj.transform.localScale * 200;
+				obj.transform.localPosition = Vector3.zero;
+				obj.transform.localRotation = Quaternion.identity;
+//                obj.transform.position = ResourceManager.Singleton.TrackPos;
+//                Quaternion quat = obj.transform.rotation;
+//                obj.transform.localRotation = quat;
 
-                MeshRenderer[] childRenders = obj.GetComponentsInChildren<MeshRenderer>();
-                if (childRenders != null)
-                {
-                    foreach (MeshRenderer mr in childRenders)
-                    {
-                        mr.gameObject.AddComponent<BoxCollider>();
-                    }
-                }
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
-                obj.AddComponent<ObjectTouchControl>();
-                Debug.Log("add2: " + obj.name + " ; " + init + " ; " + isLocal + " ; " + id + " ; " + _content);
+				return obj.AddComponent<ARModel>();
                 //ResourceManager.Singleton.SetDefaultSize(obj);
             }
+			return obj.GetComponent<ARModel>();
         }
     }
 }

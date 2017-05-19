@@ -813,12 +813,12 @@ namespace Kudan.AR
 		/// <summary>
 		/// Takes a screenshot of the camera feed and any projected objects, without any UI.
 		/// </summary>
-		public void takeScreenshot()
+		public void takeScreenshot(string path, System.Action<Texture2D> run)
 		{
-			StartCoroutine (Screenshot ());
+			StartCoroutine (Screenshot (path, run));
 		}
 		
-		IEnumerator Screenshot()
+		IEnumerator Screenshot(string filePath, System.Action<Texture2D> run)
 		{
 			List<GameObject> uiObjects = FindGameObjectsInUILayer ();
 
@@ -826,6 +826,9 @@ namespace Kudan.AR
 			{
 				uiObjects [i].SetActive (false);
 			}
+			BoundBoxes_drawLines boundlines = GetComponent<BoundBoxes_drawLines> ();
+			if (boundlines != null)
+				boundlines.enabled = false;
 
 			bool wasDebug = false;
 			if (_displayDebugGUI) 
@@ -845,7 +848,6 @@ namespace Kudan.AR
 
 			byte[] bytes = screen.EncodeToJPG ();
 
-			string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".jpg";
 			System.IO.File.WriteAllBytes (filePath, bytes);
 
 			Debug.Log ("Saved screenshot at: " + filePath);
@@ -854,6 +856,8 @@ namespace Kudan.AR
 			{
 				uiObjects [i].SetActive (true);
 			}
+			if (boundlines != null)
+				boundlines.enabled = true;
 
 			if (wasDebug) 
 			{
@@ -862,6 +866,8 @@ namespace Kudan.AR
 
 			GetComponent<Camera> ().targetTexture = null;
 			Destroy(RT);
+			if (run != null)
+				run (screen);
 		}
 
 		List<GameObject> FindGameObjectsInUILayer()

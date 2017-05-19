@@ -67,7 +67,6 @@ namespace IMAV
         public GameObject hlightPrefab;
         Shader oringin;
 
-        GameObject hightlightAuro;
         Vector3 trackPos;
         Quaternion trackRot;
         public Vector3 TrackPos {
@@ -79,8 +78,8 @@ namespace IMAV
             get { return trackRot; }
         }
 
-        GameObject currentObj;
-        public GameObject CurrentObject
+		ARModel currentObj;
+		public ARModel CurrentObject
         {
             get { return currentObj; }
         }
@@ -249,79 +248,25 @@ namespace IMAV
             }
         }
 
-        public void disableHighlight()
-        {
-            if (currentObj != null) {
-                DestroyImmediate(hightlightAuro);
-                hightlightAuro = null;
-                //if (currentObj.GetComponent<Renderer>() != null) {
-                //    currentObj.GetComponent<Renderer>().material.shader = oringin;
-                //} else {
-                //    for (int i = 1; i < currentObj.transform.childCount; ++i) {
-                //        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
-                //            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = oringin;
-                //        }
-                //    }
-                //}
-            }
-        }
-
-        public void highlightObject()
-        {
-            if (currentObj != null)
-            {
-                hightlightAuro = Instantiate(hlightPrefab);
-                hightlightAuro.transform.parent = currentObj.transform;
-                hightlightAuro.transform.localPosition = Vector3.zero;
-                hightlightAuro.transform.localScale = Vector3.one;
-                //if (currentObj.GetComponent<Renderer>() != null) {
-                //    oringin = currentObj.GetComponent<Renderer>().material.shader;
-                //    currentObj.GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                //} else {
-                //    if (currentObj.transform.GetChild(1).GetComponent<Renderer>() != null) {
-                //        oringin = currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader;
-                //        currentObj.transform.GetChild(1).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                //    }
-                //    for (int i = 2; i < currentObj.transform.childCount; ++i) {
-                //        if (currentObj.transform.GetChild(i).GetComponent<Renderer>() != null) {
-                //            currentObj.transform.GetChild(i).GetComponent<Renderer>().material.shader = Shader.Find("Outlined/Texture");
-                //        }
-                //    }
-                //}
-                
-            }
-        }
-
-		public void SetCurrentObject(GameObject obj, SelectState st = SelectState.Actived)
+		public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
 		{
 			if (currentObj != null) {
-				ObjectTouchControl otc = currentObj.GetComponent<ObjectTouchControl> ();
-				if (otc != null) {
-					if (currentObj == obj) {
-						otc.Selected = st;
-						return;
-					} else
-						otc.Selected = SelectState.None;
-					disableHighlight ();
-				}
+				if (currentObj == obj) {
+					currentObj.Selected = st;
+					return;
+				} else
+					currentObj.Selected = SelectState.None;
 			}
-			ObjectTouchControl tc = obj.GetComponent<ObjectTouchControl> ();
-			if (tc != null) {
-				tc.Selected = st;
-				currentObj = obj;
-				highlightObject ();
-			} else {
-				currentObj = null;
-			}
+			currentObj = obj;
+			if (currentObj != null)
+				currentObj.Selected = st;
 		}
 
 		public void SetCurrentObjectState(SelectState st)
 		{
 			if(currentObj != null)
 			{
-				ObjectTouchControl tc = currentObj.GetComponent<ObjectTouchControl> ();
-				if(tc != null)
-					tc.Selected = st;
+				currentObj.Selected = st;
 			}
 		}
 
@@ -342,7 +287,7 @@ namespace IMAV
 
         IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, int _id, string _content)
         {
-            objlist.Add(obj);
+			objlist.Add(obj);
             if (!marker && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
@@ -356,8 +301,8 @@ namespace IMAV
                     SceneObject sobj = obj.AddComponent<SceneObject>();
                     sobj.Init(_islocal, _id, _content);
                 }
-                DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
-				SetCurrentObject(obj);
+                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
+				SetCurrentObject(m);
                 ResetTouchMode();
             }
             catch (System.Exception ex)
@@ -375,12 +320,12 @@ namespace IMAV
             }
         }
 
-        GameObject storeObj = null;
+		ARModel storeObj = null;
         public void Pause()
         {
             if (currentObj != null) {
                 storeObj = currentObj;
-                currentObj.GetComponent<ObjectTouchControl>().enabled = false;
+				currentObj.Selected = SelectState.None;
                 currentObj = null;
             }
         }
@@ -390,27 +335,9 @@ namespace IMAV
             if (storeObj != null)
             {
                 currentObj = storeObj;
-                currentObj.GetComponent<ObjectTouchControl>().enabled = true;
+				currentObj.Selected = SelectState.Actived;
             }
         }
-
-        //public void StartMarkerlessTracker()
-        //{
-        //    ResetTouchMode();
-        //}
-
-        //	public void AddMarkerlessDriver()
-        //	{
-        //		GameObject obj = new GameObject ();
-        //		obj.name = "Markerless";
-        //		obj.tag = "Markerless";
-        //		obj.AddComponent<MarkerlessTransformDriver> ();
-        //		markerlessTransform = obj.transform;
-        //		if (!marker) {
-        //			_kudanTracker.StopTracking ();
-        //			_kudanTracker.StartTracking ();
-        //		}
-        //	}
 
         public void StartPlaceObject()
         {
@@ -421,27 +348,14 @@ namespace IMAV
             _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
         }
 
-        //	public void ReInit()
-        //	{
-        //		StartCoroutine (recreator ());
-        //	}
-        //
-        //IEnumerator recreator()
-        //{
-        //    yield return new WaitForSeconds(0.2f);
-        //    GameObject obj = new GameObject();
-        //    DataUtility.SetAsMarkerlessObject(obj, false, false, );
-        //    StartMarkerlessTracker();
-        //    yield return new WaitForSeconds(0.1f);
-        //    Destroy(obj);
-        //}
-
         public void Clear()
         {
             foreach (GameObject obj in objlist)
             {
                 DestroyImmediate(obj);
             }
+			BoundBoxes_drawLines camlines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
+			camlines.Reset ();
             objlist.Clear();
         }
 
@@ -452,20 +366,11 @@ namespace IMAV
             StartPlaceObject();
         }
 
-        //IEnumerator WaitToStartArbiTracking()
-        //{
-        //    DebugString("reset 0");
-        //    yield return new WaitWhile(_kudanTracker.ArbiTrackIsTracking);
-        //    yield return new WaitForEndOfFrame();
-        //    DebugString("reset 1");
-
-        //}
-
         public void DeleteCurrentObject()
         {
             if (currentObj != null) {
-                Destroy(currentObj);
-                objlist.Remove(currentObj);
+				currentObj.Delete ();
+				objlist.Remove(currentObj.gameObject);
                 currentObj = null;
             }
         }
