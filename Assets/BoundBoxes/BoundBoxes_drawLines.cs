@@ -21,7 +21,7 @@ public class BoundBoxes_drawLines : MonoBehaviour {
 		if(outlines==null) return;
 	    CreateLineMaterial();
 	    lineMaterial.SetPass(0);
-		GL.Begin( GL.LINE_STRIP );
+		GL.Begin( GL.LINES );
 		foreach(KeyValuePair<int, Color> c in colors)
 		{
 			GL.Color (c.Value);

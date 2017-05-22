@@ -140,7 +140,7 @@ namespace IMAV
                     orientation.w = arbiOrientation.Get<float>("w");
                 }
 				Vector3 rotation = orientation.eulerAngles;
-		#endif           
+		#endif   
 				float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime;
 				float positionChangeZ = this.transform.position.z + deltMoveZ;
 

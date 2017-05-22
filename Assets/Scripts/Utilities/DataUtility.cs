@@ -79,10 +79,9 @@ namespace IMAV
                 obj.layer = 8;
                 obj.transform.localScale = obj.transform.localScale * 200;
 				obj.transform.localPosition = Vector3.zero;
-				obj.transform.localRotation = Quaternion.identity;
 //                obj.transform.position = ResourceManager.Singleton.TrackPos;
-//                Quaternion quat = obj.transform.rotation;
-//                obj.transform.localRotation = quat;
+                Quaternion quat = obj.transform.rotation;
+                obj.transform.localRotation = quat;
 
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
 				return obj.AddComponent<ARModel>();

@@ -311,14 +311,14 @@ namespace IMAV
             }
         }
 
-        void OnApplicationPause(bool isPause)
-        {
-            if (isPause)
-            {
-                DebugString("pausing "+markerlessTransform.gameObject.activeSelf);
-                Reset();
-            }
-        }
+//        void OnApplicationPause(bool isPause)
+//        {
+//            if (isPause)
+//            {
+//                DebugString("pausing "+markerlessTransform.gameObject.activeSelf);
+//                Reset();
+//            }
+//        }
 
 		ARModel storeObj = null;
         public void Pause()
