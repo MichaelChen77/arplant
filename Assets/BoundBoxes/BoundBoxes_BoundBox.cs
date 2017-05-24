@@ -52,12 +52,12 @@ public class BoundBoxes_BoundBox : MonoBehaviour {
 	}
 	
 	public void init() { 
+		originalSize = transform.localScale.x;
+		cameralines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
+		calculateBounds ();
+		setPoints ();
+		setLines ();
 		if (cameralines != null) {
-			originalSize = transform.localScale.x;
-			cameralines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
-			calculateBounds ();
-			setPoints ();
-			setLines ();
 			if (lineID == 0)
 				lineID = cameralines.AddOutlines (lines, lineColor);
 			else

@@ -55,7 +55,7 @@ namespace IMAV
 				StartCoroutine(SetObjectState (model, SelectState.None));
 				selectedObj = roomObj.GetComponent<SceneObject>();
 				SceneObject s = DataUtility.CurrentObject.GetComponent<SceneObject> ();
-				selectedObj.SetTransform(s.OriginalScale, s.OriginalRotation);
+				selectedObj.SetTransform(s.OriginalScale*4f, s.OriginalRotation);
 				PutObjectOnFloor (roomObj.transform);
 				SetCamCtrl ();
             }
@@ -89,14 +89,9 @@ namespace IMAV
 
 		public void PutObjectOnFloor(Transform tran)
 		{
-			RaycastHit hit;
-			float dist = 0;
-			if (Physics.Raycast(tran.position, Vector3.down, out hit, LayerMask.NameToLayer("Room"))){
-				dist = hit.distance;
-				tran.localPosition = new Vector3 (0, dist, 0);
-			}
-			else
-				tran.localPosition = new Vector3(0, 1.4f, 0);
+			tran.localPosition = new Vector3 (0, 2, 0);
+			Rigidbody rg = tran.gameObject.AddComponent<Rigidbody> ();
+			rg.freezeRotation = true;
 		}
 
         public void SetNextLight()

@@ -77,7 +77,7 @@ namespace IMAV
             if (init)
             {
                 obj.layer = 8;
-                obj.transform.localScale = obj.transform.localScale * 200;
+                obj.transform.localScale = obj.transform.localScale * 100;
 				obj.transform.localPosition = Vector3.zero;
 //                obj.transform.position = ResourceManager.Singleton.TrackPos;
                 Quaternion quat = obj.transform.rotation;
