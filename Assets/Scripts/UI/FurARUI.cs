@@ -15,9 +15,9 @@ namespace IMAV.UI
         public SearchForm searchform;
         public Text markerHint;
         public CaptureAndSave snapShot;
-        public ToggleButton touchBtn;
+        //public ToggleButton touchBtn;
         public ToggleButton UIToggle;
-        public StatusButton constraintBtn;
+        //public StatusButton constraintBtn;
         public Button detailsBtn;
         public GameObject imageViewDlg;
         public ImageGallery imageGallery;
@@ -35,10 +35,10 @@ namespace IMAV.UI
         void Start()
         {
             try {
-                touchBtn.SetToggle(ResourceManager.Singleton.touchMove);
-                touchBtn.onToggleClick = SetTouchMove;
-                constraintBtn.SetStatus(ResourceManager.Singleton.constraintID);
-                constraintBtn.onButtonClick = SetConstraintMode;
+//                touchBtn.SetToggle(ResourceManager.Singleton.touchMove);
+//                touchBtn.onToggleClick = SetTouchMove;
+//                constraintBtn.SetStatus(ResourceManager.Singleton.constraintID);
+//                constraintBtn.onButtonClick = SetConstraintMode;
                 UIToggle.onToggleClick = ShowControlButtons;
                 ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
                 ResourceManager.Singleton.Reset();
@@ -102,8 +102,8 @@ namespace IMAV.UI
         void SetTouchMove(bool flag)
         {
             ResourceManager.Singleton.touchMove = flag;
-            constraintBtn.Switch(flag);
-            constraintBtn.SetStatus(0);
+//            constraintBtn.Switch(flag);
+//            constraintBtn.SetStatus(0);
             ResourceManager.Singleton.constraintID = 0;
         }
 

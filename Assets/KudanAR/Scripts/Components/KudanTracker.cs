@@ -338,6 +338,7 @@ namespace Kudan.AR
 			if (_startOnEnable)
 			{
 				StartTracking();
+				Debug.Log ("Start tracking");
 			}
 		}
 
@@ -348,6 +349,7 @@ namespace Kudan.AR
 		void OnDisable()
 		{
 			StopTracking();
+			Debug.Log ("Stop tracking");
 		}
 
 		/// <summary>
@@ -362,9 +364,8 @@ namespace Kudan.AR
 		/// <param name="focusStatus">True if the app has gained focus, false if it has lost focus.</param>
 		void OnApplicationFocus(bool focusStatus)
 		{
-			if (_trackerPlugin != null)
-			{
-				_trackerPlugin.OnApplicationFocus(focusStatus);
+			if (_trackerPlugin != null) {
+				_trackerPlugin.OnApplicationFocus (focusStatus);
 			}
 		}
 

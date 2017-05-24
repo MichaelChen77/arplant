@@ -203,8 +203,8 @@ namespace IMAV
         {
             touchMove = true;
             constraintID = 0;
-            appui.touchBtn.SetToggle(touchMove);
-            appui.constraintBtn.SetStatus(constraintID);
+            //appui.touchBtn.SetToggle(touchMove);
+            //appui.constraintBtn.SetStatus(constraintID);
         }
 
         public void SetDefaultSize(GameObject obj)
@@ -343,7 +343,7 @@ namespace IMAV
         {
             Vector3 floorPosition;          // The current position in 3D space of the floor
             Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
-
+			Debug.Log("start place object");
             _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
             _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
         }
@@ -363,6 +363,7 @@ namespace IMAV
         {
             Clear();
             ResetTouchMode();
+			Debug.Log ("Reset");
             StartPlaceObject();
         }
 

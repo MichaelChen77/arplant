@@ -26,7 +26,7 @@ namespace IMAV
         {
             get { return selectedObj; }
         }
-        SceneObject dragObj;
+		GameObject roomObj;
         int lightIndex = 0;
 
         void Awake()
@@ -43,23 +43,54 @@ namespace IMAV
 
         void Start()
         {
-            GameObject obj = null;
-            if (DataUtility.CurrentObject != null)
-                obj = Instantiate(DataUtility.CurrentObject);
-            if (obj != null)
+			if (DataUtility.CurrentObject != null) {
+				roomObj = Instantiate (DataUtility.CurrentObject);
+				DataUtility.CurrentObject.SetActive (false);
+			}
+			if (roomObj != null)
             {
-                obj.SetActive(true);
-                DestroyImmediate(obj.GetComponent<ObjectTouchControl>());
-                obj.transform.parent = room;
-                selectedObj = obj.GetComponent<SceneObject>();
-                selectedObj.transform.localPosition = new Vector3(0, 1.4f, 0);
+				roomObj.SetActive(true);
+				ARModel model = roomObj.GetComponent<ARModel> ();
+				model.Selected = SelectState.None;
+				roomObj.transform.parent = room;
+				selectedObj = roomObj.GetComponent<SceneObject>();
+				PutObjectOnFloor (roomObj.transform);
                 selectedObj.ResumeTransform();
-                camCtrl.SetorbitDistance();
+				SetCamCtrl ();
             }
             GameObject lobj = lights.GetCurrentObject();
             if (lobj != null)
                 lightText.text = lobj.name;
         }
+
+		public void SetCamCtrl()
+		{
+			if (camCtrl.orbitPivot == null) {
+				camCtrl.orbitPivot = roomObj.transform;
+				camCtrl.SetorbitDistance ();
+			} else {
+				camCtrl.orbitPivot = null;
+			}
+		}
+
+		public void SetCamLight()
+		{
+			Light l = camCtrl.GetComponentInChildren<Light> ();
+			if (l != null)
+				l.enabled = !l.enabled;
+		}
+
+		public void PutObjectOnFloor(Transform tran)
+		{
+			RaycastHit hit;
+			float dist = 0;
+			if (Physics.Raycast(tran.position, Vector3.down, out hit, LayerMask.NameToLayer("Room"))){
+				dist = hit.distance;
+				tran.localPosition = new Vector3 (0, dist, 0);
+			}
+			else
+				tran.localPosition = new Vector3(0, 1.4f, 0);
+		}
 
         public void SetNextLight()
         {
@@ -77,15 +108,15 @@ namespace IMAV
 
         public void GoToMainScene()
         {
-//            if(selectedObj.materialID != -1)
-//            {
-//                DataUtility.CurrentObject.SetActive(true);
-//                SceneObject obj = DataUtility.CurrentObject.GetComponent<SceneObject>();
-//                if(obj != null)
-//                {
-//                    obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
-//                }
-//            }
+            if(selectedObj.materialID != -1)
+            {
+                DataUtility.CurrentObject.SetActive(true);
+                SceneObject obj = DataUtility.CurrentObject.GetComponent<SceneObject>();
+                if(obj != null)
+                {
+                    obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
+                }
+            }
             SceneManager.LoadScene("ARScene");
         }
 
