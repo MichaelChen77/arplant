@@ -28,16 +28,24 @@ public class SceneObject : MonoBehaviour {
 
     [SerializeField]
     Vector3 originScale = Vector3.one;
+	public Vector3 OriginalScale
+	{
+		get{ return originScale; }
+	}
     [SerializeField]
     Quaternion originRotation = Quaternion.identity;
+	public Quaternion OriginalRotation
+	{
+		get{ return originRotation; }
+	}
 
     public void Init(bool _islocal, int _id, string str)
-    {
+	{
         id = _id;
         isLocal = _islocal;
         localID = str;
         InitObject();
-        InitCollider();
+        //InitCollider();
     }
 
     public void ResumeTransform()
@@ -45,6 +53,14 @@ public class SceneObject : MonoBehaviour {
         transform.localScale = originScale;
         transform.localRotation = originRotation;
     }
+
+	public void SetTransform(Vector3 _scale, Quaternion _rot)
+	{
+		originScale = _scale;
+		originRotation = _rot;
+		transform.localScale = originScale;
+		transform.localRotation = originRotation;
+	}
 
     public string ToDataString()
     {

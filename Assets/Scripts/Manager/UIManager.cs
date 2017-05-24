@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace IMAV
 {
@@ -20,7 +21,6 @@ namespace IMAV
             }
         }
 
-        //public SceneObject tempobj;
         SceneObject selectedObj;
         public SceneObject SelectedObj
         {
@@ -32,7 +32,7 @@ namespace IMAV
         void Awake()
         {
             if (mSingleton)
-            {
+			{
                 Destroy(gameObject);
             }
             else
@@ -49,19 +49,26 @@ namespace IMAV
 			}
 			if (roomObj != null)
             {
+				roomObj.transform.parent = room;
 				roomObj.SetActive(true);
 				ARModel model = roomObj.GetComponent<ARModel> ();
-				model.Selected = SelectState.None;
-				roomObj.transform.parent = room;
+				StartCoroutine(SetObjectState (model, SelectState.None));
 				selectedObj = roomObj.GetComponent<SceneObject>();
+				SceneObject s = DataUtility.CurrentObject.GetComponent<SceneObject> ();
+				selectedObj.SetTransform(s.OriginalScale, s.OriginalRotation);
 				PutObjectOnFloor (roomObj.transform);
-                selectedObj.ResumeTransform();
 				SetCamCtrl ();
             }
             GameObject lobj = lights.GetCurrentObject();
             if (lobj != null)
                 lightText.text = lobj.name;
         }
+
+		IEnumerator SetObjectState(ARModel mo, SelectState _state)
+		{
+			yield return new WaitForEndOfFrame ();
+			mo.Selected = _state;
+		}
 
 		public void SetCamCtrl()
 		{

@@ -51,24 +51,27 @@ public class BoundBoxes_BoundBox : MonoBehaviour {
 		}
 	}
 	
-	public void init() {
-		originalSize = transform.localScale.x;
-		cameralines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
-		calculateBounds ();
-		setPoints ();
-		setLines ();
-		if (lineID == 0)
-			lineID = cameralines.AddOutlines (lines, lineColor);
-		else
-			cameralines.SetOutlines (lineID, lines, lineColor);
+	public void init() { 
+		if (cameralines != null) {
+			originalSize = transform.localScale.x;
+			cameralines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
+			calculateBounds ();
+			setPoints ();
+			setLines ();
+			if (lineID == 0)
+				lineID = cameralines.AddOutlines (lines, lineColor);
+			else
+				cameralines.SetOutlines (lineID, lines, lineColor);
+		}
 	}
 
 	void LateUpdate()
 	{
 		UpdateTransform ();
-		setPoints();
-		setLines();
-		cameralines.SetOutlines(lineID, lines,lineColor);
+		setPoints ();
+		setLines ();
+		if (cameralines != null)
+			cameralines.SetOutlines (lineID, lines, lineColor);
 	}
 	
 	public void calculateBounds() {
