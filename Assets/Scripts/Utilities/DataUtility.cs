@@ -85,7 +85,6 @@ namespace IMAV
 
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
 				return obj.AddComponent<ARModel>();
-                //ResourceManager.Singleton.SetDefaultSize(obj);
             }
 			return obj.GetComponent<ARModel>();
         }

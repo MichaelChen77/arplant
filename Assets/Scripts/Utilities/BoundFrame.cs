@@ -35,6 +35,22 @@ namespace IMAV.UI
         GameObject target;
         private Renderer[] renderers;
 
+        public void CloseShadowCast()
+        {
+            MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
+            if (renders != null)
+            {
+                foreach (MeshRenderer mr in renders)
+                {
+                    if (mr.name != "Plane")
+                    {
+                        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                        mr.receiveShadows = false;
+                    }
+                }
+            }
+        }
+
         public void SetObject(GameObject obj)
         {
             target = obj;
@@ -103,12 +119,13 @@ namespace IMAV.UI
             scalelines();
         }
 
-        void scaleline(Transform tran, float _x)
+        void scaleline(Transform tran, float _x1, float _x2)
         {
-            if (_x > 7)
+            float f = _x1 - _x2 - 13;
+            if (f > 0)
             {
                 tran.gameObject.SetActive(true);
-                tran.localScale = new Vector3(1, _x - 7, 1);
+                tran.localScale = new Vector3(1, f * 0.5f, 1);
             }
             else
                 tran.gameObject.SetActive(false);
@@ -116,20 +133,22 @@ namespace IMAV.UI
 
         void scalelines()
         {
-            scaleline(frontTop, topFrontRight.localPosition.x);
-            scaleline(frontBottom, topFrontRight.localPosition.x);
-            scaleline(frontLeft, topFrontRight.localPosition.y);
-            scaleline(frontRight, topFrontRight.localPosition.y);
-            scaleline(backTop, topBackRight.localPosition.x);
-            scaleline(backBottom, topBackRight.localPosition.x);
-            scaleline(backLeft, topBackRight.localPosition.y);
-            scaleline(backRight, topBackRight.localPosition.y);
-            scaleline(midTopLeft, topFrontRight.localPosition.z);
-            scaleline(midTopRight, topFrontRight.localPosition.z);
-            scaleline(midBottomLeft, topFrontRight.localPosition.z);
-            scaleline(midBottomRight, topFrontRight.localPosition.z);
+            scaleline(frontTop, topFrontRight.localPosition.x, topFrontLeft.localPosition.x);
+            scaleline(frontBottom, bottomFrontRight.localPosition.x, bottomFrontLeft.localPosition.x);
+            scaleline(frontLeft, topFrontLeft.localPosition.y, bottomFrontLeft.localPosition.y);
+            scaleline(frontRight, topFrontRight.localPosition.y, bottomFrontRight.localPosition.y);
+            scaleline(backTop, topBackRight.localPosition.x, topBackLeft.localPosition.x);
+            scaleline(backBottom, bottomBackRight.localPosition.x, bottomBackLeft.localPosition.x);
+            scaleline(backLeft, topBackLeft.localPosition.y, bottomBackLeft.localPosition.y);
+            scaleline(backRight, topBackRight.localPosition.y, bottomBackRight.localPosition.y);
+            scaleline(midTopLeft, topFrontLeft.localPosition.z, topBackLeft.localPosition.z);
+            scaleline(midTopRight, topFrontRight.localPosition.z, topBackRight.localPosition.z);
+            scaleline(midBottomLeft, bottomFrontLeft.localPosition.z, bottomBackRight.localPosition.z);
+            scaleline(midBottomRight, bottomFrontRight.localPosition.z, bottomBackRight.localPosition.z);
 
-            bottomPlane.localScale = new Vector3(topBackRight.localPosition.x, 1, topBackRight.localPosition.y);
+            float _x = topBackRight.localPosition.x - topBackLeft.localPosition.x;
+            float _y = topBackLeft.localPosition.y - bottomBackLeft.localPosition.y;
+            bottomPlane.localScale = new Vector3(_x*0.5f, 1, _y*0.5f);
         }
 
         void refresh()

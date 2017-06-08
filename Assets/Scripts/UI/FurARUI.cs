@@ -176,7 +176,7 @@ namespace IMAV.UI
                     tran.gameObject.SetActive(false);
                 }
 
-                SceneManager.LoadSceneAsync("VRRoom");
+                SceneManager.LoadScene("VRRoom");
             }
         }
 

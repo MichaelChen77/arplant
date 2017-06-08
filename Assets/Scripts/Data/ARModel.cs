@@ -40,7 +40,20 @@ namespace IMAV
 			if (touchCtrl == null)
 				touchCtrl = gameObject.AddComponent<ObjectTouchControl> ();
 			touchCtrl.Init (this);
+            CloseShadowCast();
 		}
+
+        public void CloseShadowCast()
+        {
+            MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
+            if (renders != null)
+            {
+                foreach (MeshRenderer mr in renders)
+                {
+                    mr.receiveShadows = false;
+                }
+            }
+        }
 
 		public void Delete()
 		{
