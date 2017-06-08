@@ -265,20 +265,27 @@ namespace IMAV
             }
         }
 
-		public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
-		{
-			if (currentObj != null) {
-				if (currentObj == obj) {
-					currentObj.Selected = st;
-					return;
-				} else
-					currentObj.Selected = SelectState.None;
-			}
-			currentObj = obj;
-            frame.SetObject(currentObj.gameObject);
-			if (currentObj != null)
-				currentObj.Selected = st;
-		}
+        public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
+        {
+            if (currentObj != null)
+            {
+                if (currentObj == obj)
+                {
+                    currentObj.Selected = st;
+                    return;
+                }
+                else
+                    currentObj.Selected = SelectState.None;
+            }
+            currentObj = obj;
+            if (currentObj != null)
+            {
+                currentObj.Selected = st;
+                frame.SetObject(currentObj.gameObject);
+            }
+            else
+                frame.SetObject(null);
+        }
 
 		public void SetCurrentObjectState(SelectState st)
 		{
@@ -360,6 +367,7 @@ namespace IMAV
 
         public void Clear()
         {
+            SetCurrentObject(null);
             foreach (GameObject obj in objlist)
             {
                 DestroyImmediate(obj);
@@ -385,9 +393,10 @@ namespace IMAV
         public void DeleteCurrentObject()
         {
             if (currentObj != null) {
-				currentObj.Delete ();
+                currentObj.Delete ();
 				objlist.Remove(currentObj.gameObject);
                 currentObj = null;
+                SetCurrentObject(null);
             }
         }
 

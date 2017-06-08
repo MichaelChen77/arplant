@@ -38,7 +38,7 @@ namespace IMAV
 		/// </summary>
 		Vector3 originalPos;
 
-		BoundBoxes_BoundBox boundbox;
+		//BoundBoxes_BoundBox boundbox;
 		ARModel target;
 		bool startDrag = false;
 
@@ -48,10 +48,10 @@ namespace IMAV
 		public void Init(ARModel model)
 		{
 			SaveTransform ();
-			boundbox = GetComponent<BoundBoxes_BoundBox> ();
-			if (boundbox == null)
-				boundbox = gameObject.AddComponent<BoundBoxes_BoundBox> ();
-			boundbox.init ();
+			//boundbox = GetComponent<BoundBoxes_BoundBox> ();
+			//if (boundbox == null)
+			//	boundbox = gameObject.AddComponent<BoundBoxes_BoundBox> ();
+			//boundbox.init ();
 			target = model;
 		}
 
@@ -174,18 +174,18 @@ namespace IMAV
 		public void SetActive(bool flag)
 		{
 			this.enabled = flag;
-			if (flag)
-				boundbox.init ();
-			else
-				boundbox.Delete ();
+			//if (flag)
+			//	boundbox.init ();
+			//else
+			//	boundbox.Delete ();
 			if (Input.touchCount == 1)
 				startDrag = flag;
-			boundbox.enabled = flag;
+			//boundbox.enabled = flag;
 		}
 
 		public void Delete()
 		{
-			boundbox.Delete ();
+			//boundbox.Delete ();
 		}
     }
 }

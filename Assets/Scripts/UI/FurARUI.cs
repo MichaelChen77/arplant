@@ -89,7 +89,7 @@ namespace IMAV.UI
 		void HideUI()
 		{
 			furform.Close ();
-		}
+        }
 
         void SetTouchMove(bool flag)
         {
@@ -178,6 +178,11 @@ namespace IMAV.UI
 
                 SceneManager.LoadSceneAsync("VRRoom");
             }
+        }
+
+        public void GotoHomeScene()
+        {
+            SceneManager.LoadSceneAsync("Start");
         }
 
         IEnumerator resetObject()
