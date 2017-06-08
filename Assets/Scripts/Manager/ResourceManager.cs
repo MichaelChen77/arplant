@@ -47,11 +47,17 @@ public class ResObject
     }
 }
 
+public enum VirtualMode
+{
+    Markerless, Marker, Placement
+}
+
 namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
         public FurCategory[] FurCategories;
         public FurARUI appui;
+        public BoundFrame frame;
         public DebugView debugview;
         public bool marker = true;
         public KudanTracker _kudanTracker;
@@ -64,7 +70,12 @@ namespace IMAV
         public float defaultMaxSize;
         public bool touchMove = true;
         public int constraintID = 0;
-        public GameObject hlightPrefab;
+        VirtualMode vMode = VirtualMode.Markerless;
+        public VirtualMode VMode
+        {
+            get { return vMode; }
+        }
+        //public GameObject hlightPrefab;
         Shader oringin;
 
         Vector3 trackPos;
@@ -148,6 +159,14 @@ namespace IMAV
             }
         }
 
+        public void SetPlacementMode(bool flag)
+        {
+            if (flag)
+                vMode = VirtualMode.Placement;
+            else
+                vMode = VirtualMode.Markerless;
+        }
+
         public void DebugString(string str)
         {
             if (debugview != null)
@@ -203,8 +222,6 @@ namespace IMAV
         {
             touchMove = true;
             constraintID = 0;
-            //appui.touchBtn.SetToggle(touchMove);
-            //appui.constraintBtn.SetStatus(constraintID);
         }
 
         public void SetDefaultSize(GameObject obj)
@@ -258,6 +275,7 @@ namespace IMAV
 					currentObj.Selected = SelectState.None;
 			}
 			currentObj = obj;
+            frame.SetObject(currentObj.gameObject);
 			if (currentObj != null)
 				currentObj.Selected = st;
 		}
@@ -302,23 +320,16 @@ namespace IMAV
                     sobj.Init(_islocal, _id, _content);
                 }
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
-				SetCurrentObject(m);
+                SetCurrentObject(m);
                 ResetTouchMode();
+                if (vMode == VirtualMode.Placement)
+                    _kudanTracker.ArbiTrackStop();
             }
             catch (System.Exception ex)
             {
                 DebugString("error: " + ex.Message);
             }
         }
-
-//        void OnApplicationPause(bool isPause)
-//        {
-//            if (isPause)
-//            {
-//                DebugString("pausing "+markerlessTransform.gameObject.activeSelf);
-//                Reset();
-//            }
-//        }
 
 		ARModel storeObj = null;
         public void Pause()
@@ -343,7 +354,6 @@ namespace IMAV
         {
             Vector3 floorPosition;          // The current position in 3D space of the floor
             Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
-			Debug.Log("start place object");
             _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
             _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
         }
@@ -363,8 +373,13 @@ namespace IMAV
         {
             Clear();
             ResetTouchMode();
-			Debug.Log ("Reset");
             StartPlaceObject();
+        }
+
+        public void Quit()
+        {
+            AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
+            cls.Call("goToActivity");
         }
 
         public void DeleteCurrentObject()

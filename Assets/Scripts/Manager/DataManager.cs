@@ -249,6 +249,11 @@ namespace IMAV
             }
         }
 
+        public void LoadModelData(string id)
+        {
+            Debug.Log("load model " + id);
+        }
+
         public void DownloadModelCallback(int _id, UnityEngine.Object[] content)
         {
             try
