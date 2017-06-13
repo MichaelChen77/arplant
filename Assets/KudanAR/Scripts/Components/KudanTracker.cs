@@ -827,9 +827,6 @@ namespace Kudan.AR
 			{
 				uiObjects [i].SetActive (false);
 			}
-			BoundBoxes_drawLines boundlines = GetComponent<BoundBoxes_drawLines> ();
-			if (boundlines != null)
-				boundlines.enabled = false;
 
 			bool wasDebug = false;
 			if (_displayDebugGUI) 
@@ -857,8 +854,6 @@ namespace Kudan.AR
 			{
 				uiObjects [i].SetActive (true);
 			}
-			if (boundlines != null)
-				boundlines.enabled = true;
 
 			if (wasDebug) 
 			{

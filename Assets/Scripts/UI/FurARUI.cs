@@ -21,19 +21,28 @@ namespace IMAV.UI
         public Animator ctrlBtnPanelAnim;
         public TargetNode targetNode;
 		public DisableSelf imageSaved;
+        public GToggleButton markerlessBtn;
+        public GToggleButton placementBtn;
 
-        public void Init(ToggleButton markerBtn)
-        {
-            markerBtn.SetToggle(ResourceManager.Singleton.marker);
-            if (markerBtn.onToggleClick == null)
-                markerBtn.onToggleClick = DoAfterSetMarker;
-        }
+
+        //public void Init(ToggleButton markerBtn)
+        //{
+        //    markerBtn.SetToggle(ResourceManager.Singleton.marker);
+        //    if (markerBtn.onToggleClick == null)
+        //        markerBtn.onToggleClick = DoAfterSetMarker;
+        //}
+
+        //void DoAfterSetMarker(bool flag)
+        //{
+        //    ResourceManager.Singleton.SetMarker(flag);
+        //    SetMarkerHint();
+        //}
 
         void Start()
         {
             try {
-                ResourceManager.Singleton.SetMarker(ResourceManager.Singleton.marker);
                 ResourceManager.Singleton.Reset();
+                SetVirtualMode(DataUtility.VirtualModeInt, false);
                 StartCoroutine(resetObject());
             }
             catch(System.Exception ex)
@@ -42,14 +51,36 @@ namespace IMAV.UI
             }
         }
 
+        public void SetVirtualMode(int m)
+        {
+            SetVirtualMode(m, true);
+        }
+
+        public void SetVirtualMode(int m, bool showHint)
+        {
+            if (System.Enum.IsDefined(typeof(VirtualMode), m))
+            {
+                DataUtility.VirtualModeInt = m;
+                VirtualMode vm = (VirtualMode)m;
+                if (vm == VirtualMode.Markerless)
+                {
+                    markerlessBtn.setTrigger(true);
+                    placementBtn.setTrigger(false);
+                }
+                else if (vm == VirtualMode.Placement)
+                {
+                    markerlessBtn.setTrigger(false);
+                    placementBtn.setTrigger(true);
+                }
+                ResourceManager.Singleton.SetVirtualMode(vm);
+                if (showHint)
+                    SetMarkerHint();
+            }
+        }
+
         public void ShowControlButtons(bool flag)
         {
             ctrlBtnPanelAnim.SetBool("Show", flag);
-        }
-
-        public void ShowMarlessArrow()
-        {
-            //targetNode.targetAwaysOn = !targetNode.targetAwaysOn;
         }
 
         void Update()
@@ -138,19 +169,15 @@ namespace IMAV.UI
             imageGallery.Open();
         }
 
-        void DoAfterSetMarker(bool flag)
-        {
-            ResourceManager.Singleton.SetMarker(flag);
-            SetMarkerHint();
-        }
-
         void SetMarkerHint()
         {
             markerHint.gameObject.SetActive(true);
-            if (ResourceManager.Singleton.marker)
-                markerHint.text = "Marker On";
-            else
-                markerHint.text = "Marker Off";
+            if (ResourceManager.Singleton.VMode == VirtualMode.Marker)
+                markerHint.text = "AR Mode Marker On";
+            else if(ResourceManager.Singleton.VMode == VirtualMode.Markerless)
+                markerHint.text = "AR Mode Marker Off";
+            else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
+                markerHint.text = "Simple Placement Mode";
             StartCoroutine(closeHint());
         }
 
@@ -180,6 +207,11 @@ namespace IMAV.UI
             }
         }
 
+        public void TestMode()
+        {
+            SceneManager.LoadSceneAsync("VRRoom");
+        }
+
         public void GotoHomeScene()
         {
             SceneManager.LoadSceneAsync("Start");
@@ -187,8 +219,10 @@ namespace IMAV.UI
 
         IEnumerator resetObject()
         {
-            if (!ResourceManager.Singleton.marker && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+            if (ResourceManager.Singleton.VMode == VirtualMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+            {
                 yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+            }
             yield return new WaitForSeconds(1f);
             List<Transform> temp = new List<Transform>();
             ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);

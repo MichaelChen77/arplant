@@ -148,7 +148,7 @@ namespace IMAV.UI
 
             float _x = topBackRight.localPosition.x - topBackLeft.localPosition.x;
             float _y = topBackLeft.localPosition.y - bottomBackLeft.localPosition.y;
-            bottomPlane.localScale = new Vector3(_x*0.5f, 1, _y*0.5f);
+            bottomPlane.localScale = new Vector3(_x*0.1f, 1, _y*0.1f);
         }
 
         void refresh()

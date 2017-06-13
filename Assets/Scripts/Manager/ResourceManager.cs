@@ -59,7 +59,7 @@ namespace IMAV
         public FurARUI appui;
         public BoundFrame frame;
         public DebugView debugview;
-        public bool marker = true;
+        //public bool marker = true;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
         public TrackingMethodMarkerless _markerlessTracking;
@@ -75,9 +75,6 @@ namespace IMAV
         {
             get { return vMode; }
         }
-        //public GameObject hlightPrefab;
-        Shader oringin;
-
         Vector3 trackPos;
         Quaternion trackRot;
         public Vector3 TrackPos {
@@ -159,12 +156,23 @@ namespace IMAV
             }
         }
 
-        public void SetPlacementMode(bool flag)
+        public void SetVirtualMode(VirtualMode flag)
         {
-            if (flag)
-                vMode = VirtualMode.Placement;
-            else
-                vMode = VirtualMode.Markerless;
+            vMode = flag;
+            if (vMode == VirtualMode.Placement)
+            {
+                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
+                _kudanTracker.ArbiTrackStop();
+            }
+            else if(vMode == VirtualMode.Markerless)
+            {
+                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
+                StartPlaceObject();
+            }
+            else if(vMode == VirtualMode.Marker)
+            {
+                _kudanTracker.ChangeTrackingMethod(_markerTracking);
+            }
         }
 
         public void DebugString(string str)
@@ -254,17 +262,6 @@ namespace IMAV
             }
         }
 
-        public void SetMarker(bool flag)
-        {
-            marker = flag;
-            if (marker) {
-                _kudanTracker.ChangeTrackingMethod(_markerTracking);
-            }
-            else {
-                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
-            }
-        }
-
         public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
         {
             if (currentObj != null)
@@ -313,7 +310,7 @@ namespace IMAV
         IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, int _id, string _content)
         {
 			objlist.Add(obj);
-            if (!marker && !_kudanTracker.ArbiTrackIsTracking())
+            if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
@@ -329,8 +326,6 @@ namespace IMAV
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
                 SetCurrentObject(m);
                 ResetTouchMode();
-                if (vMode == VirtualMode.Placement)
-                    _kudanTracker.ArbiTrackStop();
             }
             catch (System.Exception ex)
             {
@@ -372,8 +367,6 @@ namespace IMAV
             {
                 DestroyImmediate(obj);
             }
-			BoundBoxes_drawLines camlines = Camera.main.GetComponent<BoundBoxes_drawLines> ();
-			camlines.Reset ();
             objlist.Clear();
         }
 
@@ -381,7 +374,7 @@ namespace IMAV
         {
             Clear();
             ResetTouchMode();
-            StartPlaceObject();
+            //StartPlaceObject();
         }
 
         public void Quit()

@@ -83,7 +83,7 @@ namespace IMAV.UI
         public void Open()
         {
             gameObject.SetActive(true);
-            appUI.Init(markerBtn);
+            //appUI.Init(markerBtn);
         }
 
         public void Close()

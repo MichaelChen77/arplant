@@ -5,10 +5,9 @@ namespace IMAV
 {
     public class DataUtility
     {
-
-        public static bool firstobject = true;
         public static GameObject CurrentObject = null;
         public static DontDestroy dontdestroy = null;
+        public static int VirtualModeInt = 0;
         public static bool WorkOnLocal = false;
 
         public static Sprite CreateSprit(byte[] bytes)
@@ -78,10 +77,18 @@ namespace IMAV
             {
                 obj.layer = 8;
                 obj.transform.localScale = obj.transform.localScale * 100;
-				obj.transform.localPosition = Vector3.zero;
-//                obj.transform.position = ResourceManager.Singleton.TrackPos;
-                Quaternion quat = obj.transform.rotation;
-                obj.transform.localRotation = quat;
+                if (ResourceManager.Singleton.VMode == VirtualMode.Markerless)
+                {
+                    obj.transform.localPosition = Vector3.zero;
+                    Quaternion quat = obj.transform.rotation;
+                    obj.transform.localRotation = quat;
+                }
+                else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
+                {
+                    obj.transform.position = ResourceManager.Singleton.TrackPos;
+                    Quaternion quat = obj.transform.rotation;
+                    obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
+                }
 
                 ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
 				return obj.AddComponent<ARModel>();

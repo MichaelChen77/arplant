@@ -8,6 +8,11 @@ public class DebugView : MonoBehaviour {
     public Text debugText;
     public RectTransform content;
 
+    public void Open()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
+
     public void AppendText(string str)
     {
         debugText.text += str;

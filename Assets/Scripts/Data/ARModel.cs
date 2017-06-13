@@ -33,6 +33,18 @@ namespace IMAV
 		void Start()
 		{
 			Init ();
+            //BoxCollider box = GetComponent<BoxCollider>();
+            //if(box != null)
+            //{
+            //    GameObject plane = Instantiate(Resources.Load("ShadowPlane", typeof(GameObject))) as GameObject;
+            //    if (plane != null)
+            //    {
+            //        plane.transform.parent = transform;
+            //        Vector3 boundDiff = box.bounds.center - transform.position;
+            //        plane.transform.localPosition = transform.rotation * boundDiff + transform.rotation * Vector3.Scale(box.bounds.extents, new Vector3(0, 0, -1));
+            //        plane.transform.localScale = new Vector3(box.bounds.extents.x * 0.2f, 1, box.bounds.extents.y * 0.1f);
+            //    }
+            //}
 		}
 
 		void Init () {
