@@ -95,58 +95,58 @@ public class MainCamCtrl : MonoBehaviour {
     Vector2 deltaVec = Vector2.zero;
     void FreeCam()
     {
-        if (Input.touchCount == 1)
+        //if (Input.touchCount == 1)
+        //{
+        //    Touch fing1 = Input.GetTouch(0);
+        //    if (fing1.phase == TouchPhase.Moved)
+        //    {
+        //        deltaVec = fing1.deltaPosition * 0.1f;
+        //        orbitCamera();
+        //    }
+        //}
+        //processZoom();
+
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            Touch fing1 = Input.GetTouch(0);
-            if (fing1.phase == TouchPhase.Moved)
+            if (orbitPivot != null && useOCD)
+                camTargetDistance = Vector3.Distance(orbitPivot.position, transform.position);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        {
+            shiftUpSpeed();
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        {
+            shiftDownSpeed();
+        }
+        if (Input.GetMouseButton(0))
+        {
+            if (Input.GetKey(KeyCode.LeftAlt))
             {
-                deltaVec = fing1.deltaPosition * 0.1f;
                 orbitCamera();
             }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                dragCamera();
+            }
         }
-        processZoom();
-
-                //if (Input.GetKeyDown(KeyCode.LeftAlt))
-                //{
-                //    if (orbitPivot != null && useOCD)
-                //        camTargetDistance = Vector3.Distance(orbitPivot.position, transform.position);
-                //}
-                //if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-                //{
-                //    shiftUpSpeed();
-                //}
-                //if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
-                //{
-                //    shiftDownSpeed();
-                //}
-                //if (Input.GetMouseButton(0))
-                //{
-                //    if (Input.GetKey(KeyCode.LeftAlt))
-                //    {
-                //        orbitCamera();
-                //    }
-                //    else if (Input.GetKey(KeyCode.LeftControl))
-                //    {
-                //        dragCamera();
-                //    }
-                //}
-                //if (Input.GetMouseButton(1))
-                //{
-                //    if (Input.GetKey(KeyCode.LeftAlt))
-                //    {
-                //        zoomCamera();
-                //    }
-                //    else
-                //    {
-                //        rotatAndFlyCamera();
-                //    }
-                //}
-                //updateCursor();
-                //if(Input.GetMouseButtonUp(0)||Input.GetMouseButtonUp(1))
-                //{
-                //    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-                //}
-                moveCamera();
+        if (Input.GetMouseButton(1))
+        {
+            if (Input.GetKey(KeyCode.LeftAlt))
+            {
+                zoomCamera();
+            }
+            else
+            {
+                rotatAndFlyCamera();
+            }
+        }
+        updateCursor();
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+        moveCamera();
         transform.position = transform.position + transform.forward * Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * camZoomSpeed*30f;
     }
 

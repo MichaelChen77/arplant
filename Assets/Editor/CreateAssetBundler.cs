@@ -3,13 +3,25 @@ using UnityEngine;
 
 public class CreateAssetBundler{
 
-    [UnityEditor.MenuItem("Assets/Build AssetBundles")]
-    static void BuildAllAssetBundles()
+    [UnityEditor.MenuItem("AssetsBundle/Build AssetBundles - Win")]
+    static void BuildStandaloneAssetBundles()
     {
-        BuildPipeline.BuildAssetBundles("Assets/AssetBundles", BuildAssetBundleOptions.DeterministicAssetBundle, BuildTarget.StandaloneWindows64);
+        BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Win", BuildAssetBundleOptions.DeterministicAssetBundle, BuildTarget.StandaloneWindows64);
     }
 
-    [UnityEditor.MenuItem("Assets/Get AssetBundle names")]
+    [UnityEditor.MenuItem("AssetsBundle/Build AssetBundles -IOS")]
+    static void BuildIOSBundles()
+    {
+        BuildPipeline.BuildAssetBundles("Assets/AssetBundles/IOS", BuildAssetBundleOptions.DeterministicAssetBundle, BuildTarget.iOS);
+    }
+
+    [UnityEditor.MenuItem("AssetsBundle/Build AssetBundles - Android")]
+    static void BuildAndroidBundles()
+    {
+        BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Android", BuildAssetBundleOptions.DeterministicAssetBundle, BuildTarget.Android);
+    }
+
+    [UnityEditor.MenuItem("AssetsBundle/Get AssetBundle names")]
     static void GetNames()
     {
         var names = AssetDatabase.GetAllAssetBundleNames();
@@ -17,9 +29,9 @@ public class CreateAssetBundler{
             Debug.Log("AssetBundle: " + name);
     }
 
-    [UnityEditor.MenuItem("Assets/Clear Cache")]
+    [UnityEditor.MenuItem("AssetsBundle/Clear Cache")]
     static void ClearCache()
     {
         Caching.CleanCache();
     }
-}
+} 
