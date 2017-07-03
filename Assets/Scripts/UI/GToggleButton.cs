@@ -53,8 +53,6 @@ public class GToggleButton : MonoBehaviour
 
     void UpdateToggle()
     {
-        if (targetImage == null)
-            return;
         switch (constraint)
         {
             case ToggleConstraint.Color: UpdateColor(); break;
@@ -69,18 +67,24 @@ public class GToggleButton : MonoBehaviour
 
     void UpdateColor()
     {
-        if (trigger)
-            targetImage.color = toggleOnVar.color;
-        else
-            targetImage.color = toggleOffVar.color;
+        if (targetImage != null)
+        {
+            if (trigger)
+                targetImage.color = toggleOnVar.color;
+            else
+                targetImage.color = toggleOffVar.color;
+        }
     }
 
     void UpdateSprite()
     {
-        if (trigger)
-            targetImage.sprite = toggleOnVar.sprite;
-        else
-            targetImage.sprite = toggleOffVar.sprite;
+        if (targetImage != null)
+        {
+            if (trigger)
+                targetImage.sprite = toggleOnVar.sprite;
+            else
+                targetImage.sprite = toggleOffVar.sprite;
+        }
     }
 
     void UpdateText()
@@ -89,5 +93,6 @@ public class GToggleButton : MonoBehaviour
             targetText.text = toggleOnVar.text;
         else
             targetText.text = toggleOffVar.text;
+        Debug.Log("update text: " + toggleOffVar.text + " ; " + targetText.text);
     }
 }

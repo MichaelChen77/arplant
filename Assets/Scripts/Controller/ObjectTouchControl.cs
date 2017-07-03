@@ -141,8 +141,8 @@ namespace IMAV
                 }
 				Vector3 rotation = orientation.eulerAngles;
 		#endif   
-				float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime;
-				float positionChangeZ = this.transform.position.z + deltMoveZ;
+				float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime *10;
+				float positionChangeZ = this.transform.position.z + deltMoveZ /10;
 
 				Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, positionChangeZ);
 				Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);

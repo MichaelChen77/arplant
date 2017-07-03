@@ -8,24 +8,27 @@ namespace IMAV
 {
     public class MainInterfaceCtrl : MonoBehaviour
     {
+        public SignUpPanel signupPanel;
 
-        public LoginForm loginform;
-
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
-
+            Screen.orientation = ScreenOrientation.Portrait;
         }
 
-        public void Play()
+        public void ClickGuestButton()
         {
             DataUtility.WorkOnLocal = true;
             GotoARScene();
         }
 
-        public void Login()
+        public void ClickStartButton()
         {
-            loginform.Open(GotoARScene);
+            signupPanel.Open(GotoARScene, true);
+        }
+
+        public void ClickSignInButton()
+        {
+            signupPanel.Open(GotoARScene, false);
         }
 
         public void GotoARScene()

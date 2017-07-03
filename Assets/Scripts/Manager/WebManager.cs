@@ -69,7 +69,6 @@ public class WebManager : MonoBehaviour {
             Debug.Log("user register error: " + w.error);
         else
         {
-            Debug.Log("text: " + w.text);
             getInfo(w.text);
         }
     }
