@@ -25,7 +25,6 @@ namespace IMAV.UI
         public GToggleButton placementBtn;
 
         public RectTransform menuRect;
-        public UIPanel helpPanel;
         public GameObject showMenuButton;
 
         void Start()

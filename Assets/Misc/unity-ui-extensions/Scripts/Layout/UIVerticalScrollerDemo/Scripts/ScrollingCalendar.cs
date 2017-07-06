@@ -57,11 +57,15 @@ public class ScrollingCalendar : MonoBehaviour
 		{
 			arrayYears[i] = 1900 + i;
 			
-			GameObject clone = (GameObject)Instantiate(yearsButtonPrefab, new Vector3(0, i*80, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+			GameObject clone = Instantiate(yearsButtonPrefab);
 			clone.transform.SetParent(yearsScrollingPanel);
-			clone.transform.localScale = new Vector3(1, 1, 1);
+            clone.transform.localScale = Vector3.one;
+            RectTransform rect = clone.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2(0, i * 80);
+            rect.sizeDelta = new Vector2(0, 80);
 			clone.GetComponentInChildren<Text>().text = "" + arrayYears[i];
 			clone.name = "Year_" + arrayYears[i];
+
 			clone.AddComponent<CanvasGroup>();
 			yearsButtons[i] = clone;
 			
@@ -80,11 +84,14 @@ public class ScrollingCalendar : MonoBehaviour
 			string month = "";
 			months[i] = i;
 			
-			GameObject clone = (GameObject)Instantiate(monthsButtonPrefab, new Vector3(0, i * 80, 0), Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+			GameObject clone = Instantiate(monthsButtonPrefab);
 			clone.transform.SetParent(monthsScrollingPanel);
 			clone.transform.localScale = new Vector3(1, 1, 1);
+            RectTransform rect = clone.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2(0, i * 80);
+            rect.sizeDelta = new Vector2(0, 80);
 
-			switch(i)
+            switch (i)
 			{
 			case 0:
 				month = "Jan";
