@@ -24,19 +24,9 @@ namespace IMAV.UI
         public GToggleButton markerlessBtn;
         public GToggleButton placementBtn;
 
-
-        //public void Init(ToggleButton markerBtn)
-        //{
-        //    markerBtn.SetToggle(ResourceManager.Singleton.marker);
-        //    if (markerBtn.onToggleClick == null)
-        //        markerBtn.onToggleClick = DoAfterSetMarker;
-        //}
-
-        //void DoAfterSetMarker(bool flag)
-        //{
-        //    ResourceManager.Singleton.SetMarker(flag);
-        //    SetMarkerHint();
-        //}
+        public RectTransform menuRect;
+        public UIPanel helpPanel;
+        public GameObject showMenuButton;
 
         void Start()
         {
@@ -119,7 +109,23 @@ namespace IMAV.UI
 
 		void HideUI()
 		{
-			furform.Close ();
+            showMenu(false);
+
+            //cschen0705 furform.Close();
+        }
+
+        public void HideAllUI()
+        {
+
+        }
+
+        public void showMenu(bool flag)
+        {
+            if (flag)
+                LeanTween.move(menuRect, Vector2.zero, 0.25f).setEaseOutQuad();
+            else
+                LeanTween.move(menuRect, new Vector2(menuRect.rect.width, 0f), 0.25f).setEaseInQuad();
+            showMenuButton.SetActive(!flag);
         }
 
         void SetTouchMove(bool flag)
