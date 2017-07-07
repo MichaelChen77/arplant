@@ -294,20 +294,20 @@ namespace IMAV
 
         public void AddMarkerlessObject(GameObject obj)
         {
-            StartCoroutine(AddingMarkerlessObject(obj, false, false, 0, ""));
+            StartCoroutine(AddingMarkerlessObject(obj, false, false, "0", ""));
         }
 
-        public void AddMarkerlessRemoteObject(int id, GameObject obj, bool init)
+        public void AddMarkerlessRemoteObject(string id, GameObject obj, bool init)
         {
             StartCoroutine(AddingMarkerlessObject(obj, init, false, id, ""));
         }
 
         public void AddMarkerlessLocalObject(string _content, GameObject obj, bool init)
         {
-            StartCoroutine(AddingMarkerlessObject(obj, init, true, 0, _content));
+            StartCoroutine(AddingMarkerlessObject(obj, init, true, "0", _content));
         }
 
-        IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, int _id, string _content)
+        IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, string _id, string _content)
         {
 			objlist.Add(obj);
             if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
@@ -323,7 +323,7 @@ namespace IMAV
                     SceneObject sobj = obj.AddComponent<SceneObject>();
                     sobj.Init(_islocal, _id, _content);
                 }
-                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _id, _content);
+                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
                 SetCurrentObject(m);
                 ResetTouchMode();
             }

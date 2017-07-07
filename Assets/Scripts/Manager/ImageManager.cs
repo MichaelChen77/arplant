@@ -47,7 +47,8 @@ namespace IMAV
         void ResetFiles()
         {
             files.Clear();
-            string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
+            //string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
+            string[] strs = Directory.GetFiles(@"D:\Resources\");
             foreach (string s in strs)
             {
                 files.Add(s);
@@ -78,13 +79,23 @@ namespace IMAV
             {
                 string res = str;
                 if (str == string.Empty)
-                    res = files[files.Count - 1];
-                imagePanel.Open(str);
+                    imagePanel.Open(files.Count - 1);
+                else
+                {
+                    int index = files.IndexOf(str);
+                    imagePanel.Open(index);
+                }
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Debug.Log("show screen shot error: " + ex.Message);
             }
+        }
+
+        public void ShowScreenShot(int index)
+        {
+            if (index > -1 && index < files.Count)
+                imagePanel.Open(index);
         }
 
         public string GetImagePath(int index)

@@ -12,7 +12,7 @@ namespace IMAV.UI
 
     public enum UIMoveToType
     {
-        Previous, Next, None;
+        Previous, Next, None
     }
 
     public class UISwipe : UIControl, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -30,14 +30,38 @@ namespace IMAV.UI
         public int CurrentPage
         {
             get { return curPage; }
-            set { curPage = value; }
+            set
+            {
+                curPage = value;
+                if (transform.childCount > 0)
+                {
+                    int index = curPage % transform.childCount;
+                    float w = index * pageSize;
+                    if (dirType == UIDirectionType.Horizontal)
+                    {
+                        rt.offsetMax = new Vector2(rt.offsetMax.x- w, 0);
+                        rt.offsetMin = new Vector2(rt.offsetMin.x - w, 0);
+                        lastTargetPos = rt.anchoredPosition.x;
+                        Debug.Log("rt: " + rt.anchoredPosition + " ; " + w + " ; " + curPage);
+                    }
+                    else
+                    {
+                        rt.offsetMax = new Vector2(0, pageSize * (transform.childCount - 1) + w);
+                        rt.offsetMin = new Vector2(0, rt.offsetMin.y + w);
+                        lastTargetPos = rt.anchoredPosition.y;
+                    }
+                }
+            }
         }
 
         protected int pageCount = 0;
         public int PageCount
         {
             get { return pageCount; }
-            set { pageCount = value; }
+            set
+            {
+                pageCount = value;
+            }
         }
 
         protected UIMoveToType curMove = UIMoveToType.None;
@@ -68,6 +92,7 @@ namespace IMAV.UI
                 rt.offsetMax = new Vector2(0, pageSize * (transform.childCount - 1));
                 SetPosY(pageSize);
             }
+            Debug.Log("size: " + pageSize+" ; "+lastTargetPos);
         }
 
         public Transform Switch(bool moveNext)
@@ -153,6 +178,7 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
+                Debug.Log("cur: "+curPage+" ; "+curMove);
                 LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted).setEase(LeanTweenType.linear);
             }
             else

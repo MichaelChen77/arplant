@@ -243,15 +243,48 @@ namespace IMAV
             else
             {
                 GameObject obj = Instantiate(_data.Model);
-                ResourceManager.Singleton.AddMarkerlessRemoteObject(_data.id, obj, true);
+                ResourceManager.Singleton.AddMarkerlessRemoteObject(_data.id.ToString(), obj, true);
                 if (loadingImage != null)
                     loadingImage.Hide();
             }
         }
 
-        public void LoadModelData(string id)
+        public void LoadModelData(string sku)
         {
-            Debug.Log("load model " + id);
+#if UNITY_ANDROID
+            string url = Tags.AndroidEcModelUrl + sku;
+#elif UNITY_IOS
+            string url = Tags.IOSEcModelUrl + sku;
+#endif
+            if (modelDict.ContainsKey(sku))
+                LoadModelToScene(sku);
+            else
+                StartCoroutine(WebManager.Singleton.DownloadAssetBundle(sku, url, WebDownloadModelCallback));
+        }
+
+        Dictionary<string, GameObject> modelDict = new Dictionary<string, GameObject>();
+
+        public void WebDownloadModelCallback(string sku, UnityEngine.Object[] content)
+        {
+            try
+            {
+                if (!modelDict.ContainsKey(sku))
+                    modelDict[sku] = (GameObject)content[0];
+                LoadModelToScene(sku);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("DownloadModelCallback Exception: " + ex.Message);
+            }
+            if (loadingImage != null)
+                loadingImage.Hide();
+        }
+
+        void LoadModelToScene(string sku)
+        {
+            GameObject obj = Instantiate(modelDict[sku]);
+            obj.transform.position = Vector3.zero;
+            //ResourceManager.Singleton.AddMarkerlessRemoteObject(sku, obj, true);
         }
 
         public void DownloadModelCallback(int _id, UnityEngine.Object[] content)
@@ -264,7 +297,7 @@ namespace IMAV
                     furnitureDict[_id].Model = (GameObject)content[0];
                     GameObject obj = Instantiate(furnitureDict[_id].Model);
                     obj.transform.position = Vector3.zero;
-                    ResourceManager.Singleton.AddMarkerlessRemoteObject(_id, obj, true);
+                    ResourceManager.Singleton.AddMarkerlessRemoteObject(_id.ToString(), obj, true);
                 }
             }
             catch (Exception ex)

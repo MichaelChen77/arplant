@@ -13,6 +13,7 @@ public class WebManager : MonoBehaviour {
     public delegate void ReceiveStringData(string str);
     public delegate void ReceiveData(MessageData data);
     public delegate void RecObjectsData(int id, Object[] obj);
+    public delegate void RecModelAsset(string sku, Object[] obj);
     public delegate void ReceiveBinary(int id, byte[] data);
 
     private static WebManager mSingleton;
@@ -94,6 +95,22 @@ public class WebManager : MonoBehaviour {
         {
             Object[] objs = www.assetBundle.LoadAllAssets();
             getInfo(id, objs);
+        }
+        else
+        {
+            Debug.Log("cannot download asset bundle from " + url);
+        }
+    }
+
+    public IEnumerator DownloadAssetBundle(string sku, string url, RecModelAsset getInfo)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+
+        if (www.assetBundle != null)
+        {
+            Object[] objs = www.assetBundle.LoadAllAssets();
+            getInfo(sku, objs);
         }
         else
         {

@@ -13,6 +13,10 @@ public class Tags{
     public const string GetScenesUrl = baseUrl + "design/m/get-all-designs";
     public const string GetSceneUrl = baseUrl + "design/m/get-design-info?id=";
 
+
+    public const string AndroidEcModelUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com:9000/product-3d/";
+    public const string IOSEcModelUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com:9000/product-3d-model-2/";
+
     public const string SearchUrl = baseUrl + "product/m/search";
     public const string UserRegUrl = baseUrl + "site/signup";
     public const string UserLoginUrl = baseUrl + "site/login";

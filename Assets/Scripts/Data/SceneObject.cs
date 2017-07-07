@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SceneObject : MonoBehaviour {
 
-    int id = -1;
-    public int ID
+    string id = string.Empty;
+    public string ID
     {
         get { return id; }
     }
@@ -39,7 +39,7 @@ public class SceneObject : MonoBehaviour {
 		get{ return originRotation; }
 	}
 
-    public void Init(bool _islocal, int _id, string str)
+    public void Init(bool _islocal, string _id, string str)
 	{
         id = _id;
         isLocal = _islocal;
