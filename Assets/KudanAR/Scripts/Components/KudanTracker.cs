@@ -810,16 +810,16 @@ namespace Kudan.AR
 			}
 		}
 
-		#region Screenshot methods
-		/// <summary>
-		/// Takes a screenshot of the camera feed and any projected objects, without any UI.
-		/// </summary>
-		public void takeScreenshot(string path, System.Action<Texture2D> run)
+        #region Screenshot methods
+        /// <summary>
+        /// Takes a screenshot of the camera feed and any projected objects, without any UI.
+        /// </summary>
+        public void takeScreenshot(string path, string thumbpath, System.Action<Texture2D, string> run)
 		{
-			StartCoroutine (Screenshot (path, run));
+			StartCoroutine (Screenshot (path, thumbpath, run));
 		}
 		
-		IEnumerator Screenshot(string filePath, System.Action<Texture2D> run)
+		IEnumerator Screenshot(string filePath, string thumbPath, System.Action<Texture2D, string> run)
 		{
 			List<GameObject> uiObjects = FindGameObjectsInUILayer ();
 
@@ -863,7 +863,7 @@ namespace Kudan.AR
 			GetComponent<Camera> ().targetTexture = null;
 			Destroy(RT);
 			if (run != null)
-				run (screen);
+				run (screen, thumbPath);
 		}
 
 		List<GameObject> FindGameObjectsInUILayer()

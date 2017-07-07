@@ -48,7 +48,7 @@ namespace IMAV
         {
             files.Clear();
             //string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
-            string[] strs = Directory.GetFiles(@"D:\Resources\");
+            string[] strs = Directory.GetFiles(@"C:\WorkSpace\AR\TestImages\");
             foreach (string s in strs)
             {
                 files.Add(s);
@@ -63,14 +63,52 @@ namespace IMAV
             }
 
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
-            string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-            ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, PostScreenShot);
+            string filename = "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
+            string filePath = DataUtility.GetScreenShotPath() + filename;
+            string thumbnailPath = DataUtility.GetScreenThumbnailPath() + filename;
+            ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, thumbnailPath, PostScreenShot);
             files.Add(filePath);
         }
 
-        void PostScreenShot(Texture2D tex)
+        void PostScreenShot(Texture2D tex, string path)
         {
-            snapShot.SaveTextureToGallery(tex, ImageType.PNG);
+            snapShot.SaveTextureToGallery(tex, ImageType.JPG);
+            CreateThumbnail(tex, path, path);
+        }
+
+        IEnumerator CreateThumbnail(Texture2D tex, string path1, string path2)
+        {
+            int w = 180;
+            int h = w * Screen.height / Screen.width;
+            yield return new WaitForEndOfFrame();
+            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
+            Camera.main.targetTexture = RT;
+            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
+            Texture2D thumbnail = new Texture2D(w, h, TextureFormat.RGB24, false);
+
+            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
+            thumbnail.ReadPixels(new Rect(0, 0, w, h), 0, 0);
+            byte[] bytes = screen.EncodeToJPG();
+            byte[] bytes2 = thumbnail.EncodeToJPG();
+
+            System.IO.File.WriteAllBytes(path1, bytes);
+            System.IO.File.WriteAllBytes(path2, bytes);
+            Camera.main.targetTexture = null;
+            Destroy(RT);
+            //Texture2D t = new Texture2D(180, 180, TextureFormat.ARGB32, false);
+            //tex.Resize(180, 180, TextureFormat.RGB24, false);
+
+            //byte[] bytes = tex.EncodeToJPG();
+            //File.WriteAllBytes(path, bytes);
+        }
+
+        public void CreateThumbnailFrom()
+        {
+            Sprite sp = imagePanel.GetCurrentImage();
+            if (sp != null)
+                StartCoroutine(CreateThumbnail(sp.texture, @"C:\WorkSpace\AR\TestImages\ScreenShots\" + imagePanel.swipe.CurrentPage + ".jpg", @"C:\WorkSpace\AR\TestImages\Thumbnails\" + imagePanel.swipe.CurrentPage + ".jpg"));
+            else
+                Debug.Log("null sprite");
         }
 
         public void ShowScreenShot(string str)

@@ -70,6 +70,11 @@ namespace IMAV
             return Application.persistentDataPath + "/ScreenShots/";
         }
 
+        public static string GetScreenThumbnailPath()
+        {
+            return Application.persistentDataPath + "/ScreenThumbnails/";
+        }
+
 		public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, string _content)
         {
             obj.transform.parent = ResourceManager.Singleton.markerlessTransform;

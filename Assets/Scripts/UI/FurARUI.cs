@@ -150,10 +150,10 @@ namespace IMAV.UI
 
 			System.DateTime dt = System.DateTime.Now.ToLocalTime ();
 			string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-			ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, PostScreenShot);
+			ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, "", PostScreenShot);
         }
 
-		void PostScreenShot(Texture2D tex)
+		void PostScreenShot(Texture2D tex, string path)
 		{
 			snapShot.SaveTextureToGallery (tex, ImageType.JPG);
 			imageSaved.Open ();

@@ -25,6 +25,7 @@ namespace IMAV.UI
 
         protected RectTransform rt;
         protected float lastTargetPos;
+        protected float originRtPos;
         protected float pageSize = 900f;
         protected int curPage = 0;
         public int CurrentPage
@@ -32,24 +33,11 @@ namespace IMAV.UI
             get { return curPage; }
             set
             {
-                curPage = value;
-                if (transform.childCount > 0)
+                if (curPage != value)
                 {
+                    curPage = value;
                     int index = curPage % transform.childCount;
-                    float w = index * pageSize;
-                    if (dirType == UIDirectionType.Horizontal)
-                    {
-                        rt.offsetMax = new Vector2(rt.offsetMax.x- w, 0);
-                        rt.offsetMin = new Vector2(rt.offsetMin.x - w, 0);
-                        lastTargetPos = rt.anchoredPosition.x;
-                        Debug.Log("rt: " + rt.anchoredPosition + " ; " + w + " ; " + curPage);
-                    }
-                    else
-                    {
-                        rt.offsetMax = new Vector2(0, pageSize * (transform.childCount - 1) + w);
-                        rt.offsetMin = new Vector2(0, rt.offsetMin.y + w);
-                        lastTargetPos = rt.anchoredPosition.y;
-                    }
+                    MovePage(-index);
                 }
             }
         }
@@ -85,14 +73,15 @@ namespace IMAV.UI
                 pageSize = rt.rect.width;
                 rt.offsetMax = new Vector2(pageSize * (transform.childCount - 1), 0);
                 SetPosX(pageSize);
+                originRtPos = rt.anchoredPosition.x;
             }
             else
             {
                 pageSize = rt.rect.height;
                 rt.offsetMax = new Vector2(0, pageSize * (transform.childCount - 1));
                 SetPosY(pageSize);
+                originRtPos = rt.anchoredPosition.y;
             }
-            Debug.Log("size: " + pageSize+" ; "+lastTargetPos);
         }
 
         public Transform Switch(bool moveNext)
@@ -147,6 +136,15 @@ namespace IMAV.UI
             lastTargetPos = rt.anchoredPosition.y;
         }
 
+        public void MovePage(int num)
+        {
+            float _size = num * pageSize;
+            if (dirType == UIDirectionType.Horizontal)
+                rt.anchoredPosition = new Vector2(originRtPos + _size, rt.anchoredPosition.y);
+            else
+                rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, originRtPos + _size);
+        }
+
         public void OnBeginDrag(PointerEventData data)
         {
             if (OnSwipeStart != null)
@@ -178,7 +176,6 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
-                Debug.Log("cur: "+curPage+" ; "+curMove);
                 LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted).setEase(LeanTweenType.linear);
             }
             else

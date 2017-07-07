@@ -48,5 +48,10 @@ namespace IMAV.UI
             swipe.CurrentPage = 0;
             listToggles[0].isOn = true;
         }
+
+        public void GotoPage(int index)
+        {
+            swipe.CurrentPage = index;
+        }
     }
 }
