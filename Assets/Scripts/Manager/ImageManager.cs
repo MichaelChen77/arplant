@@ -73,42 +73,27 @@ namespace IMAV
         void PostScreenShot(Texture2D tex, string path)
         {
             snapShot.SaveTextureToGallery(tex, ImageType.JPG);
-            CreateThumbnail(tex, path, path);
+            StartCoroutine(CreateThumbnail(tex, path));
         }
 
-        IEnumerator CreateThumbnail(Texture2D tex, string path1, string path2)
+        IEnumerator CreateThumbnail(Texture2D tex, string path)
         {
-            int w = 180;
-            int h = w * Screen.height / Screen.width;
+            int w = 200;
+            int h = w * tex.height / tex.width;
+            int _t = h % 4;
+            h = h - _t;
+            Texture2D newTex = Instantiate(tex);
             yield return new WaitForEndOfFrame();
-            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
-            Camera.main.targetTexture = RT;
-            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
-            Texture2D thumbnail = new Texture2D(w, h, TextureFormat.RGB24, false);
-
-            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
-            thumbnail.ReadPixels(new Rect(0, 0, w, h), 0, 0);
-            byte[] bytes = screen.EncodeToJPG();
-            byte[] bytes2 = thumbnail.EncodeToJPG();
-
-            System.IO.File.WriteAllBytes(path1, bytes);
-            System.IO.File.WriteAllBytes(path2, bytes);
-            Camera.main.targetTexture = null;
-            Destroy(RT);
-            //Texture2D t = new Texture2D(180, 180, TextureFormat.ARGB32, false);
-            //tex.Resize(180, 180, TextureFormat.RGB24, false);
-
-            //byte[] bytes = tex.EncodeToJPG();
-            //File.WriteAllBytes(path, bytes);
+            TextureScale.Point(newTex, w, h);
+            byte[] bytes = newTex.EncodeToJPG();
+            File.WriteAllBytes(path, bytes);
         }
 
         public void CreateThumbnailFrom()
         {
             Sprite sp = imagePanel.GetCurrentImage();
-            if (sp != null)
-                StartCoroutine(CreateThumbnail(sp.texture, @"C:\WorkSpace\AR\TestImages\ScreenShots\" + imagePanel.swipe.CurrentPage + ".jpg", @"C:\WorkSpace\AR\TestImages\Thumbnails\" + imagePanel.swipe.CurrentPage + ".jpg"));
-            else
-                Debug.Log("null sprite");
+            string path = @"C:\WorkSpace\AR\TestImages\Thumbnails\thumbnail.jpg";
+            StartCoroutine(CreateThumbnail(sp.texture, path));
         }
 
         public void ShowScreenShot(string str)

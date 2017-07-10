@@ -17,7 +17,7 @@ namespace IMAV.UI
         public CaptureAndSave snapShot;
         public Button detailsBtn;
         public GameObject imageViewDlg;
-        public ImageGallery imageGallery;
+        public UIImageGallery imageGallery;
         public Animator ctrlBtnPanelAnim;
         public TargetNode targetNode;
 		public DisableSelf imageSaved;
@@ -161,17 +161,19 @@ namespace IMAV.UI
 
         public void ViewImage()
         {
-            imageViewDlg.SetActive(false);
-            ResourceManager.Singleton.Pause();
-            if (File.Exists(DataUtility.GetScreenShotPath() + currentfile))
-                imageGallery.Open(DataUtility.GetScreenShotPath() + currentfile);
-            else
-                imageGallery.Open();
+            //cschen0710
+            //imageViewDlg.SetActive(false);
+            //ResourceManager.Singleton.Pause();
+            //if (File.Exists(DataUtility.GetScreenShotPath() + currentfile))
+            //    imageGallery.Open(DataUtility.GetScreenShotPath() + currentfile);
+            //else
+            //    imageGallery.Open();
         }
 
         public void OpenImageGallery()
         {
-            imageGallery.Open();
+            //cschen0710
+            //imageGallery.Open();
         }
 
         void SetMarkerHint()
