@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace IMAV.UI
 {
-    public class UIImageGrid : MonoBehaviour
+    public class UIImageGrid : UIContainer
     {
         public Text gridName;
         public GridLayoutGroup gridGroup;
@@ -14,8 +14,9 @@ namespace IMAV.UI
         public float nameHeight = 35f;
 
         bool isloaded = false;
-
         RectTransform gridRect;
+        DirectoryInfo gridDir;
+        public System.Action<UIImageGrid, UIImage> ItemClickedHandler;
 
         private void Awake()
         {
@@ -32,6 +33,7 @@ namespace IMAV.UI
         {
             if (dir.Exists)
             {
+                gridDir = dir;
                 gridName.text = dir.Name;
                 FileInfo[] files = dir.GetFiles();
                 for (int i = 0; i < files.Length; i++)
@@ -39,6 +41,11 @@ namespace IMAV.UI
             }
             yield return new WaitForEndOfFrame();
             Refresh();
+        }
+
+        public bool EqualDirectory(string path)
+        {
+            return gridDir.FullName == path;
         }
 
         public bool IsLoaded()
@@ -55,27 +62,41 @@ namespace IMAV.UI
         {
             GameObject obj = Instantiate(imagePrefab, gridGroup.transform);
             UIImage im = obj.GetComponent<UIImage>();
-            im.LoadImage(f);
+            im.LoadImage(gridDir.Name, f);
             im.OnClickHandler = ClickOnImage;
+            im.Parent = this;
         }
 
-        public void ClickOnImage(UIImage im)
+        void ClickOnImage(UIImage im)
         {
-            Debug.Log("Open image: " + im.ImageTag);
+            if (ItemClickedHandler != null)
+                ItemClickedHandler(this, im);
         }
 
-        public void AddItemRefresh(FileInfo f)
+        public override void Refresh()
         {
-            AddItem(f);
-            Refresh();
+            if (ChildCount > 0)
+            {
+                foreach(UIControl c in items)
+                {
+                    c.Refresh();
+                }
+                gridRect.sizeDelta = new Vector2(gridRect.sizeDelta.x, gridGroup.preferredHeight + nameHeight);
+                isloaded = true;
+            }
+            else
+                Delete();
         }
 
-        public void Refresh()
+        public void SetPosY(float _y)
         {
-            gridRect.sizeDelta = new Vector2(gridRect.sizeDelta.x, gridGroup.preferredHeight + nameHeight);
-            isloaded = true;
+            gridRect.anchoredPosition = new Vector2(gridRect.anchoredPosition.x, _y);
         }
 
-
+        public override void Delete()
+        {
+            ImageManager.Singleton.DeleteImageFolder(gridDir.Name);
+            base.Delete();
+        }
     }
 }

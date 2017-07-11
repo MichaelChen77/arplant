@@ -15,13 +15,14 @@ namespace IMAV.UI
         Previous, Next, None
     }
 
-    public class UISwipe : UIControl, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class UISwipe : UIControl, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
         public UIDirectionType dirType = UIDirectionType.Horizontal;
         public float moveTime = 0.3f;
 
         public Action OnSwipeCompleted;
         public Action OnSwipeStart;
+        public Action OnSwipeClicked;
 
         protected RectTransform rt;
         protected float lastTargetPos;
@@ -31,15 +32,15 @@ namespace IMAV.UI
         public int CurrentPage
         {
             get { return curPage; }
-            set
-            {
-                if (curPage != value)
-                {
-                    curPage = value;
-                    int index = curPage % transform.childCount;
-                    MovePage(-index);
-                }
-            }
+            //set
+            //{
+            //    if (curPage != value)
+            //    {
+            //        curPage = value;
+            //        //int index = curPage % transform.childCount;
+            //        //MovePage(-index);
+            //    }
+            //}
         }
 
         protected int pageCount = 0;
@@ -51,6 +52,7 @@ namespace IMAV.UI
                 pageCount = value;
             }
         }
+        bool startDrag = false;
 
         protected UIMoveToType curMove = UIMoveToType.None;
         public UIMoveToType CurrentMoveType
@@ -136,8 +138,10 @@ namespace IMAV.UI
             lastTargetPos = rt.anchoredPosition.y;
         }
 
-        public void MovePage(int num)
+        public void MovePage(int num, int _cur = -1)
         {
+            if (_cur != -1)
+                curPage = _cur;
             float _size = num * pageSize;
             if (dirType == UIDirectionType.Horizontal)
                 rt.anchoredPosition = new Vector2(originRtPos + _size, rt.anchoredPosition.y);
@@ -145,10 +149,25 @@ namespace IMAV.UI
                 rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, originRtPos + _size);
         }
 
+        public void MoveToPage(int id)
+        {
+            if(curPage != id)
+            {
+                curPage = id;
+                int index = curPage % transform.childCount;
+                MovePage(-index);
+            }
+        }
+
         public void OnBeginDrag(PointerEventData data)
         {
             if (OnSwipeStart != null)
                 OnSwipeStart();
+            if (dirType == UIDirectionType.Horizontal)
+                lastTargetPos = rt.anchoredPosition.x;
+            else
+                lastTargetPos = rt.anchoredPosition.y;
+            startDrag = true;
         }
 
         public void OnDrag(PointerEventData data)
@@ -161,6 +180,7 @@ namespace IMAV.UI
 
         public void OnEndDrag(PointerEventData data)
         {
+            startDrag = false;
             curMove = UIMoveToType.None;
             if (dirType == UIDirectionType.Horizontal)
             {
@@ -194,6 +214,12 @@ namespace IMAV.UI
                 }
                 LeanTween.moveY(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted).setEase(LeanTweenType.linear);
             }
+        }
+
+        public void OnPointerClick(PointerEventData data)
+        {
+            if (!startDrag && OnSwipeClicked != null)
+                OnSwipeClicked();
         }
 
         public override void Close()

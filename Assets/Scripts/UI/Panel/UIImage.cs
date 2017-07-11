@@ -7,25 +7,55 @@ using UnityEngine.EventSystems;
 namespace IMAV.UI
 {
     [RequireComponent(typeof(Image))]
-    public class UIImage : MonoBehaviour, IPointerClickHandler
+    public class UIImage : UIControl, IPointerClickHandler
     {
+        public GameObject coverPrefab;
+
         public System.Action<UIImage> OnClickHandler;
 
+        bool selected = false;
+        public bool Selected
+        {
+            get { return selected; }
+            set {
+                if (selected != value)
+                {
+                    selected = value;
+                    if(selected)
+                    {
+                        if (coverObject == null)
+                            coverObject = Instantiate(coverPrefab, transform);
+                        else
+                            coverObject.SetActive(true);
+                    }
+                    else
+                    {
+                        if (coverObject != null)
+                            coverObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
         protected Image image;
+        protected GameObject coverObject;
         string imageTag;
         public string ImageTag
         {
             get { return imageTag; }
         }
+        FileInfo imageFile;
 
         private void Awake()
         {
             image = GetComponent<Image>();
         }
 
-        public void LoadImage(FileInfo f)
+        public void LoadImage(string dir, FileInfo f)
         {
-            imageTag = f.Name;
+            imageTag = dir + @"\" + f.Name;
+            imageFile = f;
+            ImageManager.Singleton.AddImage(imageTag);
             StartCoroutine(Load(f.FullName));
         }
 
@@ -49,6 +79,22 @@ namespace IMAV.UI
                 }
             }
             catch { }
+        }
+
+        public override void Delete()
+        {
+            ImageManager.Singleton.DeleteImage(imageTag);
+            Destroy(image.sprite);
+            base.Delete();
+        }
+
+        public override void Refresh()
+        {
+            if(imageFile == null || !imageFile.Exists)
+            {
+                Destroy(image.sprite);
+                base.Delete();
+            }
         }
     }
 }

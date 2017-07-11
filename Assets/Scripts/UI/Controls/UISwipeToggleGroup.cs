@@ -45,13 +45,13 @@ namespace IMAV.UI
 
         public void ResetPages()
         {
-            swipe.CurrentPage = 0;
+            swipe.MoveToPage(0);
             listToggles[0].isOn = true;
         }
 
         public void GotoPage(int index)
         {
-            swipe.CurrentPage = index;
+            swipe.MoveToPage(index);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace IMAV
 {
@@ -67,15 +69,30 @@ namespace IMAV
 
         public static string GetScreenShotPath()
         {
-            return Application.persistentDataPath + "/ScreenShots/";
+            //return Application.persistentDataPath + "/ScreenShots/";
+            return @"C:\WorkSpace\AR\TestImages\ScreenShots\";
         }
 
         public static string GetScreenThumbnailPath()
         {
-            return Application.persistentDataPath + "/ScreenThumbnails/";
+            //return Application.persistentDataPath + "/ScreenThumbnails/";
+            return @"C:\WorkSpace\AR\TestImages\ScreenThumbnails\";
         }
 
-		public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, string _content)
+        public static void SetDirectory(string str)
+        {
+            if (!Directory.Exists(str))
+                Directory.CreateDirectory(str);
+        }
+
+        public static void Swap<T>(List<T> list, int indexA, int indexB)
+        {
+            T tmp = list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = tmp;
+        }
+
+        public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, string _content)
         {
             obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
             if (init)

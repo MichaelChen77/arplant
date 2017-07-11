@@ -9,6 +9,8 @@ namespace IMAV
     public class ImageManager : MonoBehaviour
     {
         public UIImagePanel imagePanel;
+        public UIImageGallery imageGallery;
+        public UIDialog msgDialog;
 
         private static ImageManager mSingleton;
         public static ImageManager Singleton
@@ -39,41 +41,59 @@ namespace IMAV
             }
         }
 
-        void Start()
-        {
-            ResetFiles();
-        }
+        //void Start()
+        //{
+        //    ResetFiles();
+        //}
 
-        void ResetFiles()
-        {
-            files.Clear();
-            //string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
-            string[] strs = Directory.GetFiles(@"C:\WorkSpace\AR\TestImages\");
-            foreach (string s in strs)
-            {
-                files.Add(s);
-            }
-        }
+        //void ResetFiles()
+        //{
+        //    files.Clear();
+        //    string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
+        //    foreach (string s in strs)
+        //    {
+        //        files.Add(s);
+        //    }
+        //}
 
         public void CaptureScreen()
         {
-            if (!Directory.Exists(DataUtility.GetScreenShotPath()))
-            {
-                Directory.CreateDirectory(DataUtility.GetScreenShotPath());
-            }
-
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
-            string filename = "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-            string filePath = DataUtility.GetScreenShotPath() + filename;
-            string thumbnailPath = DataUtility.GetScreenThumbnailPath() + filename;
-            ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, thumbnailPath, PostScreenShot);
-            files.Add(filePath);
+            string date = dt.ToString("yyyy-MM-dd");
+            string filePath = DataUtility.GetScreenShotPath() + date + "/";
+            string thumbnailPath = DataUtility.GetScreenThumbnailPath() + date + "/";
+            DataUtility.SetDirectory(filePath);
+            DataUtility.SetDirectory(thumbnailPath);
+
+            string filename = "FurAR " + dt.ToString("HH-mm-ss") + ".jpg";
+            //ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath+filename, thumbnailPath+filename, PostScreenShot);
+            StartCoroutine(Screenshot(filePath + filename, thumbnailPath + filename, PostScreenShot));
         }
 
-        void PostScreenShot(Texture2D tex, string path)
+        IEnumerator Screenshot(string filePath, string thumbPath, System.Action<Texture2D, string, string> run)
+        {
+            yield return new WaitForEndOfFrame();
+            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
+            Camera.main.targetTexture = RT;
+            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
+            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
+            byte[] bytes = screen.EncodeToJPG();
+            System.IO.File.WriteAllBytes(filePath, bytes);
+            Camera.main.targetTexture = null;
+            Destroy(RT);
+            if (run != null)
+                run(screen, filePath, thumbPath);
+        }
+
+        void PostScreenShot(Texture2D tex, string filepath, string thumbpath)
+        {
+            files.Add(filepath);
+            StartCoroutine(CreateThumbnail(tex, thumbpath));
+        }
+
+        public void SaveScreenShot(Texture2D tex)
         {
             snapShot.SaveTextureToGallery(tex, ImageType.JPG);
-            StartCoroutine(CreateThumbnail(tex, path));
         }
 
         IEnumerator CreateThumbnail(Texture2D tex, string path)
@@ -87,13 +107,7 @@ namespace IMAV
             TextureScale.Point(newTex, w, h);
             byte[] bytes = newTex.EncodeToJPG();
             File.WriteAllBytes(path, bytes);
-        }
-
-        public void CreateThumbnailFrom()
-        {
-            Sprite sp = imagePanel.GetCurrentImage();
-            string path = @"C:\WorkSpace\AR\TestImages\Thumbnails\thumbnail.jpg";
-            StartCoroutine(CreateThumbnail(sp.texture, path));
+            imageGallery.AddImage(path);
         }
 
         public void ShowScreenShot(string str)
@@ -106,6 +120,7 @@ namespace IMAV
                 else
                 {
                     int index = files.IndexOf(str);
+                    Debug.Log("show " + index + " ; " + str);
                     imagePanel.Open(index);
                 }
             }
@@ -124,9 +139,54 @@ namespace IMAV
         public string GetImagePath(int index)
         {
             if (index > -1 && index < files.Count)
-                return files[index];
+                return DataUtility.GetScreenShotPath() + files[index];
             else
                 return string.Empty;
+        }
+
+        public void DeleteImage(string str)
+        {
+            files.Remove(str);
+            string path1 = DataUtility.GetScreenShotPath() + str;
+            string path2 = DataUtility.GetScreenThumbnailPath() + str;
+            File.Delete(path1);
+            File.Delete(path2);
+            Debug.Log("Delete Image: " + str);
+        }
+
+        public void DeleteImage(int index)
+        {
+            if (index > -1 && index < files.Count)
+            {
+                DeleteImage(files[index]);
+            }
+        }
+
+        public void AddImage(string str)
+        {
+            if (!files.Contains(str))
+                files.Add(str);
+        }
+
+        public void DeleteImageFolder(string str)
+        {
+            DirectoryInfo thumbdir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath()+str);
+            if (thumbdir.Exists)
+                StartCoroutine(DeleteFolder(thumbdir));
+            DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenShotPath() + str);
+            if (dir.Exists)
+                StartCoroutine(DeleteFolder(dir));
+        }
+
+        IEnumerator DeleteFolder(DirectoryInfo dir)
+        {
+            int tick = 0;
+            while (dir.GetFiles().Length != 0 && tick < 5000)
+            {
+                yield return new WaitForEndOfFrame();
+                tick++;
+            }
+            dir.Delete();
         }
     }
 }
