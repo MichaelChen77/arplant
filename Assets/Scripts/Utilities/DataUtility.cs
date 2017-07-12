@@ -70,13 +70,13 @@ namespace IMAV
         public static string GetScreenShotPath()
         {
             //return Application.persistentDataPath + "/ScreenShots/";
-            return @"C:\WorkSpace\AR\TestImages\ScreenShots\";
+            return @"D:\WorkSpace\AR\ImageTest\ScreenShots\";
         }
 
         public static string GetScreenThumbnailPath()
         {
             //return Application.persistentDataPath + "/ScreenThumbnails/";
-            return @"C:\WorkSpace\AR\TestImages\ScreenThumbnails\";
+            return @"D:\WorkSpace\AR\ImageTest\ScreenThumbnails\";
         }
 
         public static void SetDirectory(string str)

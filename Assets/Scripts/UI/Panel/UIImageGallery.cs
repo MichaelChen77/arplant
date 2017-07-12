@@ -32,10 +32,19 @@ namespace IMAV.UI
             galleryRect = GetComponent<RectTransform>();
             DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
             DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
+            
+        }
+
+        public override void Open()
+        {
+            base.Open();
+            galleryRect.sizeDelta = new Vector2(Screen.width, Screen.height);
         }
 
         void Start()
         {
+            galleryRect.anchoredPosition = new Vector2(galleryRect.anchoredPosition.x, -Screen.height * 0.7f);
+            galleryRect.sizeDelta = new Vector2(galleryRect.sizeDelta.x, Screen.height);
             topPos = -spaceY;
             DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath());
             StartCoroutine(LoadDirectory(dir));
@@ -125,6 +134,9 @@ namespace IMAV.UI
 
         public void UpdateSize()
         {
+            if (topPos + Screen.height > 0)
+                topPos = -Screen.height;
+            Debug.Log("pos: " + Screen.height + " ; " + Screen.width);
             contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, -topPos);
         }
 
