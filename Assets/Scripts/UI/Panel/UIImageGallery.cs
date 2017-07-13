@@ -22,9 +22,7 @@ namespace IMAV.UI
 
         RectTransform galleryRect;
         List<UIImage> selectedImages = new List<UIImage>();
-        bool isOpened = false;
         bool isSelectState = false;
-        float startPos = 0;
         float topPos = 0;
 
         void Awake()
@@ -32,19 +30,16 @@ namespace IMAV.UI
             galleryRect = GetComponent<RectTransform>();
             DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
             DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
-            
+        }
+
+        void Start()
+        {
+            Open();
         }
 
         public override void Open()
         {
             base.Open();
-            galleryRect.sizeDelta = new Vector2(Screen.width, Screen.height);
-        }
-
-        void Start()
-        {
-            galleryRect.anchoredPosition = new Vector2(galleryRect.anchoredPosition.x, -Screen.height * 0.7f);
-            galleryRect.sizeDelta = new Vector2(galleryRect.sizeDelta.x, Screen.height);
             topPos = -spaceY;
             DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath());
             StartCoroutine(LoadDirectory(dir));
@@ -81,7 +76,7 @@ namespace IMAV.UI
                     grid = AddItem(file.Directory, 0);
                 }
                 else
-                    grid.AddItem(file);
+                    grid.AddItem(file, 0.4f, 0);
             }
             StartCoroutine(DelayRefresh());
         }
@@ -106,7 +101,10 @@ namespace IMAV.UI
             grid.Open(dir);
             grid.ItemClickedHandler = OnClickImage;
             if (index != -1)
+            {
                 Items.Insert(index, grid);
+                obj.transform.SetSiblingIndex(index);
+            }
             grid.Parent = this;
             return grid;
         }
@@ -136,52 +134,7 @@ namespace IMAV.UI
         {
             if (topPos + Screen.height > 0)
                 topPos = -Screen.height;
-            Debug.Log("pos: " + Screen.height + " ; " + Screen.width);
             contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, -topPos);
-        }
-
-        public void OnBeginDrag(BaseEventData data)
-        {
-            startPos = galleryRect.anchoredPosition.y;
-        }
-
-        public void OnDrag(BaseEventData data)
-        {
-            PointerEventData p = data as PointerEventData;
-            galleryRect.anchoredPosition = new Vector2(galleryRect.anchoredPosition.x, galleryRect.anchoredPosition.y + p.delta.y);
-        }
-
-        public void OnEndDrag(BaseEventData data)
-        {
-            float targetPos = 0;
-            isOpened = true;
-            if (galleryRect.anchoredPosition.y < startPos)
-            {
-                targetPos = startPos;
-                isOpened = false;
-            }
-            LeanTween.moveY(galleryRect, targetPos, moveTime).setOnComplete(OnOpenCompleted).setEase(LeanTweenType.linear);
-            float _y = bodyRect.anchoredPosition.y - header.sizeDelta.y * 0.5f;
-            LeanTween.moveY(bodyRect, _y, moveTime).setEase(LeanTweenType.easeSpring);
-        }
-
-        void OnOpenCompleted()
-        {
-            if(isOpened)
-            {
-                swipeObject.SetActive(false);
-                header.gameObject.SetActive(true);
-                bodyRect.offsetMax = new Vector2(0, -header.sizeDelta.y);
-                bodyRect.offsetMin = Vector2.zero;
-            }
-        }
-
-        void HalfOpen()
-        {
-            isOpened = false;
-            header.gameObject.SetActive(false);
-            bodyRect.offsetMax = Vector2.zero;
-            bodyRect.offsetMin = Vector2.zero;
         }
 
         public void OnSelectClick()

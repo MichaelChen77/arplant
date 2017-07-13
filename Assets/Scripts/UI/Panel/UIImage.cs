@@ -51,11 +51,16 @@ namespace IMAV.UI
             image = GetComponent<Image>();
         }
 
-        public void LoadImage(string dir, FileInfo f)
+        public void LoadImage(string dir, FileInfo f, float animated = 0)
         {
             imageTag = dir + @"\" + f.Name;
             imageFile = f;
             ImageManager.Singleton.AddImage(imageTag);
+            if (animated > 0)
+            {
+                transform.localScale = Vector3.zero;
+                LeanTween.scale(gameObject, Vector3.one, animated);
+            }
             StartCoroutine(Load(f.FullName));
         }
 

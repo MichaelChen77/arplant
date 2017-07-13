@@ -26,6 +26,14 @@ namespace IMAV.UI
         public void Open(DirectoryInfo dir)
         {
             isloaded = false;
+            float _x = gridGroup.cellSize.x + gridGroup.spacing.x;
+            float f = gridRect.rect.width % _x;
+            int num = (int)(gridRect.rect.width / _x);
+            if (f < _x * 0.8f)
+                num++;
+            float csize = gridRect.rect.width / num - gridGroup.spacing.x;
+            gridGroup.cellSize = new Vector2(csize, csize);
+            Debug.Log("size: " + gridRect.rect.width);
             StartCoroutine(LoadDirectory(dir));
         }
 
@@ -37,7 +45,7 @@ namespace IMAV.UI
                 gridName.text = dir.Name;
                 FileInfo[] files = dir.GetFiles();
                 for (int i = 0; i < files.Length; i++)
-                    AddItem(files[i]);
+                    AddItem(files[i], 0);
             }
             yield return new WaitForEndOfFrame();
             Refresh();
@@ -58,12 +66,17 @@ namespace IMAV.UI
             return gridRect.sizeDelta.y;
         }
 
-        public void AddItem(FileInfo f)
+        public void AddItem(FileInfo f, float animated, int index = -1)
         {
             GameObject obj = Instantiate(imagePrefab, gridGroup.transform);
             UIImage im = obj.GetComponent<UIImage>();
-            im.LoadImage(gridDir.Name, f);
+            im.LoadImage(gridDir.Name, f, animated);
             im.OnClickHandler = ClickOnImage;
+            if (index != -1)
+            {
+                Items.Insert(index, im);
+                obj.transform.SetSiblingIndex(index);
+            }
             im.Parent = this;
         }
 

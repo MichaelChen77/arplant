@@ -126,7 +126,7 @@ namespace IMAV
             {
                 DataManager.Singleton.FurnitureDatas.Clear();
                 int k = 0;
-                for(int i=0; i<FurCategories.Length; i++)
+                for (int i = 0; i < FurCategories.Length; i++)
                 {
                     for (int j = 0; j < FurCategories[i].Furnitures.Count; j++)
                     {

@@ -70,8 +70,38 @@ namespace IMAV
             StartCoroutine(Screenshot(filePath + filename, thumbnailPath + filename, PostScreenShot));
         }
 
+        List<GameObject> FindGameObjectsInUILayer()
+        {
+            GameObject[] goArray = FindObjectsOfType<GameObject>();
+
+            List<GameObject> uiList = new List<GameObject>();
+
+            for (var i = 0; i < goArray.Length; i++)
+            {
+                if (goArray[i].layer == 5)
+                {
+                    uiList.Add(goArray[i]);
+                }
+            }
+
+            if (uiList.Count == 0)
+            {
+                return null;
+            }
+
+            return uiList;
+        }
+
         IEnumerator Screenshot(string filePath, string thumbPath, System.Action<Texture2D, string, string> run)
         {
+            List<GameObject> uiObjects = FindGameObjectsInUILayer();
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(false);
+            }
+
+
             yield return new WaitForEndOfFrame();
             RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
             Camera.main.targetTexture = RT;
@@ -79,6 +109,12 @@ namespace IMAV
             screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
             byte[] bytes = screen.EncodeToJPG();
             System.IO.File.WriteAllBytes(filePath, bytes);
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(true);
+            }
+
             Camera.main.targetTexture = null;
             Destroy(RT);
             if (run != null)
