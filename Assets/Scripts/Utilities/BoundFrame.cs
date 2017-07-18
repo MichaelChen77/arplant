@@ -26,7 +26,7 @@ namespace IMAV.UI
         public Transform backBottom;
         public Transform backLeft;
         public Transform backRight;
-        public Transform bottomPlane;
+        //public Transform bottomPlane;
 
         private Vector3 boundDiff;
         private Vector3 boundExtents;
@@ -83,15 +83,19 @@ namespace IMAV.UI
                 Destroy(co);
                 boundDiff = bound.center - transform.position;
                 boundExtents = bound.extents;
+
+                //Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
+                //target.transform.position -= new Vector3(0, delta.z, 0);
+                //transform.position = target.transform.position;
+
                 setPoints();
                 return true;
             }
             return false;
-
         }
 
         void setPoints()
-        {
+        { 
             Vector3 bc = transform.position + quat * boundDiff;
             topFrontRight.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(1, 1, 1));
             topFrontLeft.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(-1, 1, 1));
@@ -114,7 +118,8 @@ namespace IMAV.UI
             backBottom.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(0, -1, -1));
             backLeft.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(-1, 0, -1));
             backRight.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(1, 0, -1));
-            bottomPlane.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
+            //bottomPlane.position = bc + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
+            //Debug.Log("bottomPlane: " + bottomPlane.localPosition);
 
             scalelines();
         }
@@ -146,9 +151,9 @@ namespace IMAV.UI
             scaleline(midBottomLeft, bottomFrontLeft.localPosition.z, bottomBackRight.localPosition.z);
             scaleline(midBottomRight, bottomFrontRight.localPosition.z, bottomBackRight.localPosition.z);
 
-            float _x = topBackRight.localPosition.x - topBackLeft.localPosition.x;
-            float _y = topBackLeft.localPosition.y - bottomBackLeft.localPosition.y;
-            bottomPlane.localScale = new Vector3(_x*0.1f, 1, _y*0.1f);
+            //float _x = topBackRight.localPosition.x - topBackLeft.localPosition.x;
+            //float _y = topBackLeft.localPosition.y - bottomBackLeft.localPosition.y;
+            //bottomPlane.localScale = new Vector3(_x * 0.1f, 1, _y * 0.1f);
         }
 
         void refresh()
@@ -180,7 +185,7 @@ namespace IMAV.UI
                 backBottom.localPosition = backBottom.localPosition * rate;
                 backLeft.localPosition = backLeft.localPosition * rate;
                 backRight.localPosition = backRight.localPosition * rate;
-                bottomPlane.localPosition = bottomPlane.localPosition * rate;
+                //bottomPlane.localPosition = bottomPlane.localPosition * rate;
 
                 scalelines();
             }

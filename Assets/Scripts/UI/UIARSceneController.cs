@@ -237,7 +237,8 @@ namespace IMAV.UI
                 List<Transform> temp = new List<Transform>();
                 foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
                 {
-                    temp.Add(tr);
+                    if (tr.tag != "static")
+                        temp.Add(tr);
                 }
                 foreach (Transform tran in temp)
                 {

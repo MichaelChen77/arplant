@@ -110,6 +110,8 @@ namespace IMAV
                 else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
                 {
                     obj.transform.position = ResourceManager.Singleton.TrackPos;
+
+                    BoxCollider box = obj.GetComponent<BoxCollider>();
                     Quaternion quat = obj.transform.rotation;
                     obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
                 }

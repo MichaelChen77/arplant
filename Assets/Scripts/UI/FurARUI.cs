@@ -33,6 +33,7 @@ namespace IMAV.UI
                 ResourceManager.Singleton.Reset();
                 SetVirtualMode(DataUtility.VirtualModeInt, false);
                 StartCoroutine(resetObject());
+                ResourceManager.Singleton.DebugString("FurUI start end");
             }
             catch(System.Exception ex)
             {
@@ -95,7 +96,7 @@ namespace IMAV.UI
 					RaycastHit hit;
 					if (Physics.Raycast (ray, out hit)) {
 						GameObject touchedObject = hit.transform.gameObject;
-						if (touchedObject != null) {
+						if (touchedObject != null && touchedObject.tag != "static") {
 							ResourceManager.Singleton.SetCurrentObject (touchedObject.GetComponent<ARModel> ());
 						} else {
 							ResourceManager.Singleton.SetCurrentObjectState (SelectState.None);
@@ -108,9 +109,9 @@ namespace IMAV.UI
 
 		void HideUI()
 		{
-            showMenu(false);
+            //showMenu(false);
 
-            //cschen0705 furform.Close();
+            furform.Close();
         }
 
         public void HideAllUI()
@@ -202,7 +203,8 @@ namespace IMAV.UI
                 List<Transform> temp = new List<Transform>();
                 foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
                 {
-                    temp.Add(tr);
+                    if (tr.tag != "static")
+                        temp.Add(tr);
                 }
                 foreach (Transform tran in temp)
                 {

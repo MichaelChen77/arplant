@@ -30,30 +30,48 @@ namespace IMAV
 			}
 		}
 
-		void Start()
-		{
-			Init ();
-            //BoxCollider box = GetComponent<BoxCollider>();
-            //if(box != null)
-            //{
-            //    GameObject plane = Instantiate(Resources.Load("ShadowPlane", typeof(GameObject))) as GameObject;
-            //    if (plane != null)
-            //    {
-            //        plane.transform.parent = transform;
-            //        Vector3 boundDiff = box.bounds.center - transform.position;
-            //        plane.transform.localPosition = transform.rotation * boundDiff + transform.rotation * Vector3.Scale(box.bounds.extents, new Vector3(0, 0, -1));
-            //        plane.transform.localScale = new Vector3(box.bounds.extents.x * 0.2f, 1, box.bounds.extents.y * 0.1f);
-            //    }
-            //}
+
+        void Start()
+        {
+            Init();
+        }
+
+        void Init () {
+            if (touchCtrl == null)
+            {
+                float f = calculateBounds(gameObject);
+                transform.position += new Vector3(0, f, 0);
+                ResourceManager.Singleton.DebugString("positiion: " + transform.position+" ; "+f);
+                touchCtrl = GetComponent<ObjectTouchControl>();
+                touchCtrl = gameObject.AddComponent<ObjectTouchControl>();
+                touchCtrl.Init(this, f);
+                CloseShadowCast();
+            }
 		}
 
-		void Init () {
-			touchCtrl = GetComponent<ObjectTouchControl> ();
-			if (touchCtrl == null)
-				touchCtrl = gameObject.AddComponent<ObjectTouchControl> ();
-			touchCtrl.Init (this);
-            CloseShadowCast();
-		}
+        float calculateBounds(GameObject obj)
+        {
+            BoxCollider box = obj.GetComponent<BoxCollider>();
+            if (box != null)
+            {
+                GameObject co = new GameObject("dummy");
+                co.transform.position = obj.transform.position;
+                co.transform.localScale = obj.transform.lossyScale;
+                BoxCollider cobc = co.AddComponent<BoxCollider>();
+                Quaternion quat = obj.transform.rotation;
+                cobc.center = box.center;
+                cobc.size = box.size;
+                Bounds bound = cobc.bounds;
+                Destroy(co);
+                Vector3 boundDiff = bound.center - transform.position;
+                Vector3 boundExtents = bound.extents;
+
+                Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
+                ResourceManager.Singleton.DebugString("delta: " + delta);
+                return -delta.y;
+            }
+            return 0;
+        }
 
         public void CloseShadowCast()
         {

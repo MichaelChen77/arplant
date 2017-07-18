@@ -284,7 +284,8 @@ namespace IMAV
         {
             GameObject obj = Instantiate(modelDict[sku]);
             obj.transform.position = Vector3.zero;
-            //ResourceManager.Singleton.AddMarkerlessRemoteObject(sku, obj, true);
+            ResourceManager.Singleton.DebugString("Load Model To Scene");
+            ResourceManager.Singleton.AddMarkerlessRemoteObject(sku, obj, true);
         }
 
         public void DownloadModelCallback(int _id, UnityEngine.Object[] content)

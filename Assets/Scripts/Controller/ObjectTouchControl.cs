@@ -42,16 +42,15 @@ namespace IMAV
 		ARModel target;
 		bool startDrag = false;
 
+        float heightPos;
+
         /// <summary>
         /// Start this instance.
         /// </summary>
-		public void Init(ARModel model)
+		public void Init(ARModel model, float height)
 		{
+            heightPos = height;
 			SaveTransform ();
-			//boundbox = GetComponent<BoundBoxes_BoundBox> ();
-			//if (boundbox == null)
-			//	boundbox = gameObject.AddComponent<BoundBoxes_BoundBox> ();
-			//boundbox.init ();
 			target = model;
 		}
 
@@ -60,13 +59,14 @@ namespace IMAV
         /// </summary>
         void Update()
         {
-			if (target.Selected == SelectState.Actived) {
-				if (Input.touchCount == 1) {
+            if (target.Selected == SelectState.Actived)
+            {
+                if (Input.touchCount == 1) {
 					Drag (Input.GetTouch (0));
 				} else if (Input.touchCount == 2) {
 					processZoomAndRotate (Input.GetTouch (0), Input.GetTouch (1));
 				}
-			}
+            }
         }
 			
 		void processZoomAndRotate (Touch fing1, Touch fing2)
@@ -93,6 +93,9 @@ namespace IMAV
 					if (scaleChange < 1) {
 						scaleChange = 1;
 					}
+                    float rate = scaleChange / transform.localScale.x;
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y * rate, transform.localPosition.z);
+                    heightPos = heightPos * rate;
 					this.transform.localScale = new Vector3 (scaleChange, scaleChange, scaleChange);
 				} else {
 					if (delta1 > 1f)
@@ -123,7 +126,7 @@ namespace IMAV
 			else if (startDrag && fing.phase == TouchPhase.Moved)
             {
                 Vector2 fingMove = fing.deltaPosition;
-		#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
                 AndroidJavaClass kudanArClass = new AndroidJavaClass("eu.kudan.androidar.KudanAR");
                 AndroidJavaObject m_KudanAR_Instance = kudanArClass.CallStatic<AndroidJavaObject>("getInstance");
                 Quaternion orientation = new Quaternion();
@@ -139,15 +142,30 @@ namespace IMAV
                     orientation.z = arbiOrientation.Get<float>("z");
                     orientation.w = arbiOrientation.Get<float>("w");
                 }
-				Vector3 rotation = orientation.eulerAngles;
-		#endif   
-				float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime *10;
-				float positionChangeZ = this.transform.position.z + deltMoveZ /10;
+                Vector3 rotation = orientation.eulerAngles;
+#endif
+                //float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime *10;
+                //float positionChangeZ = this.transform.position.z + deltMoveZ /10;
 
-				Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, positionChangeZ);
-				Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);
-				pos1.z = positionChangeZ;
-				transform.position = pos1;
+                //Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, positionChangeZ);
+                //Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);
+                //pos1.z = positionChangeZ;
+                //transform.position = pos1;
+
+                //hPlane = new Plane(ResourceManager.Singleton.markerlessTransform.position.normalized, transform.position);
+                
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, float.MaxValue, 1<<11))
+                {
+                    if (hit.collider != null)
+                    {
+                        transform.position = hit.point + new Vector3(0, heightPos, 0);
+                        Debug.Log("hit point: " + hit.point+" ; "+hit.collider.name);
+                    }
+                    //transform.position = ray.GetPoint(rayDistance);
+                    //ResourceManager.Singleton.DebugString("Plane: " + hPlane.normal + " ; " + transform.position + " ; ");
+                }
             }
         }
 
@@ -159,7 +177,7 @@ namespace IMAV
 			originalSize = transform.localScale;
 			originalRot = transform.rotation;
 			originalPos = transform.position;
-		}
+        }
 
 		/// <summary>
 		/// Reset to the original transform data: scale, position, rotation

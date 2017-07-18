@@ -14,4 +14,5 @@ public class FrameTest : MonoBehaviour {
         else
             frame.SetObject(target);
     }
+
 }

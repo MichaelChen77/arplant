@@ -135,6 +135,7 @@ namespace IMAV
                     }
                 }
             }
+            DebugString("ResourceManager start end");
         }
 
         void LoadResources()
@@ -313,6 +314,7 @@ namespace IMAV
             if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
+                ResourceManager.Singleton.DebugString("start Place object");
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
             }
             try
@@ -324,8 +326,10 @@ namespace IMAV
                     sobj.Init(_islocal, _id, _content);
                 }
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
+                ResourceManager.Singleton.DebugString("set as markerless");
                 SetCurrentObject(m);
                 ResetTouchMode();
+                ResourceManager.Singleton.DebugString("set as currentObject");
             }
             catch (System.Exception ex)
             {
