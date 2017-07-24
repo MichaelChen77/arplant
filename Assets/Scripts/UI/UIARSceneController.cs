@@ -24,27 +24,98 @@ namespace IMAV.UI
         public GToggleButton markerlessBtn;
         public GToggleButton placementBtn;
 
-        public UIControl menuRect;
-        public GameObject showMenuButton;
+        //public UIControl menuRect;
+        //public GameObject showMenuButton;
+
+        public UIControl mainMenu;
+        UIControl currentPanel;
 
         void Start()
         {
-            try
+            //try
+            //{
+            //    ResourceManager.Singleton.Reset();
+            //    SetVirtualMode(DataUtility.VirtualModeInt, false);
+            //    StartCoroutine(resetObject());
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            //}
+        }
+
+        //UIControl currentPanel;
+        //public GameObject LockBackground;
+        //public void OpenPanelUniq(UIControl panel)
+        //{
+        //    if (currentPanel != null)
+        //        currentPanel.Close();
+        //    OpenMenu(panel);
+        //}
+
+        //public void OpenPanel(UIControl panel)
+        //{
+        //    OpenMenu(panel);
+        //    HideUI();
+        //}
+
+        //public void OpenMenu(UIControl panel)
+        //{
+        //    currentPanel = panel;
+        //    if (currentPanel != null)
+        //        currentPanel.Open();
+        //}
+
+        //public void OpenPanelLock(UIControl panel)
+        //{
+        //    OpenPanel(panel);
+        //    LockBackground.SetActive(true);
+        //}
+
+        //public void CloseCurrentPanel()
+        //{
+        //    if (currentPanel != null)
+        //        currentPanel.Close();
+        //    currentPanel = null;
+        //    LockBackground.SetActive(false);
+        //}
+
+
+        public void OpenMenu()
+        {
+            closeCurrentPanel();
+            mainMenu.Open();
+        }
+
+        void closeCurrentPanel()
+        {
+            if (currentPanel != null)
             {
-                ResourceManager.Singleton.Reset();
-                SetVirtualMode(DataUtility.VirtualModeInt, false);
-                StartCoroutine(resetObject());
-            }
-            catch (System.Exception ex)
-            {
-                ResourceManager.Singleton.DebugString("error: " + ex.Message);
+                currentPanel.Close();
+                currentPanel = null;
             }
         }
 
+        public void OpenUI(UIControl ui)
+        {
+            mainMenu.Close();
+            currentPanel = ui;
+            ui.Open();
+        }
+
+        public void CloseUI(bool openMenu)
+        {
+            closeCurrentPanel();
+            if (openMenu)
+                mainMenu.Open();
+        }
+
+
+
         void Update()
         {
-            if (detailsBtn.interactable == (ResourceManager.Singleton.CurrentObject == null))
-                detailsBtn.interactable = !detailsBtn.interactable;
+            //if (detailsBtn.interactable == (ResourceManager.Singleton.CurrentObject == null))
+            //    detailsBtn.interactable = !detailsBtn.interactable;
             CheckTouch();
         }
 
@@ -78,50 +149,9 @@ namespace IMAV.UI
                             ResourceManager.Singleton.SetCurrentObjectState(SelectState.None);
                         }
                     }
-                    HideUI();
+                    //HideUI();
                 }
             }
-        }
-
-        void HideUI()
-        {
-            menuRect.Close();
-        }
-
-        UIControl currentPanel;
-        public GameObject LockBackground;
-        public void OpenPanelUniq(UIControl panel)
-        {
-            if (currentPanel != null)
-                currentPanel.Close();
-            OpenMenu(panel);
-        }
-
-        public void OpenPanel(UIControl panel)
-        {
-            OpenMenu(panel);
-            HideUI();
-        }
-
-        public void OpenMenu(UIControl panel)
-        {
-            currentPanel = panel;
-            if (currentPanel != null)
-                currentPanel.Open();
-        }
-
-        public void OpenPanelLock(UIControl panel)
-        {
-            OpenPanel(panel);
-            LockBackground.SetActive(true);
-        }
-
-        public void CloseCurrentPanel()
-        {
-            if (currentPanel != null)
-                currentPanel.Close();
-            currentPanel = null;
-            LockBackground.SetActive(false);
         }
 
         public void SetVirtualMode(int m)
@@ -185,7 +215,7 @@ namespace IMAV.UI
 
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
             string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-            ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, "", PostScreenShot);
+            //ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, "", PostScreenShot);
         }
 
         void PostScreenShot(Texture2D tex, string path)

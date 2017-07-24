@@ -12,12 +12,21 @@ namespace IMAV
         public static int VirtualModeInt = 0;
         public static bool WorkOnLocal = false;
 
-        public static Sprite CreateSprit(byte[] bytes)
+        public static Sprite CreateSprite(byte[] bytes)
         {
             if (bytes == null)
                 return null;
             Texture2D tex = new Texture2D(10, 10);
             tex.LoadImage(bytes);
+            Rect _rect = new Rect(0, 0, tex.width, tex.height);
+            Sprite newSprite = Sprite.Create(tex, _rect, new Vector2(0.5f, 0.5f));
+            return newSprite;
+        }
+
+        public static Sprite CreateSprite(Texture2D tex)
+        {
+            if (tex == null)
+                return null;
             Rect _rect = new Rect(0, 0, tex.width, tex.height);
             Sprite newSprite = Sprite.Create(tex, _rect, new Vector2(0.5f, 0.5f));
             return newSprite;
@@ -92,6 +101,23 @@ namespace IMAV
             T tmp = list[indexA];
             list[indexA] = list[indexB];
             list[indexB] = tmp;
+        }
+
+        public static string CovertToTimeString(int t)
+        {
+            string str = "";
+            if (t > 3600)
+                str = (t / 3600).ToString("00");
+            else
+                str = "00:";
+            t = t % 3600;
+            if (t > 60)
+                str += (t / 60).ToString("00");
+            else
+                str += "00:";
+            t = t % 60;
+            str += t.ToString("00");
+            return str;
         }
 
         public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, string _content)

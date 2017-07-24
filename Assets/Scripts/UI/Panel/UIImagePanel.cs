@@ -139,7 +139,7 @@ namespace IMAV.UI
                     if (fi.Exists)
                     {
                         byte[] content = File.ReadAllBytes(str);
-                        return DataUtility.CreateSprit(content);
+                        return DataUtility.CreateSprite(content);
                     }
                 }
                 catch { }

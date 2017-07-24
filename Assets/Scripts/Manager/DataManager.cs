@@ -197,7 +197,7 @@ namespace IMAV
             {
                 if (furnitureDict.ContainsKey(_id))
                 {
-                    furnitureDict[_id].Thumbnail = DataUtility.CreateSprit(content);
+                    furnitureDict[_id].Thumbnail = DataUtility.CreateSprite(content);
                 }
                 loadedCount--;
                 if (loadedCount == 0)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,12 @@ namespace IMAV
         public List<string> Images
         {
             get { return files; }
+        }
+
+        Dictionary<string, Sprite> thumbnails = new Dictionary<string, Sprite>();
+        public Dictionary<string, Sprite> Thumbnails
+        {
+            get { return thumbnails; }
         }
 
         public CaptureAndSave snapShot;
@@ -56,7 +63,12 @@ namespace IMAV
         //    }
         //}
 
-        public void CaptureScreen()
+        #region Screenshot methods
+
+        /// <summary>
+        /// Takes a screenshot of the camera feed and any projected objects, without any UI.
+        /// </summary>
+        public void CaptureScreen(bool duringRecord, Action<string> run)
         {
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
             string date = dt.ToString("yyyy-MM-dd");
@@ -65,9 +77,59 @@ namespace IMAV
             DataUtility.SetDirectory(filePath);
             DataUtility.SetDirectory(thumbnailPath);
 
-            string filename = "FurAR " + dt.ToString("HH-mm-ss") + ".jpg";
-            //ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath+filename, thumbnailPath+filename, PostScreenShot);
-            StartCoroutine(Screenshot(filePath + filename, thumbnailPath + filename, PostScreenShot));
+            string filename = "/FurAR " + dt.ToString("HH-mm-ss") + ".jpg";
+            if (duringRecord)
+                StartCoroutine(ScreenshotDuringRecord(date + filename, run));
+            else
+                StartCoroutine(Screenshot(date + filename, run));
+        }
+
+        IEnumerator ScreenshotDuringRecord(string filepath, Action<string> run)
+        {
+            yield return null;
+            Everyplay.TakeThumbnail();
+        }
+
+        IEnumerator Screenshot(string filepath, Action<string> run)
+        {
+            List<GameObject> uiObjects = FindGameObjectsInUILayer();
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(false);
+            }
+
+            yield return new WaitForEndOfFrame();
+
+            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
+            Camera.main.targetTexture = RT;
+            Camera.main.Render();
+            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
+            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
+            byte[] bytes = screen.EncodeToJPG();
+            System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath()+filepath, bytes);
+
+            int w = 200;
+            int h = w * Screen.height / Screen.width;
+            int _t = h % 4;
+            h = h - _t;
+            Texture2D newTex = Instantiate(screen);
+            yield return new WaitForEndOfFrame();
+            TextureScale.Point(newTex, w, h);
+            byte[] thumbbytes = newTex.EncodeToJPG();
+            File.WriteAllBytes(DataUtility.GetScreenThumbnailPath() + filepath, thumbbytes);
+
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].SetActive(true);
+            }
+            Camera.main.targetTexture = null;
+            Destroy(RT);
+
+            thumbnails[filepath] = DataUtility.CreateSprite(newTex);
+            
+            if (run != null)
+                run(filepath);
         }
 
         List<GameObject> FindGameObjectsInUILayer()
@@ -91,59 +153,11 @@ namespace IMAV
 
             return uiList;
         }
-
-        IEnumerator Screenshot(string filePath, string thumbPath, System.Action<Texture2D, string, string> run)
-        {
-            List<GameObject> uiObjects = FindGameObjectsInUILayer();
-
-            for (int i = 0; i < uiObjects.Count; i++)
-            {
-                uiObjects[i].SetActive(false);
-            }
-
-
-            yield return new WaitForEndOfFrame();
-            RenderTexture RT = new RenderTexture(Screen.width, Screen.height, 24);
-            Camera.main.targetTexture = RT;
-            Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
-            screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
-            byte[] bytes = screen.EncodeToJPG();
-            System.IO.File.WriteAllBytes(filePath, bytes);
-
-            for (int i = 0; i < uiObjects.Count; i++)
-            {
-                uiObjects[i].SetActive(true);
-            }
-
-            Camera.main.targetTexture = null;
-            Destroy(RT);
-            if (run != null)
-                run(screen, filePath, thumbPath);
-        }
-
-        void PostScreenShot(Texture2D tex, string filepath, string thumbpath)
-        {
-            files.Add(filepath);
-            StartCoroutine(CreateThumbnail(tex, thumbpath));
-        }
+        #endregion
 
         public void SaveScreenShot(Texture2D tex)
         {
             snapShot.SaveTextureToGallery(tex, ImageType.JPG);
-        }
-
-        IEnumerator CreateThumbnail(Texture2D tex, string path)
-        {
-            int w = 200;
-            int h = w * tex.height / tex.width;
-            int _t = h % 4;
-            h = h - _t;
-            Texture2D newTex = Instantiate(tex);
-            yield return new WaitForEndOfFrame();
-            TextureScale.Point(newTex, w, h);
-            byte[] bytes = newTex.EncodeToJPG();
-            File.WriteAllBytes(path, bytes);
-            imageGallery.AddImage(path);
         }
 
         public void ShowScreenShot(string str)
@@ -223,6 +237,11 @@ namespace IMAV
                 tick++;
             }
             dir.Delete();
+        }
+
+        public Sprite GetLastImage(bool thumbnail)
+        {
+            return null;
         }
     }
 }

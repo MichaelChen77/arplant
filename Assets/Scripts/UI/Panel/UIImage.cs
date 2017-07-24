@@ -80,7 +80,7 @@ namespace IMAV.UI
                     byte[] content = File.ReadAllBytes(str);
                     if(image == null)
                         image = GetComponent<Image>();
-                    image.sprite = DataUtility.CreateSprit(content);
+                    image.sprite = DataUtility.CreateSprite(content);
                 }
             }
             catch { }
