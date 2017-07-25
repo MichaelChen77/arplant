@@ -24,6 +24,38 @@ namespace IMAV.UI
 
         [SerializeField]
         bool isRecording = false;
+        bool isPaused = false;
+
+        Texture2D thumbnailTex;
+
+        void Start()
+        {
+            Everyplay.RecordingStarted += RecordingStarted;
+            Everyplay.RecordingStopped += RecordingStopped;
+        }
+
+        void Destroy()
+        {
+            Everyplay.RecordingStarted -= RecordingStarted;
+            Everyplay.RecordingStopped -= RecordingStopped;
+        }
+
+        private void RecordingStarted()
+        {
+            SetIsRecording(true);
+            isPaused = false;
+            recordTime = 0;
+            lastRecordSec = 0;
+            ImageManager.Singleton.StartRecordVideo();
+        }
+
+        private void RecordingStopped()
+        {
+            SetIsRecording(false);
+            recordTime = 0;
+            SetRecordTimeText();
+            ImageManager.Singleton.StopRecordVideo(OnPostScreenCaptured);
+        }
 
         public override void Open()
         {
@@ -52,33 +84,10 @@ namespace IMAV.UI
 
         public void StartVideoRecord()
         {
-            SetIsRecording(true);
-            recordTime = 0;
-            lastRecordSec = 0;
+            ResourceManager.Singleton.DebugString("Start video");
             Everyplay.StartRecording();
         }
 
-        void WalkSessions()
-        {
-            Debug.Log("Walking sessions");
-            string basePath = Application.temporaryCachePath;
-#if UNITY_ANDROID
-            string[] sParts = basePath.Split('/');
-            basePath = "/sdcard/Android/data/" + sParts[sParts.Length - 2] + "/cache/sessions/";
-#elif UNITY_IOS
-  basePath = basePath.Substring (0,basePath.Length-15);
-  basePath += "/tmp/Everyplay/session/";
-#endif
-            string[] dirs = System.IO.Directory.GetDirectories(basePath);
-            foreach (string s in dirs)
-            {
-                Debug.Log("Found folder: " + s);
-                string[] files = System.IO.Directory.GetFiles(s);
-                Debug.Log("It contains the following files:");
-                foreach (string s2 in files)
-                    Debug.Log(s2);
-            }
-        }
 
         void SetIsRecording(bool flag)
         {
@@ -93,17 +102,17 @@ namespace IMAV.UI
 
         public void StopVideoRecord()
         {
+            ResourceManager.Singleton.DebugString("Stop video");
             Everyplay.StopRecording();
-            SetIsRecording(false);
         }
 
         public void PauseVideoRecord()
         {
-            isRecording = !isRecording;
-            if (isRecording)
-                Everyplay.ResumeRecording();
-            else
+            isPaused = !isPaused;
+            if (isPaused)
                 Everyplay.PauseRecording();
+            else
+                Everyplay.ResumeRecording();
         }
 
         public override void Close()
@@ -113,7 +122,7 @@ namespace IMAV.UI
 
         void Update()
         {
-            if (isRecording)
+            if (isRecording && !isPaused)
             {
                 recordTime += Time.deltaTime;
                 SetRecordTimeText();

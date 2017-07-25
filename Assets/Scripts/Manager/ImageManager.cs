@@ -36,6 +36,9 @@ namespace IMAV
 
         public CaptureAndSave snapShot;
 
+        string curRecordName;
+        bool isVideoThumb = false;
+
         void Awake()
         {
             if (mSingleton)
@@ -48,10 +51,15 @@ namespace IMAV
             }
         }
 
-        //void Start()
-        //{
-        //    ResetFiles();
-        //}
+        void Start()
+        {
+            Everyplay.ThumbnailTextureReady += OnThumbnailReady;
+        }
+
+        void OnDestroy()
+        {
+            Everyplay.ThumbnailTextureReady -= OnThumbnailReady;
+        }
 
         //void ResetFiles()
         //{
@@ -64,6 +72,22 @@ namespace IMAV
         //}
 
         #region Screenshot methods
+        private void OnThumbnailReady(Texture2D tex, bool portrait)
+        {
+            byte[] thumbbytes = tex.EncodeToJPG();
+            if (isVideoThumb)
+            {
+                File.WriteAllBytes(DataUtility.GetScreenThumbnailPath() + tex.name, thumbbytes);
+                thumbnails[tex.name] = DataUtility.CreateSprite(tex);
+                isVideoThumb = false;
+            }
+            else
+            { 
+                File.WriteAllBytes(DataUtility.GetScreenShotPath() + tex.name, thumbbytes);
+                SaveThumbnail(tex, tex.name);
+                Destroy(tex);
+            }
+        }
 
         /// <summary>
         /// Takes a screenshot of the camera feed and any projected objects, without any UI.
@@ -71,22 +95,25 @@ namespace IMAV
         public void CaptureScreen(bool duringRecord, Action<string> run)
         {
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
-            string date = dt.ToString("yyyy-MM-dd");
+            string date = dt.ToString("yyyyMMdd");
             string filePath = DataUtility.GetScreenShotPath() + date + "/";
-            string thumbnailPath = DataUtility.GetScreenThumbnailPath() + date + "/";
+            string thumbPath = DataUtility.GetScreenThumbnailPath() + date + "/";
             DataUtility.SetDirectory(filePath);
-            DataUtility.SetDirectory(thumbnailPath);
+            DataUtility.SetDirectory(thumbPath);
 
-            string filename = "/FurAR " + dt.ToString("HH-mm-ss") + ".jpg";
+            string filename = "Screen " + dt.ToString("yyyyMMdd_HHmmss") + ".jpg";
             if (duringRecord)
-                StartCoroutine(ScreenshotDuringRecord(date + filename, run));
+                ScreenshotDuringRecord(Screen.width, Screen.height, date + "/" + filename);
             else
-                StartCoroutine(Screenshot(date + filename, run));
+                StartCoroutine(Screenshot(date + "/" + filename, run));
         }
 
-        IEnumerator ScreenshotDuringRecord(string filepath, Action<string> run)
+        void ScreenshotDuringRecord(int width, int height, string filename)
         {
-            yield return null;
+            Texture2D screen = new Texture2D(width, height, TextureFormat.RGB24, false);
+            screen.name = filename;
+            screen.wrapMode = TextureWrapMode.Clamp;
+            Everyplay.SetThumbnailTargetTexture(screen);
             Everyplay.TakeThumbnail();
         }
 
@@ -109,15 +136,7 @@ namespace IMAV
             byte[] bytes = screen.EncodeToJPG();
             System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath()+filepath, bytes);
 
-            int w = 200;
-            int h = w * Screen.height / Screen.width;
-            int _t = h % 4;
-            h = h - _t;
-            Texture2D newTex = Instantiate(screen);
-            yield return new WaitForEndOfFrame();
-            TextureScale.Point(newTex, w, h);
-            byte[] thumbbytes = newTex.EncodeToJPG();
-            File.WriteAllBytes(DataUtility.GetScreenThumbnailPath() + filepath, thumbbytes);
+            SaveThumbnail(screen, filepath);
 
             for (int i = 0; i < uiObjects.Count; i++)
             {
@@ -125,11 +144,72 @@ namespace IMAV
             }
             Camera.main.targetTexture = null;
             Destroy(RT);
+            Destroy(screen);
 
-            thumbnails[filepath] = DataUtility.CreateSprite(newTex);
-            
             if (run != null)
                 run(filepath);
+        }
+
+        void SaveThumbnail(Texture2D screen, string filepath)
+        {
+            int h = DataUtility.GetRelatedHeight(Tags.ThumbnailWidth);
+            Texture2D newTex = Instantiate(screen);
+            TextureScale.Point(newTex, Tags.ThumbnailWidth, h);
+            byte[] thumbbytes = newTex.EncodeToJPG();
+            File.WriteAllBytes(DataUtility.GetScreenThumbnailPath() + filepath, thumbbytes);
+            thumbnails[filepath] = DataUtility.CreateSprite(newTex);
+        }
+
+        void WalkSessions(string jsonfile, string videofile)
+        {
+            string[] dirs = System.IO.Directory.GetDirectories(DataUtility.GetSessionPath());
+            if (dirs != null)
+            {
+                foreach (string s in dirs)
+                {
+                    string[] files = System.IO.Directory.GetFiles(s);
+                    foreach (string f in files)
+                    {
+                        FileInfo file = new FileInfo(f);
+                        if (file.Extension == ".json")
+                        {
+                            File.Copy(file.FullName, jsonfile);
+                        }
+                        else if (file.Extension == ".mp4")
+                        {
+                            File.Copy(file.FullName, videofile);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void StopRecordVideo(Action<string> run)
+        {
+            string jsonName = DataUtility.GetScreenVideoPath() + curRecordName + ".json";
+            string videoName = DataUtility.GetScreenVideoPath() + curRecordName + ".mp4";
+
+            WalkSessions(jsonName, videoName);
+
+            if (run != null)
+                run(curRecordName + ".jpg");
+        }
+
+        public void StartRecordVideo()
+        {
+            System.DateTime dt = System.DateTime.Now.ToLocalTime();
+            string date = dt.ToString("yyyyMMdd");
+            string videoPath = DataUtility.GetScreenVideoPath() + date + "/";
+            string thumbPath = DataUtility.GetScreenThumbnailPath() + date + "/";
+            DataUtility.SetDirectory(videoPath);
+            DataUtility.SetDirectory(thumbPath);
+
+            string fileName = "Video " + dt.ToString("yyyyMMdd_HHmmss");
+            curRecordName = date + "/" + fileName;
+
+            int h = DataUtility.GetRelatedHeight(Tags.ThumbnailWidth);
+            isVideoThumb = true;
+            ScreenshotDuringRecord(Tags.ThumbnailWidth, h, curRecordName + ".jpg");
         }
 
         List<GameObject> FindGameObjectsInUILayer()
@@ -158,6 +238,11 @@ namespace IMAV
         public void SaveScreenShot(Texture2D tex)
         {
             snapShot.SaveTextureToGallery(tex, ImageType.JPG);
+        }
+
+        public void SaveVideo(string source, string filename)
+        {
+            GallerySaver.CopyToGallery(source, filename);
         }
 
         public void ShowScreenShot(string str)

@@ -90,6 +90,32 @@ namespace IMAV
             return @"C:\WorkSpace\AR\TestImages\ScreenThumbnails\";
         }
 
+        public static string GetScreenVideoPath()
+        {
+            return Application.persistentDataPath + "/Videos/";
+        }
+
+        public static string GetSessionPath()
+        {
+            string basePath = Application.temporaryCachePath;
+#if UNITY_ANDROID
+            string[] sParts = basePath.Split('/');
+            basePath = "/sdcard/Android/data/" + sParts[sParts.Length - 2] + "/cache/sessions/";
+#elif UNITY_IOS
+  basePath = basePath.Substring (0,basePath.Length-15);
+  basePath += "/tmp/Everyplay/session/";
+#endif
+            return basePath;
+        }
+
+        public static int GetRelatedHeight(int w)
+        {
+            int h = w * Screen.height / Screen.width;
+            int _t = h % 4;
+            h = h - _t;
+            return h;
+        }
+
         public static void SetDirectory(string str)
         {
             if (!Directory.Exists(str))
@@ -107,12 +133,12 @@ namespace IMAV
         {
             string str = "";
             if (t > 3600)
-                str = (t / 3600).ToString("00");
+                str = (t / 3600).ToString("00")+":";
             else
                 str = "00:";
             t = t % 3600;
             if (t > 60)
-                str += (t / 60).ToString("00");
+                str += (t / 60).ToString("00")+":";
             else
                 str += "00:";
             t = t % 60;
