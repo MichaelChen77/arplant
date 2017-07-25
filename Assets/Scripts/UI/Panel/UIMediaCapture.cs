@@ -56,7 +56,28 @@ namespace IMAV.UI
             recordTime = 0;
             lastRecordSec = 0;
             Everyplay.StartRecording();
-            Everyplay.PlayVideoWithDictionary()
+        }
+
+        void WalkSessions()
+        {
+            Debug.Log("Walking sessions");
+            string basePath = Application.temporaryCachePath;
+#if UNITY_ANDROID
+            string[] sParts = basePath.Split('/');
+            basePath = "/sdcard/Android/data/" + sParts[sParts.Length - 2] + "/cache/sessions/";
+#elif UNITY_IOS
+  basePath = basePath.Substring (0,basePath.Length-15);
+  basePath += "/tmp/Everyplay/session/";
+#endif
+            string[] dirs = System.IO.Directory.GetDirectories(basePath);
+            foreach (string s in dirs)
+            {
+                Debug.Log("Found folder: " + s);
+                string[] files = System.IO.Directory.GetFiles(s);
+                Debug.Log("It contains the following files:");
+                foreach (string s2 in files)
+                    Debug.Log(s2);
+            }
         }
 
         void SetIsRecording(bool flag)
@@ -92,7 +113,7 @@ namespace IMAV.UI
 
         void Update()
         {
-            if(isRecording)
+            if (isRecording)
             {
                 recordTime += Time.deltaTime;
                 SetRecordTimeText();
@@ -101,7 +122,7 @@ namespace IMAV.UI
 
         void SetRecordTimeText()
         {
-            if(lastRecordSec != (int)recordTime)
+            if (lastRecordSec != (int)recordTime)
             {
                 lastRecordSec = (int)recordTime;
                 recordTimeText.text = DataUtility.CovertToTimeString(lastRecordSec);
