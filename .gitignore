@@ -37,11 +37,11 @@ Thumbs.db
 *.7z 
 *.dmg 
 *.gz 
-*.iso 
-*.jar 
+*.iso
 *.rar 
 *.tar 
 *.zip 
+*.meta
 
 # ============ #
 # Project Specific #
