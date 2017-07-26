@@ -59,7 +59,7 @@ public class GToggleButton : MonoBehaviour
             case ToggleConstraint.Sprite: UpdateSprite(); break;
             case ToggleConstraint.Text: UpdateText(); break;
             case ToggleConstraint.ColorAndText: UpdateColor(); UpdateText(); break;
-            case ToggleConstraint.SpriteAndColor: UpdateSprite(); UpdateSprite(); break;
+            case ToggleConstraint.SpriteAndColor: UpdateSprite(); UpdateColor(); break;
             case ToggleConstraint.SpriteAndText: UpdateSprite(); UpdateText(); break;
             case ToggleConstraint.All: UpdateSprite(); UpdateColor(); UpdateText(); break;
         }

@@ -28,13 +28,6 @@ namespace IMAV.UI
         void Awake()
         {
             galleryRect = GetComponent<RectTransform>();
-            DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
-            DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
-        }
-
-        void Start()
-        {
-            Open();
         }
 
         public override void Open()
@@ -46,23 +39,35 @@ namespace IMAV.UI
         }
 
         IEnumerator LoadDirectory(DirectoryInfo dir)
-        {
+        { 
             if (dir.Exists)
             {
                 DirectoryInfo[] dirs = dir.GetDirectories().OrderByDescending(d=>d.LastWriteTime).ToArray();
-                for (int i = 0; i < dirs.Length; i++)
+                for (int i = 0; i < items.Count; i++)
                 {
-                    UIImageGrid grid = AddItem(dirs[i]);
-                    if (grid != null)
+                    UIImageGrid ug = items[i] as UIImageGrid;
+                    if (!ug.EqualDirectory(dirs[i]))
                     {
-                        yield return new WaitUntil(grid.IsLoaded);
-                        topPos -= grid.GetHeight() + spaceY;
+                        ug.Clear();
+                        ug.Open(dirs[i]);
+                    }
+                }
+                if (items.Count < dirs.Length)
+                {
+                    for(int i = items.Count; i<dirs.Length; i++)
+                    {
+                        UIImageGrid grid = AddItem(dirs[i]);
+                        if (grid != null)
+                        {
+                            yield return new WaitUntil(grid.IsLoaded);
+                            topPos -= grid.GetHeight() + spaceY;
+                        }
                     }
                 }
                 topPos -= bottomRect.sizeDelta.y;
             }
-            yield return null;
-            UpdateSize();
+            yield return new WaitForEndOfFrame();
+            Refresh();
         }
 
         public void AddImage(string str)
@@ -185,7 +190,6 @@ namespace IMAV.UI
             else
             {
                 string path = DataUtility.GetScreenShotPath() + im.ImageTag;
-                Debug.Log("open file: " + path);
                 ImageManager.Singleton.ShowScreenShot(im.ImageTag);
             }
         }

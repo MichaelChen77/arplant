@@ -39,11 +39,11 @@ namespace IMAV.UI
             if (tran != null)
             {
                 Image m = tran.GetComponent<Image>();
-                Destroy(m.sprite);
+                ClearImage(m);
                 if (flag)
-                    m.sprite = Load(ImageManager.Singleton.GetImagePath(swipe.CurrentPage + 1));
+                    m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage + 1));
                 else
-                    m.sprite = Load(ImageManager.Singleton.GetImagePath(swipe.CurrentPage - 1));
+                    m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage - 1));
             }
         }
 
@@ -86,9 +86,31 @@ namespace IMAV.UI
             for (int i = 0; i < swipe.transform.childCount; i++)
             {
                 Image img = swipe.transform.GetChild(i).GetComponent<Image>();
-                Destroy(img.sprite);
-                img.sprite = Load(ImageManager.Singleton.GetImagePath(index + i + changedInt));
+                ClearImage(img);
+                img.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(index + i + changedInt));
             }
+        }
+
+        public void PlayVideo()
+        {
+            string str = ImageManager.Singleton.Images[swipe.CurrentPage];
+            string fileName = str.Substring(0, str.LastIndexOf('_') + 1);
+            string path = File.ReadAllText(DataUtility.GetScreenVideoPath() + fileName + ".json");
+            List<System.Object> videos = EveryplayMiniJSON.Json.Deserialize(path) as List<System.Object>;
+            if (videos.Count == 1)
+            {
+                foreach (Dictionary<string, object> video in videos)
+                {
+                    Everyplay.PlayVideoWithDictionary(video);
+                }
+            }
+        }
+
+        public void ClearImage(Image img)
+        {
+            if (img.sprite != null)
+                Destroy(img.sprite.texture);
+            Destroy(img.sprite);
         }
 
         public void SaveImage()
@@ -126,25 +148,9 @@ namespace IMAV.UI
             gameObject.SetActive(false);
             if (ImageManager.Singleton.imageGallery.isActiveAndEnabled)
                 ImageManager.Singleton.imageGallery.Refresh();
+            else
+                ImageManager.Singleton.imageGallery.Open();
             //ResourceManager.Singleton.Resume();
-        }
-
-        public Sprite Load(string str)
-        {
-            if (str != string.Empty)
-            {
-                try
-                {
-                    FileInfo fi = new FileInfo(str);
-                    if (fi.Exists)
-                    {
-                        byte[] content = File.ReadAllBytes(str);
-                        return DataUtility.CreateSprite(content);
-                    }
-                }
-                catch { }
-            }
-            return null;
         }
     }
 }

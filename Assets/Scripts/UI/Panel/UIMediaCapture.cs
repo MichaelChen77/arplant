@@ -17,6 +17,8 @@ namespace IMAV.UI
         public GameObject recordTimePanel;
         public Text recordTimeText;
 
+        public UIImagePanel imagePanel;
+
 
         public Image previewImage;
         float recordTime = 0;
@@ -60,8 +62,7 @@ namespace IMAV.UI
         public override void Open()
         {
             base.Open();
-            if (previewImage.sprite == null)
-                previewImage.sprite = ImageManager.Singleton.GetLastImage(true);
+            previewImage.sprite = ImageManager.Singleton.GetLatestThumbnail();
         }
 
         public void CaptureImage()
@@ -72,12 +73,7 @@ namespace IMAV.UI
 
         void OnPostScreenCaptured(string path)
         {
-            Sprite sp = ImageManager.Singleton.Thumbnails[path];
-            if (sp == null)
-            {
-                byte[] bytes = File.ReadAllBytes(DataUtility.GetScreenThumbnailPath() + path);
-                sp = DataUtility.CreateSprite(bytes);
-            }
+            Sprite sp = ImageManager.Singleton.GetImage(path, true);
             previewImage.sprite = sp;
             LeanTween.scale(thumbnailImage, Vector3.one, 0.2f);
         }
@@ -117,7 +113,14 @@ namespace IMAV.UI
 
         public override void Close()
         {
+            base.Close();
+        }
 
+        public void ShowImage()
+        {
+            ImageManager.Singleton.ShowLatestImage();
+            Close();
+            //ImageManager.Singleton.imageGallery.Open();
         }
 
         void Update()

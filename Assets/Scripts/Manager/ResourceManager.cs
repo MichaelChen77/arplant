@@ -49,7 +49,7 @@ public class ResObject
 
 public enum VirtualMode
 {
-    Markerless, Marker, Placement
+    Markerless = 0, Marker, Placement
 }
 
 namespace IMAV
@@ -208,7 +208,7 @@ namespace IMAV
 
         public void loadnextlevel()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("ARScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("AR");
         }
 
         public void LoadGameObject(string _type, string str)

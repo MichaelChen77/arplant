@@ -33,7 +33,6 @@ namespace IMAV.UI
                 num++;
             float csize = gridRect.rect.width / num - gridGroup.spacing.x;
             gridGroup.cellSize = new Vector2(csize, csize);
-            Debug.Log("size: " + gridRect.rect.width);
             StartCoroutine(LoadDirectory(dir));
         }
 
@@ -54,6 +53,11 @@ namespace IMAV.UI
         public bool EqualDirectory(string path)
         {
             return gridDir.FullName == path;
+        }
+
+        public bool EqualDirectory(DirectoryInfo d)
+        {
+            return gridDir == d;
         }
 
         public bool IsLoaded()
@@ -110,6 +114,11 @@ namespace IMAV.UI
         {
             ImageManager.Singleton.DeleteImageFolder(gridDir.Name);
             base.Delete();
+        }
+
+        public void Clear()
+        {
+
         }
     }
 }

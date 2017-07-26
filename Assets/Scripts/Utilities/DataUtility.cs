@@ -32,6 +32,24 @@ namespace IMAV
             return newSprite;
         }
 
+        public static Sprite CreateSprite(string str)
+        {
+            if (str != string.Empty)
+            {
+                try
+                {
+                    FileInfo fi = new FileInfo(str);
+                    if (fi.Exists)
+                    {
+                        byte[] content = File.ReadAllBytes(str);
+                        return CreateSprite(content);
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);

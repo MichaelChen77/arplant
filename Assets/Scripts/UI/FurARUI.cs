@@ -48,8 +48,8 @@ namespace IMAV.UI
 
         public void SetVirtualMode(int m, bool showHint)
         {
-            if (System.Enum.IsDefined(typeof(VirtualMode), m))
-            {
+            //if (System.Enum.IsDefined(typeof(VirtualMode), m))
+            //{
                 DataUtility.VirtualModeInt = m;
                 VirtualMode vm = (VirtualMode)m;
                 if (vm == VirtualMode.Markerless)
@@ -65,7 +65,7 @@ namespace IMAV.UI
                 ResourceManager.Singleton.SetVirtualMode(vm);
                 if (showHint)
                     SetMarkerHint();
-            }
+            //}
         }
 
         public void ShowControlButtons(bool flag)
@@ -144,14 +144,16 @@ namespace IMAV.UI
         string currentfile = "";
         public void CaptureScreen()
         {
-            if (!Directory.Exists(DataUtility.GetScreenShotPath()))
-            {
-                Directory.CreateDirectory(DataUtility.GetScreenShotPath());
-            }
+   //         if (!Directory.Exists(DataUtility.GetScreenShotPath()))
+   //         {
+   //             Directory.CreateDirectory(DataUtility.GetScreenShotPath());
+   //         }
 
-			System.DateTime dt = System.DateTime.Now.ToLocalTime ();
-			string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-			//ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, "", PostScreenShot);
+			//System.DateTime dt = System.DateTime.Now.ToLocalTime ();
+			//string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
+
+            ImageManager.Singleton.CaptureScreen(false, null);
+            //ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, "", PostScreenShot);
         }
 
 		void PostScreenShot(Texture2D tex, string path)
@@ -163,18 +165,15 @@ namespace IMAV.UI
         public void ViewImage()
         {
             //cschen0710
-            //imageViewDlg.SetActive(false);
-            //ResourceManager.Singleton.Pause();
-            //if (File.Exists(DataUtility.GetScreenShotPath() + currentfile))
-            //    imageGallery.Open(DataUtility.GetScreenShotPath() + currentfile);
-            //else
-            //    imageGallery.Open();
+            imageViewDlg.SetActive(false);
+            ResourceManager.Singleton.Pause();
+            imageGallery.Open();
         }
 
         public void OpenImageGallery()
         {
             //cschen0710
-            //imageGallery.Open();
+            imageGallery.Open();
         }
 
         void SetMarkerHint()

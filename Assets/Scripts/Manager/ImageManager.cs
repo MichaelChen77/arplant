@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using IMAV.UI;
 
 namespace IMAV
@@ -53,6 +54,9 @@ namespace IMAV
 
         void Start()
         {
+            DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
+            DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
+            StartCoroutine(loadFiles());
             Everyplay.ThumbnailTextureReady += OnThumbnailReady;
         }
 
@@ -61,15 +65,21 @@ namespace IMAV
             Everyplay.ThumbnailTextureReady -= OnThumbnailReady;
         }
 
-        //void ResetFiles()
-        //{
-        //    files.Clear();
-        //    string[] strs = Directory.GetFiles(DataUtility.GetScreenShotPath());
-        //    foreach (string s in strs)
-        //    {
-        //        files.Add(s);
-        //    }
-        //}
+        IEnumerator loadFiles()
+        {
+            files.Clear();
+            yield return null;
+            DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath());
+            DirectoryInfo[] dirs = dir.GetDirectories().OrderBy(d => d.LastWriteTime).ToArray();
+            for (int i = 0; i < dirs.Length; i++)
+            {
+                FileInfo[] fs = dirs[i].GetFiles().OrderBy(d=>d.LastWriteTime).ToArray();
+                for(int j =0; j<fs.Length; j++)
+                {
+                    files.Add(dirs[i].Name + "/" + fs[j].Name);
+                }
+            }
+        }
 
         #region Screenshot methods
         private void OnThumbnailReady(Texture2D tex, bool portrait)
@@ -324,9 +334,28 @@ namespace IMAV
             dir.Delete();
         }
 
-        public Sprite GetLastImage(bool thumbnail)
+        public Sprite GetLatestThumbnail()
         {
-            return null;
+            string str = files[files.Count - 1];
+            return GetImage(str, true);
+        }
+
+        public Sprite GetImage(string str, bool isThumbnail)
+        {
+            if (isThumbnail)
+            {
+                if (!thumbnails.ContainsKey(str) || thumbnails[str] == null)
+                    thumbnails[str] = DataUtility.CreateSprite(DataUtility.GetScreenThumbnailPath() + str);
+                return thumbnails[str];
+            }
+            else
+                return DataUtility.CreateSprite(DataUtility.GetScreenShotPath() + str);
+        }
+
+        public void ShowLatestImage()
+        {
+            Debug.Log("image: " + files[files.Count - 1]);
+            imagePanel.Open(files.Count-1);
         }
     }
 }
