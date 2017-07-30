@@ -15,7 +15,6 @@ namespace IMAV.UI
         public Text selectBtnText;
         public GameObject gridPrefab;
         public RectTransform contentRect;
-        public GameObject swipeObject;
         public RectTransform header;
         public RectTransform bodyRect;
         public RectTransform bottomRect;
@@ -39,7 +38,7 @@ namespace IMAV.UI
         }
 
         IEnumerator LoadDirectory(DirectoryInfo dir)
-        { 
+        {
             if (dir.Exists)
             {
                 DirectoryInfo[] dirs = dir.GetDirectories().OrderByDescending(d=>d.LastWriteTime).ToArray();
@@ -48,8 +47,7 @@ namespace IMAV.UI
                     UIImageGrid ug = items[i] as UIImageGrid;
                     if (!ug.EqualDirectory(dirs[i]))
                     {
-                        ug.Clear();
-                        ug.Open(dirs[i]);
+                        ug.Load(dirs[i]);
                     }
                 }
                 if (items.Count < dirs.Length)
@@ -70,6 +68,18 @@ namespace IMAV.UI
             Refresh();
         }
 
+        public UIImageGrid GetItem(string path)
+        {
+            UIImageGrid grid = null;
+            foreach (UIControl c in items)
+            {
+                grid = c as UIImageGrid;
+                if (grid.EqualDirectory(path))
+                    return grid;
+            }
+            return null;
+        }
+
         public void AddImage(string str)
         {
             FileInfo file = new FileInfo(str);
@@ -83,19 +93,7 @@ namespace IMAV.UI
                 else
                     grid.AddItem(file, 0.4f, 0);
             }
-            StartCoroutine(DelayRefresh());
-        }
-
-        public UIImageGrid GetItem(string path)
-        {
-            UIImageGrid grid = null;
-            foreach (UIControl c in items)
-            {
-                grid = c as UIImageGrid;
-                if (grid.EqualDirectory(path))
-                    return grid;
-            }
-            return null;
+            DelayRefresh();
         }
 
         public UIImageGrid AddItem(DirectoryInfo dir, int index = -1)
@@ -103,7 +101,7 @@ namespace IMAV.UI
             GameObject obj = Instantiate(gridPrefab, contentRect);
             UIImageGrid grid = obj.GetComponent<UIImageGrid>();
             grid.SetPosY(topPos);
-            grid.Open(dir);
+            grid.Load(dir);
             grid.ItemClickedHandler = OnClickImage;
             if (index != -1)
             {
@@ -114,9 +112,17 @@ namespace IMAV.UI
             return grid;
         }
 
-        IEnumerator DelayRefresh()
+        public void DelayRefresh(float f = 0)
         {
-            yield return new WaitForEndOfFrame();
+            StartCoroutine(RefreshItor(f));
+        }
+
+        IEnumerator RefreshItor(float delayTime)
+        {
+            if (delayTime == 0)
+                yield return new WaitForEndOfFrame();
+            else
+                yield return new WaitForSeconds(delayTime);
             Refresh();
         }
 
@@ -170,11 +176,11 @@ namespace IMAV.UI
         {
             for(int i=selectedImages.Count-1; i>-1; i--)
             {
-                selectedImages[i].Delete();
+                selectedImages[i].Delete(true);
             }
             selectedImages.Clear();
             OnSelectClick();
-            StartCoroutine(DelayRefresh());
+            DelayRefresh();
         }
 
         public void OnClickImage(UIImageGrid grid, UIImage im)
@@ -192,6 +198,28 @@ namespace IMAV.UI
                 string path = DataUtility.GetScreenShotPath() + im.ImageTag;
                 ImageManager.Singleton.ShowScreenShot(im.ImageTag);
             }
+        }
+
+
+        public UIImage GetImage(string str)
+        {
+            UIImageGrid ug = GetImageGrid(DataUtility.GetPathName(str));
+            if(ug != null)
+            {
+                return ug.GetImage(str);
+            }
+            return null;
+        }
+
+        public UIImageGrid GetImageGrid(string str)
+        {
+            foreach (UIControl ic in items)
+            {
+                UIImageGrid ug = ic as UIImageGrid;
+                if (ug != null && ug.gridName.text == str)
+                    return ug;
+            }
+            return null;
         }
 
     }

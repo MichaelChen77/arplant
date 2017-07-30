@@ -48,6 +48,12 @@ namespace IMAV
             }
         }
 
+        public void GetCategories()
+        {
+
+        }
+
+
         public void Init(int id, ResObject resobj)
         {
             FurnitureData fd = new FurnitureData(id, resobj.name);

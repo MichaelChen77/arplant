@@ -23,9 +23,15 @@ namespace IMAV.UI
             gridRect = GetComponent<RectTransform>();
         }
 
-        public void Open(DirectoryInfo dir)
+        public void Load(DirectoryInfo dir)
         {
-            isloaded = false;
+            Clear();
+            UpdateCellSize();
+            StartCoroutine(LoadDirectory(dir));
+        }
+
+        void UpdateCellSize()
+        {
             float _x = gridGroup.cellSize.x + gridGroup.spacing.x;
             float f = gridRect.rect.width % _x;
             int num = (int)(gridRect.rect.width / _x);
@@ -33,7 +39,6 @@ namespace IMAV.UI
                 num++;
             float csize = gridRect.rect.width / num - gridGroup.spacing.x;
             gridGroup.cellSize = new Vector2(csize, csize);
-            StartCoroutine(LoadDirectory(dir));
         }
 
         IEnumerator LoadDirectory(DirectoryInfo dir)
@@ -94,9 +99,9 @@ namespace IMAV.UI
         {
             if (ChildCount > 0)
             {
-                foreach(UIControl c in items)
+                for(int i=items.Count-1; i>-1; i--)
                 {
-                    c.Refresh();
+                    items[i].Refresh();
                 }
                 gridRect.sizeDelta = new Vector2(gridRect.sizeDelta.x, gridGroup.preferredHeight + nameHeight);
                 isloaded = true;
@@ -114,11 +119,37 @@ namespace IMAV.UI
         {
             ImageManager.Singleton.DeleteImageFolder(gridDir.Name);
             base.Delete();
+           
         }
 
         public void Clear()
         {
+            foreach(Transform tran in gridGroup.transform)
+            {
+                Destroy(tran.gameObject);
+            }
+            gridGroup.transform.DetachChildren();
+        }
 
+        public UIImage GetImage(string str)
+        {
+            foreach(UIControl ic in items)
+            {
+                UIImage im = ic as UIImage;
+                if (im != null && im.ImageTag == str)
+                    return im;
+            }
+            return null;
+        }
+
+        public UIImage GetImageByName(string str)
+        {
+            foreach(UIControl ic in items)
+            {
+                if (ic.name == str)
+                    return (UIImage)ic;
+            }
+            return null;
         }
     }
 }

@@ -11,9 +11,16 @@ namespace IMAV.UI
         public Text contentText;
         public Text firstBtnText;
         public Text secondBtnText;
+        public Button firstButton;
+        public Button secondButton;
 
         Action<int, System.Object> msgHandler;
         System.Object referObject;
+
+        public void Show(string content)
+        {
+            Show(content, "Yes", "", null, null);
+        }
 
         public void Show(string content, Action<int, System.Object> callback)
         {
@@ -30,9 +37,9 @@ namespace IMAV.UI
             gameObject.SetActive(true);
             msgHandler = callback;
             referObject = refer;
+            SetButton(firstButton, firstBtnText, button1Text);
+            SetButton(secondButton, secondBtnText, button2Text);
             contentText.text = content;
-            firstBtnText.text = button1Text;
-            secondBtnText.text = button2Text;
         }
 
         public void OnBtnClicked(int i)
@@ -40,6 +47,17 @@ namespace IMAV.UI
             if (msgHandler != null)
                 msgHandler(i, referObject);
             gameObject.SetActive(false);
+        }
+
+        public void SetButton(Button btn, Text btnText, string _text)
+        {
+            if (_text.Equals(string.Empty))
+                btn.gameObject.SetActive(false);
+            else
+            {
+                btn.gameObject.SetActive(true);
+                btnText.text = _text;
+            }
         }
     }
 }

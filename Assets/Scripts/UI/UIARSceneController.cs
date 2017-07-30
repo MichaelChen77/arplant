@@ -11,76 +11,31 @@ namespace IMAV.UI
 {
     public class UIARSceneController : MonoBehaviour
     {
-        public FurnitureForm furform;
-        public SearchForm searchform;
-        public Text markerHint;
-        public CaptureAndSave snapShot;
-        public Button detailsBtn;
-        public GameObject imageViewDlg;
-        public UIImageGallery imageGallery;
-        public Animator ctrlBtnPanelAnim;
-        public TargetNode targetNode;
-        public DisableSelf imageSaved;
-        public GToggleButton markerlessBtn;
-        public GToggleButton placementBtn;
-
-        //public UIControl menuRect;
-        //public GameObject showMenuButton;
+        public DisableSelf markerHint;
+        public GToggleButton clearBtn;
+        //public GToggleButton markerlessBtn;
+        //public GToggleButton placementBtn;
 
         public UIControl mainMenu;
         UIControl currentPanel;
 
         void Start()
         {
-            //try
-            //{
-            //    ResourceManager.Singleton.Reset();
-            //    SetVirtualMode(DataUtility.VirtualModeInt, false);
-            //    StartCoroutine(resetObject());
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            //}
+            try
+            {
+                ResourceManager.Singleton.Reset();
+                ResourceManager.Singleton.DebugString("error1");
+                SetVirtualMode(DataUtility.VirtualModeInt, false);
+                //if (ResourceManager.Singleton.ExistObject)
+                //    StartCoroutine(resetObject());
+            }
+            catch (System.Exception ex)
+            {
+                ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            }
         }
 
-        //UIControl currentPanel;
-        //public GameObject LockBackground;
-        //public void OpenPanelUniq(UIControl panel)
-        //{
-        //    if (currentPanel != null)
-        //        currentPanel.Close();
-        //    OpenMenu(panel);
-        //}
-
-        //public void OpenPanel(UIControl panel)
-        //{
-        //    OpenMenu(panel);
-        //    HideUI();
-        //}
-
-        //public void OpenMenu(UIControl panel)
-        //{
-        //    currentPanel = panel;
-        //    if (currentPanel != null)
-        //        currentPanel.Open();
-        //}
-
-        //public void OpenPanelLock(UIControl panel)
-        //{
-        //    OpenPanel(panel);
-        //    LockBackground.SetActive(true);
-        //}
-
-        //public void CloseCurrentPanel()
-        //{
-        //    if (currentPanel != null)
-        //        currentPanel.Close();
-        //    currentPanel = null;
-        //    LockBackground.SetActive(false);
-        //}
-
-
+        #region UI
         public void OpenMenu()
         {
             closeCurrentPanel();
@@ -110,12 +65,18 @@ namespace IMAV.UI
                 mainMenu.Open();
         }
 
-
+        public void HideUI()
+        {
+            if (Everyplay.IsRecording() || Everyplay.IsPaused())
+                return;
+            mainMenu.Close();
+            closeCurrentPanel();
+        }
+        #endregion
 
         void Update()
         {
-            //if (detailsBtn.interactable == (ResourceManager.Singleton.CurrentObject == null))
-            //    detailsBtn.interactable = !detailsBtn.interactable;
+            clearBtn.changeTrigger(ResourceManager.Singleton.ExistObject);
             CheckTouch();
         }
 
@@ -146,10 +107,10 @@ namespace IMAV.UI
                         }
                         else
                         {
-                            ResourceManager.Singleton.SetCurrentObjectState(SelectState.None);
+                            ResourceManager.Singleton.SetCurrentObject(null);
                         }
                     }
-                    //HideUI();
+                    HideUI();
                 }
             }
         }
@@ -165,98 +126,38 @@ namespace IMAV.UI
             {
                 DataUtility.VirtualModeInt = m;
                 VirtualMode vm = (VirtualMode)m;
-                if (vm == VirtualMode.Markerless)
-                {
-                    markerlessBtn.setTrigger(true);
-                    placementBtn.setTrigger(false);
-                }
-                else if (vm == VirtualMode.Placement)
-                {
-                    markerlessBtn.setTrigger(false);
-                    placementBtn.setTrigger(true);
-                }
+                //if (vm == VirtualMode.Markerless)
+                //{
+                //    markerlessBtn.setTrigger(true);
+                //    placementBtn.setTrigger(false);
+                //}
+                //else if (vm == VirtualMode.Placement)
+                //{
+                //    markerlessBtn.setTrigger(false);
+                //    placementBtn.setTrigger(true);
+                //}
                 ResourceManager.Singleton.SetVirtualMode(vm);
                 if (showHint)
                     SetMarkerHint();
             }
         }
 
-        public void ShowControlButtons(bool flag)
-        {
-            ctrlBtnPanelAnim.SetBool("Show", flag);
-        }
-
-
-        public void HideAllUI()
-        {
-
-        }
-
-        void SetTouchMove(bool flag)
-        {
-            ResourceManager.Singleton.touchMove = flag;
-            //            constraintBtn.Switch(flag);
-            //            constraintBtn.SetStatus(0);
-            ResourceManager.Singleton.constraintID = 0;
-        }
-
-        void SetConstraintMode(int _id)
-        {
-            ResourceManager.Singleton.constraintID = _id;
-        }
-
-        string currentfile = "";
-        public void CaptureScreen()
-        {
-            if (!Directory.Exists(DataUtility.GetScreenShotPath()))
-            {
-                Directory.CreateDirectory(DataUtility.GetScreenShotPath());
-            }
-
-            System.DateTime dt = System.DateTime.Now.ToLocalTime();
-            string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
-            //ResourceManager.Singleton._kudanTracker.takeScreenshot(filePath, "", PostScreenShot);
-        }
-
-        void PostScreenShot(Texture2D tex, string path)
-        {
-            snapShot.SaveTextureToGallery(tex, ImageType.JPG);
-            imageSaved.Open();
-        }
-
-        public void ViewImage()
-        {
-            //cschen0710
-            //imageViewDlg.SetActive(false);
-            //ResourceManager.Singleton.Pause();
-            //if (File.Exists(DataUtility.GetScreenShotPath() + currentfile))
-            //    imageGallery.Open(DataUtility.GetScreenShotPath() + currentfile);
-            //else
-            //    imageGallery.Open();
-        }
-
-        public void OpenImageGallery()
-        {
-            //cschen0710
-            //imageGallery.Open();
-        }
-
         void SetMarkerHint()
         {
-            markerHint.gameObject.SetActive(true);
             if (ResourceManager.Singleton.VMode == VirtualMode.Marker)
-                markerHint.text = "AR Mode Marker On";
+                markerHint.Open("AR Mode Marker On");
             else if (ResourceManager.Singleton.VMode == VirtualMode.Markerless)
-                markerHint.text = "AR Mode Marker Off";
+                markerHint.Open("AR Mode Marker Off");
             else if (ResourceManager.Singleton.VMode == VirtualMode.Placement)
-                markerHint.text = "Simple Placement Mode";
-            StartCoroutine(closeHint());
+                markerHint.Open("Placement Mode On");
         }
 
-        IEnumerator closeHint()
+        #region functions
+
+        public void ClearScene()
         {
-            yield return new WaitForSeconds(1f);
-            markerHint.gameObject.SetActive(false);
+            if (ResourceManager.Singleton.ExistObject)
+                ResourceManager.Singleton.Reset();
         }
 
         public void GotoVRRoom()
@@ -276,18 +177,8 @@ namespace IMAV.UI
                     tran.gameObject.SetActive(false);
                 }
 
-                SceneManager.LoadScene("VRRoom");
+                SceneManager.LoadSceneAsync("VRRoom");
             }
-        }
-
-        public void TestMode()
-        {
-            SceneManager.LoadSceneAsync("VRRoom");
-        }
-
-        public void GotoHomeScene()
-        {
-            SceneManager.LoadSceneAsync("Start");
         }
 
         IEnumerator resetObject()
@@ -310,6 +201,24 @@ namespace IMAV.UI
                 ResourceManager.Singleton.DebugString("add object: " + tran.name);
             }
             DataUtility.CurrentObject = null;
+        }
+
+        public void GotoHomeScene()
+        {
+            SceneManager.LoadSceneAsync("Start");
+        }
+
+        #endregion
+
+        void SetTouchMove(bool flag)
+        {
+            ResourceManager.Singleton.touchMove = flag;
+            ResourceManager.Singleton.constraintID = 0;
+        }
+
+        void SetConstraintMode(int _id)
+        {
+            ResourceManager.Singleton.constraintID = _id;
         }
 
         public void autoAdjust()

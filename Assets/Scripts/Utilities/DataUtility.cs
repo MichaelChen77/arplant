@@ -96,21 +96,30 @@ namespace IMAV
 
         public static string GetScreenShotPath()
         {
-            //return Application.persistentDataPath + "/ScreenShots/";
-            //return @"D:\WorkSpace\AR\ImageTest\ScreenShots\";
+#if UNITY_EDITOR || UNITY_STANDALONE
             return @"C:\WorkSpace\AR\TestImages\ScreenShots\";
+#else
+            return Application.persistentDataPath + "/ScreenShots/";
+#endif
         }
 
         public static string GetScreenThumbnailPath()
         {
-            //return Application.persistentDataPath + "/ScreenThumbnails/";
-            //return @"D:\WorkSpace\AR\ImageTest\ScreenThumbnails\";
+#if UNITY_EDITOR || UNITY_STANDALONE
             return @"C:\WorkSpace\AR\TestImages\ScreenThumbnails\";
+#else
+            return Application.persistentDataPath + "/ScreenThumbnails/";
+#endif
+            
         }
 
         public static string GetScreenVideoPath()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            return @"C:\WorkSpace\AR\TestImages\Videos\";
+#else
             return Application.persistentDataPath + "/Videos/";
+#endif
         }
 
         public static string GetSessionPath()
@@ -132,6 +141,11 @@ namespace IMAV
             int _t = h % 4;
             h = h - _t;
             return h;
+        }
+
+        public static string GetPathName(string str)
+        {
+            return str.Substring(0, str.LastIndexOf('/'));
         }
 
         public static void SetDirectory(string str)

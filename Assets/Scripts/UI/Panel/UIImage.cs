@@ -10,6 +10,7 @@ namespace IMAV.UI
     public class UIImage : UIControl, IPointerClickHandler
     {
         public GameObject coverPrefab;
+        public GameObject videoCover;
 
         public System.Action<UIImage> OnClickHandler;
 
@@ -39,12 +40,12 @@ namespace IMAV.UI
 
         protected Image image;
         protected GameObject coverObject;
+
         string imageTag;
         public string ImageTag
         {
             get { return imageTag; }
         }
-        FileInfo imageFile;
 
         private void Awake()
         {
@@ -53,15 +54,25 @@ namespace IMAV.UI
 
         public void LoadImage(string dir, FileInfo f, float animated = 0)
         {
-            imageTag = dir + @"\" + f.Name;
-            imageFile = f;
-            ImageManager.Singleton.AddImage(imageTag);
+            Clear();
+            imageTag = dir + "/" + f.Name;
+            if(ImageManager.Singleton.IsVideoImage(imageTag))
+                Instantiate(videoCover, transform);
+            name = f.Name;
             if (animated > 0)
             {
                 transform.localScale = Vector3.zero;
                 LeanTween.scale(gameObject, Vector3.one, animated);
             }
-            StartCoroutine(Load(f.FullName));
+            StartCoroutine(Load(imageTag));
+        }
+
+        public void RenameTag(string fileName)
+        {
+            imageTag = fileName;
+            name = imageTag.Substring(imageTag.IndexOf('/') + 1);
+            int index = imageTag.IndexOf('/');
+            imageTag = imageTag.Substring(0, index + 1) + name;
         }
 
         public void OnPointerClick(PointerEventData data)
@@ -73,32 +84,24 @@ namespace IMAV.UI
         IEnumerator Load(string str)
         {
             yield return null;
-            try
-            {
-                if (str != string.Empty)
-                {
-                    byte[] content = File.ReadAllBytes(str);
-                    if(image == null)
-                        image = GetComponent<Image>();
-                    image.sprite = DataUtility.CreateSprite(content);
-                }
-            }
-            catch { }
+            image.sprite = ImageManager.Singleton.GetImage(str, true);
         }
 
-        public override void Delete()
+        public void Delete(bool removeFile)
         {
-            ImageManager.Singleton.DeleteImage(imageTag);
-            Destroy(image.sprite);
-            base.Delete();
+            if (removeFile)
+                ImageManager.Singleton.DeleteFile(imageTag);
+            Clear();
+            Delete();
         }
 
-        public override void Refresh()
+
+        public void Clear()
         {
-            if(imageFile == null || !imageFile.Exists)
+            if (image.sprite != null)
             {
+                Destroy(image.sprite.texture);
                 Destroy(image.sprite);
-                base.Delete();
             }
         }
     }

@@ -10,6 +10,7 @@ namespace IMAV.UI
         public UISwipe swipe;
         public RectTransform bottomRect;
         public float moveTime = 0.2f;
+        public Image tempImage;
 
         public override void Open()
         {
@@ -41,9 +42,16 @@ namespace IMAV.UI
                 Image m = tran.GetComponent<Image>();
                 ClearImage(m);
                 if (flag)
+                {
                     m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage + 1));
+                    DetectVideo(m, swipe.CurrentPage + 1);
+                }
                 else
+                {
                     m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage - 1));
+                    DetectVideo(m, swipe.CurrentPage - 1);
+                }
+                AutosetImageColor(m);
             }
         }
 
@@ -88,41 +96,75 @@ namespace IMAV.UI
                 Image img = swipe.transform.GetChild(i).GetComponent<Image>();
                 ClearImage(img);
                 img.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(index + i + changedInt));
+                DetectVideo(img, index + i + changedInt);
+                AutosetImageColor(img);
             }
+        }
+
+        public void DetectVideo(Image m, string str)
+        {
+            if (ImageManager.Singleton.IsVideoImage(str))
+                m.transform.GetChild(0).gameObject.SetActive(true);
+            else
+                m.transform.GetChild(0).gameObject.SetActive(false);
+        }
+
+        public void DetectVideo(Image m, int index)
+        {
+            string str = ImageManager.Singleton.GetPath(index);
+            DetectVideo(m, str);
         }
 
         public void PlayVideo()
         {
-            string str = ImageManager.Singleton.Images[swipe.CurrentPage];
-            string fileName = str.Substring(0, str.LastIndexOf('_') + 1);
-            string path = File.ReadAllText(DataUtility.GetScreenVideoPath() + fileName + ".json");
-            List<System.Object> videos = EveryplayMiniJSON.Json.Deserialize(path) as List<System.Object>;
-            if (videos.Count == 1)
-            {
-                foreach (Dictionary<string, object> video in videos)
-                {
-                    Everyplay.PlayVideoWithDictionary(video);
-                }
-            }
+            string str = ImageManager.Singleton.GetPath(swipe.CurrentPage);
+            ImageManager.Singleton.PlayVideo(str);
+            //string fileName = ImageManager.Singleton.GetVideoFileName(str);
+            //string path = File.ReadAllText(DataUtility.GetScreenVideoPath() + fileName + ".json");
+            //ResourceManager.Singleton.DebugString("play: " + path);
+            //List<System.Object> videos = EveryplayMiniJSON.Json.Deserialize(path) as List<System.Object>;
+            //if (videos.Count == 1)
+            //{
+            //    foreach (Dictionary<string, object> video in videos)
+            //    {
+            //        Everyplay.PlayVideoWithDictionary(video);
+            //    }
+            //}
         }
 
-        public void ClearImage(Image img)
+        void ClearImage(Image img)
         {
             if (img.sprite != null)
                 Destroy(img.sprite.texture);
             Destroy(img.sprite);
         }
 
-        public void SaveImage()
+        void AutosetImageColor(Image img)
         {
-            Sprite sp = GetCurrentImage();
-            if (sp != null)
+            if (img.sprite == null)
+                img.color = Color.clear;
+            else
+                img.color = Color.white;
+        }
+
+        public void SaveFile()
+        {
+            if (ImageManager.Singleton.IsVideoImage(swipe.CurrentPage))
             {
-                ImageManager.Singleton.SaveScreenShot(sp.texture);
+                ImageManager.Singleton.SaveVideo(swipe.CurrentPage);
+            }
+            else
+            {
+                string path = ImageManager.Singleton.GetPath(swipe.CurrentPage);
+                ResourceManager.Singleton.DebugString("save file: " + path);
+                if (path != string.Empty)
+                {
+                    ImageManager.Singleton.SaveScreenShot(path);
+                }
             }
         }
 
-        public void DeleteImage()
+        public void DeleteFile()
         {
             ImageManager.Singleton.msgDialog.Show("Delete the selected item?","Cancel", "Delete", null, DeleteImageCallback);
         }
@@ -132,6 +174,10 @@ namespace IMAV.UI
             if (res == 1)
             {
                 ImageManager.Singleton.DeleteImage(swipe.CurrentPage);
+                tempImage.sprite = Instantiate(GetCurrentImage());
+                tempImage.transform.localScale = Vector3.one;
+                tempImage.gameObject.SetActive(true);
+                LeanTween.scaleY(tempImage.gameObject, 0, 0.5f).setOnComplete(FileDeleteCompleted);
                 swipe.PageCount = ImageManager.Singleton.Images.Count;
                 if (swipe.PageCount > 0)
                 {
@@ -143,13 +189,19 @@ namespace IMAV.UI
             }
         }
 
+        void FileDeleteCompleted()
+        {
+            tempImage.gameObject.SetActive(false);
+            ClearImage(tempImage);
+        }
+
         public override void Close()
         {
-            gameObject.SetActive(false);
             if (ImageManager.Singleton.imageGallery.isActiveAndEnabled)
-                ImageManager.Singleton.imageGallery.Refresh();
-            else
-                ImageManager.Singleton.imageGallery.Open();
+            {
+                ImageManager.Singleton.imageGallery.DelayRefresh();
+            }
+            gameObject.SetActive(false);
             //ResourceManager.Singleton.Resume();
         }
     }

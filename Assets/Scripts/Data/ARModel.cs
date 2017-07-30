@@ -16,7 +16,7 @@ namespace IMAV
 		/// <summary>
 		/// Whether the object is selected
 		/// </summary>
-		SelectState selected = SelectState.None;
+		SelectState selected = SelectState.Actived;
 		public SelectState Selected {
 			get{ return selected; }
 			set { 
@@ -24,9 +24,9 @@ namespace IMAV
 				if (touchCtrl == null)
 					Init ();
 				if (selected == SelectState.Actived)
-					touchCtrl.SetActive (true);
+					touchCtrl.enabled = true;
 				else if (selected == SelectState.None)
-					touchCtrl.SetActive (false);
+					touchCtrl.enabled = false;
 			}
 		}
 
@@ -39,39 +39,35 @@ namespace IMAV
         void Init () {
             if (touchCtrl == null)
             {
-                float f = calculateBounds(gameObject);
-                transform.position += new Vector3(0, f, 0);
-                ResourceManager.Singleton.DebugString("positiion: " + transform.position+" ; "+f);
-                touchCtrl = GetComponent<ObjectTouchControl>();
                 touchCtrl = gameObject.AddComponent<ObjectTouchControl>();
-                touchCtrl.Init(this, f);
+                touchCtrl.Init(this);
                 CloseShadowCast();
             }
 		}
 
-        float calculateBounds(GameObject obj)
-        {
-            BoxCollider box = obj.GetComponent<BoxCollider>();
-            if (box != null)
-            {
-                GameObject co = new GameObject("dummy");
-                co.transform.position = obj.transform.position;
-                co.transform.localScale = obj.transform.lossyScale;
-                BoxCollider cobc = co.AddComponent<BoxCollider>();
-                Quaternion quat = obj.transform.rotation;
-                cobc.center = box.center;
-                cobc.size = box.size;
-                Bounds bound = cobc.bounds;
-                Destroy(co);
-                Vector3 boundDiff = bound.center - transform.position;
-                Vector3 boundExtents = bound.extents;
+        //float calculateBounds(GameObject obj)
+        //{
+        //    BoxCollider box = obj.GetComponent<BoxCollider>();
+        //    if (box != null)
+        //    {
+        //        GameObject co = new GameObject("dummy");
+        //        co.transform.position = obj.transform.position;
+        //        co.transform.localScale = obj.transform.lossyScale;
+        //        BoxCollider cobc = co.AddComponent<BoxCollider>();
+        //        Quaternion quat = obj.transform.rotation;
+        //        cobc.center = box.center;
+        //        cobc.size = box.size;
+        //        Bounds bound = cobc.bounds;
+        //        Destroy(co);
+        //        Vector3 boundDiff = bound.center - transform.position;
+        //        Vector3 boundExtents = bound.extents;
 
-                Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
-                ResourceManager.Singleton.DebugString("delta: " + delta);
-                return -delta.y;
-            }
-            return 0;
-        }
+        //        Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
+        //        ResourceManager.Singleton.DebugString("delta: " + delta);
+        //        return -delta.y;
+        //    }
+        //    return 0;
+        //}
 
         public void CloseShadowCast()
         {
@@ -87,7 +83,7 @@ namespace IMAV
 
 		public void Delete()
 		{
-			touchCtrl.Delete ();
+			touchCtrl.Delete();
 			Destroy (gameObject);
 		}
 	}

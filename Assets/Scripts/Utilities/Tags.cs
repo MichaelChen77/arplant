@@ -23,4 +23,5 @@ public class Tags{
     public const int ThumbnailWidth = 200;
     public static readonly string[] FurnitureCategory = { "All", "Car", "Electronics", "Furniture" };
 
+
 }

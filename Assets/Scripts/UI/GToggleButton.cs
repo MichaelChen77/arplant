@@ -18,6 +18,7 @@ public class GToggleButton : MonoBehaviour
 {
     public Image targetImage;
     public Text targetText;
+    public float transferTime = 0.3f;
     [SerializeField]
     bool trigger = true;
     public bool TriggerFlag
@@ -51,6 +52,12 @@ public class GToggleButton : MonoBehaviour
         UpdateToggle();
     }
 
+    public void changeTrigger(bool flag)
+    {
+        if (trigger != flag)
+            setTrigger(flag);
+    }
+
     void UpdateToggle()
     {
         switch (constraint)
@@ -69,14 +76,17 @@ public class GToggleButton : MonoBehaviour
     {
         if (targetImage != null)
         {
-            if (trigger)
-                targetImage.color = toggleOnVar.color;
-            else
-                targetImage.color = toggleOffVar.color;
+            Color c = trigger?toggleOnVar.color:toggleOffVar.color;
+            LeanTween.color(targetImage.GetComponent<RectTransform>(), c, transferTime);
         }
     }
 
     void UpdateSprite()
+    {
+        LeanTween.rotateAround(targetImage.gameObject, Vector3.forward, 180, transferTime).setOnComplete(ChangeSprite);
+    }
+
+    void ChangeSprite()
     {
         if (targetImage != null)
         {

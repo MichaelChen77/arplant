@@ -16,6 +16,7 @@ namespace IMAV.UI
         public GameObject stopButton;
         public GameObject recordTimePanel;
         public Text recordTimeText;
+        //public GameObject HUDCam;
 
         public UIImagePanel imagePanel;
 
@@ -24,7 +25,6 @@ namespace IMAV.UI
         float recordTime = 0;
         int lastRecordSec = 0;
 
-        [SerializeField]
         bool isRecording = false;
         bool isPaused = false;
 
@@ -48,6 +48,9 @@ namespace IMAV.UI
             isPaused = false;
             recordTime = 0;
             lastRecordSec = 0;
+            //if (HUDCam != null)
+            //    HUDCam.SetActive(true);
+            ResourceManager.Singleton.DebugString("recording start");
             ImageManager.Singleton.StartRecordVideo();
         }
 
@@ -56,6 +59,8 @@ namespace IMAV.UI
             SetIsRecording(false);
             recordTime = 0;
             SetRecordTimeText();
+            ResourceManager.Singleton.DebugString("recording stop");
+            //HUDCam.SetActive(false);
             ImageManager.Singleton.StopRecordVideo(OnPostScreenCaptured);
         }
 
@@ -75,15 +80,13 @@ namespace IMAV.UI
         {
             Sprite sp = ImageManager.Singleton.GetImage(path, true);
             previewImage.sprite = sp;
-            LeanTween.scale(thumbnailImage, Vector3.one, 0.2f);
+            LeanTween.scale(thumbnailImage, Vector3.one, 0.3f);
         }
 
         public void StartVideoRecord()
         {
-            ResourceManager.Singleton.DebugString("Start video");
             Everyplay.StartRecording();
         }
-
 
         void SetIsRecording(bool flag)
         {
@@ -118,9 +121,15 @@ namespace IMAV.UI
 
         public void ShowImage()
         {
-            ImageManager.Singleton.ShowLatestImage();
-            Close();
-            //ImageManager.Singleton.imageGallery.Open();
+            if (ImageManager.Singleton.ExistFile)
+            {
+                ImageManager.Singleton.ShowLatestImage();
+                Close();
+            }
+            else
+            {
+                ImageManager.Singleton.msgDialog.Show("Not any image\video exist in the gallery!");
+            }
         }
 
         void Update()

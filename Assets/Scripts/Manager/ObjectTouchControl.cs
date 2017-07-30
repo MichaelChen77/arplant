@@ -42,14 +42,14 @@ namespace IMAV
 		ARModel target;
 		bool startDrag = false;
 
-        float heightPos;
+        //float heightPos;
 
         /// <summary>
         /// Start this instance.
         /// </summary>
-		public void Init(ARModel model, float height)
+		public void Init(ARModel model)
 		{
-            heightPos = height;
+            //heightPos = height;
 			SaveTransform ();
 			target = model;
 		}
@@ -93,9 +93,9 @@ namespace IMAV
 					if (scaleChange < 1) {
 						scaleChange = 1;
 					}
-                    float rate = scaleChange / transform.localScale.x;
-                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y * rate, transform.localPosition.z);
-                    heightPos = heightPos * rate;
+                    //float rate = scaleChange / transform.localScale.x;
+                    //transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y * rate, transform.localPosition.z);
+                    //heightPos = heightPos * rate;
 					this.transform.localScale = new Vector3 (scaleChange, scaleChange, scaleChange);
 				} else {
 					if (delta1 > 1f)
@@ -156,12 +156,14 @@ namespace IMAV
                 
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
                 RaycastHit hit;
+                float f = transform.localPosition.y;
                 if (Physics.Raycast(ray, out hit, float.MaxValue, 1<<11))
                 {
                     if (hit.collider != null)
                     {
-                        transform.position = hit.point + new Vector3(0, heightPos, 0);
-                        Debug.Log("hit point: " + hit.point+" ; "+hit.collider.name);
+                        transform.position = hit.point;
+                        transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
+                        ResourceManager.Singleton.DebugString("hit point: " + hit.point+" ; "+transform.position);
                     }
                     //transform.position = ray.GetPoint(rayDistance);
                     //ResourceManager.Singleton.DebugString("Plane: " + hPlane.normal + " ; " + transform.position + " ; ");
@@ -205,5 +207,6 @@ namespace IMAV
 		{
 			//boundbox.Delete ();
 		}
+
     }
 }

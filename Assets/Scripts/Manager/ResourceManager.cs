@@ -56,9 +56,10 @@ namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
         public FurCategory[] FurCategories;
-        public FurARUI appui;
         public BoundFrame frame;
         public DebugView debugview;
+        public UIARSceneController arui;
+        public UIControl selectedFrame;
         //public bool marker = true;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
@@ -96,6 +97,11 @@ namespace IMAV
         public List<GameObject> ObjList
         {
             get { return objlist; }
+        }
+
+        public bool ExistObject
+        {
+            get { return objlist.Count != 0; }
         }
 
         private static ResourceManager mSingleton;
@@ -275,22 +281,27 @@ namespace IMAV
                 else
                     currentObj.Selected = SelectState.None;
             }
+
             currentObj = obj;
             if (currentObj != null)
             {
                 currentObj.Selected = st;
-                frame.SetObject(currentObj.gameObject);
+                frame.SetObject(currentObj);
+                arui.OpenUI(selectedFrame);
             }
             else
+            {
                 frame.SetObject(null);
+                arui.CloseUI(false);
+            }
         }
 
 		public void SetCurrentObjectState(SelectState st)
 		{
-			if(currentObj != null)
-			{
-				currentObj.Selected = st;
-			}
+            if (st == SelectState.None)
+                SetCurrentObject(null);
+            else if (currentObj != null)
+                currentObj.Selected = st;
 		}
 
         public void AddMarkerlessObject(GameObject obj)
@@ -314,17 +325,16 @@ namespace IMAV
             if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
-                ResourceManager.Singleton.DebugString("start Place object");
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
             }
             try
             {
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                if (init)
-                {
-                    SceneObject sobj = obj.AddComponent<SceneObject>();
-                    sobj.Init(_islocal, _id, _content);
-                }
+                //if (init)
+                //{
+                //    SceneObject sobj = obj.AddComponent<SceneObject>();
+                //    sobj.Init(_islocal, _id, _content);
+                //}
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
                 ResourceManager.Singleton.DebugString("set as markerless");
                 SetCurrentObject(m);
@@ -362,23 +372,29 @@ namespace IMAV
             Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
             _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
             _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+            ResourceManager.Singleton.DebugString("start Place object");
         }
 
         public void Clear()
         {
+            DebugString("Clear 0");
             SetCurrentObject(null);
+            DebugString("Clear 1");
             foreach (GameObject obj in objlist)
             {
-                DestroyImmediate(obj);
+                Destroy(obj);
             }
+            DebugString("Clear 2");
             objlist.Clear();
+            DebugString("Clear 3");
         }
 
         public void Reset()
         {
             Clear();
             ResetTouchMode();
-            //StartPlaceObject();
+            DebugString("Reset 1");
+            StartPlaceObject();
         }
 
         public void Quit()

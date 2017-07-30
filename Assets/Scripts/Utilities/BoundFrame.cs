@@ -51,19 +51,26 @@ namespace IMAV.UI
             }
         }
 
-        public void SetObject(GameObject obj)
+        public void SetObject(ARModel obj)
         {
-            target = obj;
             if (obj != null)
             {
+                gameObject.SetActive(true);
+                target = obj.gameObject;
+                originalSize = obj.transform.localScale.x;
                 transform.position = target.transform.position;
                 transform.rotation = target.transform.rotation;
                 renderers = obj.GetComponentsInChildren<Renderer>();
                 bool flag = calculateBounds(target);
-                gameObject.SetActive(flag);
+                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z + 1, target.transform.localPosition.z);
+                refresh();
+                
             }
             else
+            {
+                target = null;
                 gameObject.SetActive(false);
+            }
         }
 
         bool calculateBounds(GameObject obj)
@@ -71,7 +78,6 @@ namespace IMAV.UI
             BoxCollider box = obj.GetComponent<BoxCollider>();
             if (box != null)
             {
-                originalSize = obj.transform.localScale.x;
                 GameObject co = new GameObject("dummy");
                 co.transform.position = obj.transform.position;
                 co.transform.localScale = obj.transform.lossyScale;
@@ -83,11 +89,6 @@ namespace IMAV.UI
                 Destroy(co);
                 boundDiff = bound.center - transform.position;
                 boundExtents = bound.extents;
-
-                //Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
-                //target.transform.position -= new Vector3(0, delta.z, 0);
-                //transform.position = target.transform.position;
-
                 setPoints();
                 return true;
             }
@@ -188,12 +189,13 @@ namespace IMAV.UI
                 //bottomPlane.localPosition = bottomPlane.localPosition * rate;
 
                 scalelines();
+                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z + 1, target.transform.localPosition.z);
             }
         }
 
         void LateUpdate()
         {
-            if (isActiveAndEnabled)
+            if (target != null)
                 refresh();
         }
     }
