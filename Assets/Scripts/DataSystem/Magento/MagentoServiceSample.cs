@@ -5,37 +5,39 @@ public class MagentoServiceSample : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        
-        StartCoroutine(MagentoService.Instance.TopCategories(categories =>
-        {
-            foreach (Category c in categories)
-            {
-                Debug.Log("Downloaded category: " + c.name + " (id: " + c.id + ")");
-            }
 
-            DownloadProductsInCategory(categories[0].id);
-            DownloadCategoryImage(categories[0].id);
-            DownloadCategoryTexture(categories[0].id);
-        }));
-	}
+        //StartCoroutine(MagentoService.Instance.TopCategories(categories =>
+        //{
+        //    foreach (Category c in categories)
+        //    {
+        //        Debug.Log("Downloaded category: " + c.name + " (id: " + c.id + ")");
+        //    }
 
-    private void DownloadProductsInCategory(long categoryId)
-    {
-        StartCoroutine(MagentoService.Instance.GetProductsInCategory(categoryId, (catId, products) => {
-            for(int i=0; i < 6 && i < products.Count; ++i)
-            {
-                CategoryProduct categoryProduct = products[i];
-                Debug.Log("Download products in category " + categoryId + ": " + categoryProduct.sku);
-                DownloadProductDetail(categoryProduct.sku);
-                if (i == 5)
-                {
-                    DownloadProductImage(categoryProduct.sku);
-                    DownloadProductTexture(categoryProduct.sku);
-                }
-            }
-            
-        }));
+        //    DownloadProductsInCategory(categories[0].id);
+        //    DownloadCategoryImage(categories[0].id);
+        //    DownloadCategoryTexture(categories[0].id);
+        //}));
+        //DownloadProductsInCategory(3);
+
     }
+
+    //private void DownloadProductsInCategory(long categoryId)
+    //{
+    //    StartCoroutine(MagentoService.Instance.GetProductsInCategory(categoryId, (catId, products) => {
+    //        for(int i=0; i < 6 && i < products.Count; ++i)
+    //        {
+    //            CategoryProduct categoryProduct = products[i];
+    //            Debug.Log("Download products in category " + categoryId + ": " + categoryProduct.sku);
+    //            DownloadProductDetail(categoryProduct.sku);
+    //            if (i == 5)
+    //            {
+    //                DownloadProductImage(categoryProduct.sku);
+    //                DownloadProductTexture(categoryProduct.sku);
+    //            }
+    //        }
+            
+    //    }));
+    //}
 
     private void DownloadProductDetail(string sku)
     {

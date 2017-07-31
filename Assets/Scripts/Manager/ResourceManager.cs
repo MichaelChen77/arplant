@@ -55,12 +55,11 @@ public enum VirtualMode
 namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
-        public FurCategory[] FurCategories;
+        public ResController localResCtrl;
         public BoundFrame frame;
         public DebugView debugview;
         public UIARSceneController arui;
         public UIControl selectedFrame;
-        //public bool marker = true;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
         public TrackingMethodMarkerless _markerlessTracking;
@@ -69,13 +68,19 @@ namespace IMAV
         public Transform driverTransform;
         public float defaultMinSize;
         public float defaultMaxSize;
-        public bool touchMove = true;
-        public int constraintID = 0;
+
+        FurCategory[] furcategories;
+        public FurCategory[] FurCategories
+        {
+            get { return furcategories; }
+        }
+
         VirtualMode vMode = VirtualMode.Markerless;
         public VirtualMode VMode
         {
             get { return vMode; }
         }
+
         Vector3 trackPos;
         Quaternion trackRot;
         public Vector3 TrackPos {
@@ -127,41 +132,9 @@ namespace IMAV
 
         void Start()
         {
-            LoadResources();
             if (DataUtility.WorkOnLocal)
             {
-                DataManager.Singleton.FurnitureDatas.Clear();
-                int k = 0;
-                for (int i = 0; i < FurCategories.Length; i++)
-                {
-                    for (int j = 0; j < FurCategories[i].Furnitures.Count; j++)
-                    {
-                        DataManager.Singleton.Init(k, FurCategories[i].Furnitures[j]);
-                        k++;
-                    }
-                }
-            }
-            DebugString("ResourceManager start end");
-            SetVirtualMode(VirtualMode.Markerless);
-            Clear();
-        }
-
-        void LoadResources()
-        {
-            foreach (FurCategory cat in FurCategories)
-            {
-                Object[] objs = Resources.LoadAll("Furnitures/" + cat.name);
-                cat.Furnitures.Clear();
-                if (objs != null)
-                {
-                    for (int i = 0; i < objs.Length; i++)
-                    {
-                        ResObject o = new ResObject(cat.name, objs[i].name);
-                        o.resource = (GameObject)objs[i];
-                        o.thumbnail = Resources.Load<Sprite>("FurImages/" + cat.name + "/" + objs[i].name);
-                        cat.Furnitures.Add(o);
-                    }
-                }
+                localResCtrl.LoadLocalResource(furcategories);
             }
         }
 
@@ -170,8 +143,8 @@ namespace IMAV
             vMode = flag;
             if (vMode == VirtualMode.Placement)
             {
-                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
-                _kudanTracker.ArbiTrackStop();
+                _kudanTracker.StopTracking();
+                //_kudanTracker.ArbiTrackStop();
             }
             else if(vMode == VirtualMode.Markerless)
             {
@@ -180,6 +153,7 @@ namespace IMAV
             }
             else if(vMode == VirtualMode.Marker)
             {
+                _kudanTracker.ChangeTrackingMethod(_markerTracking);
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
         }
@@ -206,7 +180,7 @@ namespace IMAV
 
         public FurCategory GetCategory(string _type)
         {
-            foreach(FurCategory cat in FurCategories)
+            foreach(FurCategory cat in furcategories)
             {
                 if (cat.name == _type)
                     return cat;
@@ -235,11 +209,11 @@ namespace IMAV
             AddMarkerlessLocalObject(str, newObj, true);
         }
 
-        void ResetTouchMode()
-        {
-            touchMove = true;
-            constraintID = 0;
-        }
+        //void ResetTouchMode()
+        //{
+        //    touchMove = true;
+        //    constraintID = 0;
+        //}
 
         public void SetDefaultSize(GameObject obj)
         {
@@ -350,7 +324,7 @@ namespace IMAV
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
                 ResourceManager.Singleton.DebugString("set as markerless");
                 SetCurrentObject(m);
-                ResetTouchMode();
+                //ResetTouchMode();
             }
             catch (System.Exception ex)
             {
@@ -413,8 +387,8 @@ namespace IMAV
         public void Reset()
         {
             Clear();
-            ResetTouchMode();
-            StartPlaceObject();
+            SetVirtualMode(VirtualMode.Markerless);
+            //StartPlaceObject();
         }
 
         public void Quit()

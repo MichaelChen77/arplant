@@ -34,24 +34,24 @@ namespace IMAV.UI
 
         void LoadObjects()
         {
-            if (catRect.childCount != ResourceManager.Singleton.FurCategories.Length)
+            if (catRect.childCount != DataCenter.Singleton.Categories.Count)
             {
                 Clear(catRect);
-                foreach (FurCategory cat in ResourceManager.Singleton.FurCategories)
+                foreach (CategoryData cat in DataCenter.Singleton.Categories)
                 {
-                    AddCategory(cat);
+                    AddCategoryItem(cat);
                 }
                 StartCoroutine(DelayRefresh());
             }
             catRect.anchoredPosition = new Vector2(0, catRect.anchoredPosition.y);
         }
 
-        void AddCategory(FurCategory cat)
+        void AddCategoryItem(CategoryData cat)
         {
             GameObject obj = Instantiate(furPrefab, catGroup.transform);
             obj.transform.localScale = Vector3.one;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(cat.name, string.Empty, cat.thumbnail, ShowCategory);
+            item.Init(cat.Cat.name, cat.Cat.id, cat.icon, ShowCategory);
         }
 
         IEnumerator DelayRefresh()
@@ -62,34 +62,56 @@ namespace IMAV.UI
 
         public override void Refresh()
         {
+            furRect.anchoredPosition = new Vector2(0, furRect.anchoredPosition.y);
             catRect.sizeDelta = new Vector2(catGroup.preferredWidth, catRect.sizeDelta.y);
             furRect.sizeDelta = new Vector2(furGroup.preferredWidth, furRect.sizeDelta.y);
         }
 
-        void AddResObj(ResObject res)
+        void AddResObj(CategoryProduct res)
+        {
+            DataCenter.Singleton.GetProduct(res.sku, AddProductItem);
+        }
+
+        void AddProductItem(ProductData p)
         {
             GameObject obj = Instantiate(furPrefab, furGroup.transform);
             obj.transform.localScale = Vector3.one;
-            obj.name = res.name;
+            obj.name = p.ProductInfo.sku;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(res.Category, res.name, res.thumbnail, LoadObject);
+            item.Init(p.ProductInfo.name, p.ProductInfo.sku, p.icon, LoadObject);
+            loadingProductCount--;
+            if (loadingProductCount == 0)
+            {
+                StartCoroutine(DelayRefresh());
+            }
         }
 
-        void ShowCategory(string cat, string name)
+        void ShowCategory(string name, System.Object cat)
         {
             LeanTween.moveY(contentRect, furRectPos, moveTime);
-            backButton.interactable = true;;
-            FurCategory fcat = ResourceManager.Singleton.GetCategory(cat);
+            backButton.interactable = true;
+            CategoryData fcat = DataCenter.Singleton.GetCategory((long)cat);
             if (fcat != null)
             {
                 Clear(furRect);
-                foreach (ResObject obj in fcat.Furnitures)
-                {
-                    AddResObj(obj);
-                }
-                titleText.text = fcat.name;
+                StartCoroutine(LoadCategory(fcat));
             }
-            StartCoroutine(DelayRefresh());
+            else
+                Debug.Log("fcat is null");
+        }
+
+        int loadingProductCount = 0;
+        IEnumerator LoadCategory(CategoryData c)
+        {
+            if (!c.IsLoaded())
+                c.LoadProducts();
+            yield return new WaitUntil(c.IsLoaded);
+            loadingProductCount = c.Products.Count;
+            foreach (CategoryProduct obj in c.Products)
+            {
+                AddResObj(obj);
+            }
+            titleText.text = c.Cat.name;
         }
 
         public void GotoCatalogue()
@@ -100,13 +122,12 @@ namespace IMAV.UI
 
         public void Search(string str)
         {
-            //DataManager.Singleton.Search(str);
             Debug.Log("Search " + str);
         }
 
-        void LoadObject(string cat, string _name)
+        void LoadObject(string cat, System.Object sku)
         {
-            ResourceManager.Singleton.LoadGameObject(cat, _name);
+            DataCenter.Singleton.LoadModelData((string)sku);
             Close();
         }
 

@@ -135,6 +135,51 @@ namespace IMAV
             return basePath;
         }
 
+        public static string GetCategoryPath()
+        {
+#if UNITY_EDITOR
+            return @"C:\WorkSpace\AR\TestImages\Cats\";
+#else
+            return Application.persistentDataPath + "/Cats/";
+#endif
+        }
+
+        public static string GetProductPath()
+        {
+#if UNITY_EDITOR
+            return @"C:\WorkSpace\AR\TestImages\Products\";
+#else
+            return Application.persistentDataPath + "/Products/";
+#endif
+        }
+
+        public static string GetProductIconPath()
+        {
+#if UNITY_EDITOR
+            return @"C:\WorkSpace\AR\TestImages\Products\Icons\";
+#else
+            return Application.persistentDataPath + "/Products/Icons/";
+#endif
+        }
+
+        public static string GetProductModelPath()
+        {
+#if UNITY_EDITOR
+            return @"C:\WorkSpace\AR\TestImages\Products\Models\";
+#else
+            return Application.persistentDataPath + "/Products/Models/";
+#endif
+        }
+
+        public static string GetCategoryFile()
+        {
+#if UNITY_EDITOR
+            return @"C:\WorkSpace\AR\TestImages\Cats\cats.json";
+#else
+            return Application.persistentDataPath + "/Cats/cats.json";
+#endif
+        }
+
         public static int GetRelatedHeight(int w)
         {
             int h = w * Screen.height / Screen.width;

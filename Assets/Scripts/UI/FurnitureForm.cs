@@ -44,7 +44,7 @@ namespace IMAV.UI
             obj.transform.SetParent(content);
             obj.transform.localScale = Vector3.one;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(cat.name, string.Empty, cat.thumbnail, ShowCategory);
+            //item.Init(cat.name, string.Empty, cat.thumbnail, ShowCategory);
         }
 
         void UpdateHeight()
@@ -60,7 +60,7 @@ namespace IMAV.UI
             obj.transform.localScale = Vector3.one;
             obj.name = res.name;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(res.Category, res.name, res.thumbnail, LoadObject);
+            //item.Init(res.Category, res.name, res.thumbnail, LoadObject);
         }
 
         public void MovetoTop()

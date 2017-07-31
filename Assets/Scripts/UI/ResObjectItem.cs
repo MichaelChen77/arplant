@@ -6,15 +6,15 @@ namespace IMAV.UI
 {
     public class ResObjectItem : MonoBehaviour, IPointerClickHandler
     {
-        string currentObj;
         string category;
+        System.Object currentObj;
         public Image IconImage;
-        System.Action<string, string> OnItemClick;
+        System.Action<string, System.Object> OnItemClick;
 
-        public void Init(string cat, string str, Sprite sp, System.Action<string, string> itemClick)
+        public void Init(string cat, System.Object obj, Sprite sp, System.Action<string, System.Object> itemClick)
         {
             category = cat;
-            currentObj = str;
+            currentObj = obj;
             IconImage.sprite = sp;
             OnItemClick = itemClick;
         }

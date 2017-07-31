@@ -211,17 +211,6 @@ namespace IMAV.UI
 
         #endregion
 
-        void SetTouchMove(bool flag)
-        {
-            ResourceManager.Singleton.touchMove = flag;
-            ResourceManager.Singleton.constraintID = 0;
-        }
-
-        void SetConstraintMode(int _id)
-        {
-            ResourceManager.Singleton.constraintID = _id;
-        }
-
         public void autoAdjust()
         {
             GameObject current = ResourceManager.Singleton.CurrentObject.gameObject;

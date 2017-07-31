@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using IMAV;
 
 public delegate void CategoryDownloadCallback(List<Category> categories);
 public delegate void CategoryProductDownloadCallback(long categoryId, List<CategoryProduct> cpList);
 public delegate void ProductDownloadCallback(Product p);
 public delegate void MagentoImageDownloadCallback(byte[] bytes);
 public delegate void MagentoTextureDownloadCallback(Texture2D texture);
+public delegate void MagentoAssetBundleDownloadCallback(string sku, System.Object[] objs);
 
 public class MagentoService : MonoBehaviour {
 
@@ -39,30 +43,20 @@ public class MagentoService : MonoBehaviour {
         }
     }
 
-    public IEnumerator TopCategories(CategoryDownloadCallback callback)
+    public IEnumerator TopCategories(Action<string> callback)
     {
         WWW cases = new WWW(baseUrl + "/magento/categories");
         yield return cases;
-        
-        string json = cases.text;
 
-        List<Category> result = JsonConvert.DeserializeObject<List<Category>>(json);
-
-        callback(result);
+        callback(cases.text);
     }
 
-    public IEnumerator GetProductsInCategory(long categoryId, CategoryProductDownloadCallback callback)
+    public IEnumerator GetProductsInCategory(long categoryId, Action<string> callback)
     {
         WWW cases = new WWW(baseUrl + "//magento/categories/" + categoryId + "/products");
         yield return cases;
 
-        string json = cases.text;
-
-        List<CategoryProduct> result = JsonConvert.DeserializeObject<List<CategoryProduct>>(json);
-
-        Debug.Log("products in cat: " + result.Count);
-
-        callback(categoryId, result);
+        callback(cases.text);
     }
 
     public IEnumerator GetProductDetail(string sku, ProductDownloadCallback callback)
@@ -111,7 +105,39 @@ public class MagentoService : MonoBehaviour {
 
         callback(cases.texture);
     }
-	
+
+    public IEnumerator DownloadAssetBundle(string sku, MagentoAssetBundleDownloadCallback callback)
+    {
+        string path = DataUtility.GetProductModelPath() + sku;
+        string url = "";
+        bool existed = File.Exists(path);
+        if (existed)
+            url = "file://" + path;
+        else
+        {
+#if UNITY_ANDROID
+            url = Tags.AndroidEcModelUrl + sku;
+#elif UNITY_IOS
+            url = Tags.IOSEcModelUrl + sku;
+#endif
+        }
+        WWW www = new WWW(url);
+        yield return www;
+        if(!existed)
+        {
+            File.WriteAllBytes(path, www.bytes);
+        }
+        if (www.assetBundle != null)
+        {
+            System.Object[] objs = www.assetBundle.LoadAllAssets();
+            callback(sku, objs);
+        }
+        else
+        {
+            Debug.Log("cannot download asset bundle from " + url);
+        }
+    }
+
 
     public string EncodeUriComponent(string component)
     {

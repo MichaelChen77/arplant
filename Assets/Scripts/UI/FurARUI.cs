@@ -128,18 +128,18 @@ namespace IMAV.UI
             showMenuButton.SetActive(!flag);
         }
 
-        void SetTouchMove(bool flag)
-        {
-            ResourceManager.Singleton.touchMove = flag;
-//            constraintBtn.Switch(flag);
-//            constraintBtn.SetStatus(0);
-            ResourceManager.Singleton.constraintID = 0;
-        }
+//        void SetTouchMove(bool flag)
+//        {
+//            ResourceManager.Singleton.touchMove = flag;
+////            constraintBtn.Switch(flag);
+////            constraintBtn.SetStatus(0);
+//            ResourceManager.Singleton.constraintID = 0;
+//        }
 
-        void SetConstraintMode(int _id)
-        {
-            ResourceManager.Singleton.constraintID = _id;
-        }
+        //void SetConstraintMode(int _id)
+        //{
+        //    ResourceManager.Singleton.constraintID = _id;
+        //}
 
         string currentfile = "";
         public void CaptureScreen()

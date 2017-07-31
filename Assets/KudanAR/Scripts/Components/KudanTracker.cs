@@ -338,7 +338,6 @@ namespace Kudan.AR
 			if (_startOnEnable)
 			{
 				StartTracking();
-				Debug.Log ("Start tracking");
 			}
 		}
 
@@ -349,7 +348,6 @@ namespace Kudan.AR
 		void OnDisable()
 		{
 			StopTracking();
-			Debug.Log ("Stop tracking");
 		}
 
 		/// <summary>
@@ -364,8 +362,9 @@ namespace Kudan.AR
 		/// <param name="focusStatus">True if the app has gained focus, false if it has lost focus.</param>
 		void OnApplicationFocus(bool focusStatus)
 		{
-			if (_trackerPlugin != null) {
-				_trackerPlugin.OnApplicationFocus (focusStatus);
+			if (_trackerPlugin != null)
+			{
+				_trackerPlugin.OnApplicationFocus(focusStatus);
 			}
 		}
 
@@ -810,5 +809,82 @@ namespace Kudan.AR
 			}
 		}
 
+		#region Screenshot methods
+		/// <summary>
+		/// Takes a screenshot of the camera feed and any projected objects, without any UI.
+		/// </summary>
+		public void takeScreenshot()
+		{
+			StartCoroutine (Screenshot ());
+		}
+		
+		IEnumerator Screenshot()
+		{
+			List<GameObject> uiObjects = FindGameObjectsInUILayer ();
+
+			for (int i = 0; i < uiObjects.Count; i++)
+			{
+				uiObjects [i].SetActive (false);
+			}
+
+			bool wasDebug = false;
+			if (_displayDebugGUI) 
+			{
+				wasDebug = true;
+				_displayDebugGUI = false;
+			}
+
+			yield return new WaitForEndOfFrame ();
+
+			RenderTexture RT = new RenderTexture (Screen.width, Screen.height, 24);
+
+			GetComponent<Camera> ().targetTexture = RT;
+
+			Texture2D screen = new Texture2D (RT.width, RT.height, TextureFormat.RGB24, false);
+			screen.ReadPixels (new Rect (0, 0, RT.width, RT.height), 0, 0);
+
+			byte[] bytes = screen.EncodeToJPG ();
+
+			string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".jpg";
+			System.IO.File.WriteAllBytes (filePath, bytes);
+
+			Debug.Log ("Saved screenshot at: " + filePath);
+
+			for (int i = 0; i < uiObjects.Count; i++) 
+			{
+				uiObjects [i].SetActive (true);
+			}
+
+			if (wasDebug) 
+			{
+				_displayDebugGUI = true;
+			}
+
+			GetComponent<Camera> ().targetTexture = null;
+			Destroy(RT);
+		}
+
+		List<GameObject> FindGameObjectsInUILayer()
+		{
+			GameObject[] goArray = FindObjectsOfType<GameObject>();
+
+			List<GameObject> uiList = new List<GameObject> ();
+
+			for (var i = 0; i < goArray.Length; i++) 
+			{
+				if (goArray[i].layer == 5)
+				{
+					uiList.Add(goArray[i]);
+				}
+			}
+
+			if (uiList.Count == 0) 
+			{
+				return null;
+			}
+
+			return uiList;
+		}
+		#endregion
 	}
 };
