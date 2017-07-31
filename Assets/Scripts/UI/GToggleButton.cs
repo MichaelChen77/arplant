@@ -25,6 +25,7 @@ public class GToggleButton : MonoBehaviour
     {
         get { return trigger; }
     }
+    public bool IsAnimated = false;
     bool resetTrigger = true;
     public ToggleConstraint constraint;
     public VariableUI toggleOnVar;
@@ -77,13 +78,19 @@ public class GToggleButton : MonoBehaviour
         if (targetImage != null)
         {
             Color c = trigger?toggleOnVar.color:toggleOffVar.color;
-            LeanTween.color(targetImage.GetComponent<RectTransform>(), c, transferTime);
+            if (IsAnimated)
+                LeanTween.color(targetImage.GetComponent<RectTransform>(), c, transferTime);
+            else
+                targetImage.color = c;
         }
     }
 
     void UpdateSprite()
     {
-        LeanTween.rotateAround(targetImage.gameObject, Vector3.forward, 180, transferTime).setOnComplete(ChangeSprite);
+        if (IsAnimated)
+            LeanTween.rotateAround(targetImage.gameObject, Vector3.forward, 180, transferTime).setOnComplete(ChangeSprite);
+        else
+            ChangeSprite();
     }
 
     void ChangeSprite()

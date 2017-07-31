@@ -142,6 +142,8 @@ namespace IMAV
                 }
             }
             DebugString("ResourceManager start end");
+            SetVirtualMode(VirtualMode.Markerless);
+            Clear();
         }
 
         void LoadResources()
@@ -324,22 +326,31 @@ namespace IMAV
 			objlist.Add(obj);
             if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
-                StartPlaceObject();
-                yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+                int cost = 0;
+                while (!_kudanTracker.ArbiTrackIsTracking() && cost == 15)
+                {
+                    yield return new WaitForEndOfFrame();
+                    cost++;
+                }
+                if (cost >= 15)
+                {
+                    StartPlaceObject();
+                    yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+                }
+                yield return new WaitForEndOfFrame();
             }
             try
             {
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                //if (init)
-                //{
-                //    SceneObject sobj = obj.AddComponent<SceneObject>();
-                //    sobj.Init(_islocal, _id, _content);
-                //}
+                if (init)
+                {
+                    SceneObject sobj = obj.AddComponent<SceneObject>();
+                    sobj.Init(_islocal, _id, _content);
+                }
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
                 ResourceManager.Singleton.DebugString("set as markerless");
                 SetCurrentObject(m);
                 ResetTouchMode();
-                ResourceManager.Singleton.DebugString("set as currentObject");
             }
             catch (System.Exception ex)
             {
@@ -368,36 +379,52 @@ namespace IMAV
 
         public void StartPlaceObject()
         {
-            Vector3 floorPosition;          // The current position in 3D space of the floor
-            Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
-            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
-            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
-            ResourceManager.Singleton.DebugString("start Place object");
+            if (!_kudanTracker.ArbiTrackIsTracking())
+            {
+                Vector3 floorPosition;          // The current position in 3D space of the floor
+                Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
+
+                _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
+                _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);              // Starts markerless tracking based upon the given floor position and orientations
+            }
         }
 
         public void Clear()
         {
-            DebugString("Clear 0");
-            SetCurrentObject(null);
-            DebugString("Clear 1");
-            foreach (GameObject obj in objlist)
+            try
             {
-                Destroy(obj);
+                DebugString("Clear 0");
+                SetCurrentObject(null);
+                DebugString("Clear 1");
+                foreach (GameObject obj in objlist)
+                {
+                    Destroy(obj);
+                }
+                DebugString("Clear 2");
+                objlist.Clear();
+                DebugString("Clear 3");
             }
-            DebugString("Clear 2");
-            objlist.Clear();
-            DebugString("Clear 3");
+            catch(System.Exception ex)
+            {
+                DebugString("Clear error: " + ex.Message);
+            }
         }
 
         public void Reset()
         {
             Clear();
             ResetTouchMode();
-            DebugString("Reset 1");
             StartPlaceObject();
         }
 
         public void Quit()
+        {
+            AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
+            cls.Call("goToActivity");
+        }
+
+
+        public void AddModel()
         {
             AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
             cls.Call("goToActivity");

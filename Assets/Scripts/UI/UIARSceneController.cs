@@ -21,18 +21,19 @@ namespace IMAV.UI
 
         void Start()
         {
-            try
-            {
-                ResourceManager.Singleton.Reset();
-                ResourceManager.Singleton.DebugString("error1");
-                SetVirtualMode(DataUtility.VirtualModeInt, false);
-                //if (ResourceManager.Singleton.ExistObject)
-                //    StartCoroutine(resetObject());
-            }
-            catch (System.Exception ex)
-            {
-                ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            }
+            //try
+            //{
+            //    ResourceManager.Singleton.Clear();
+            //    ResourceManager.Singleton.DebugString("start 0");
+            //    SetVirtualMode(DataUtility.VirtualModeInt, true);
+            //    ResourceManager.Singleton.DebugString("start 1");
+            //    //StartCoroutine(resetObject());
+            //    ResourceManager.Singleton.DebugString("start 2");
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            //}
         }
 
         #region UI
@@ -187,7 +188,7 @@ namespace IMAV.UI
             {
                 yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             List<Transform> temp = new List<Transform>();
             ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
             foreach (Transform tr in DataUtility.dontdestroy.transform)
