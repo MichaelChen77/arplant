@@ -9,6 +9,7 @@ namespace IMAV
 {
     public class DataCenter : MonoBehaviour
     {
+        public GameObject defaultModel;
         List<CategoryData> categories = new List<CategoryData>();
 
         public List<CategoryData> Categories
@@ -45,6 +46,10 @@ namespace IMAV
 
         void Start()
         {
+            DataUtility.SetDirectory(DataUtility.GetCategoryPath());
+            DataUtility.SetDirectory(DataUtility.GetProductPath());
+            DataUtility.SetDirectory(DataUtility.GetProductIconPath());
+            DataUtility.SetDirectory(DataUtility.GetProductModelPath());
             CheckForUpdates();
         }
 

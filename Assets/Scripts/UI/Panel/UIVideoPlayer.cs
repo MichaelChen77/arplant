@@ -20,8 +20,8 @@ namespace IMAV.UI
         public Text videoTimeText;
         public Slider videoSlider;
 
-        bool menuShowed = false;
-        float _time = 0;
+        bool menuShowedTicking = false;
+        float menuShowedTime = 0;
         protected VideoPlayer player;
         protected AudioSource audioSource;
         string currentURL;
@@ -97,13 +97,14 @@ namespace IMAV.UI
 
         public void OnPointerClick(PointerEventData data)
         { 
-            ShowMenu(!menuShowed);
+            ShowMenu(!menuShowedTicking);
         }
 
         public void ShowMenu(bool flag)
         {
-            menuShowed = flag;
-            if (menuShowed)
+            menuShowedTicking = flag;
+            menuShowedTime = 0;
+            if (menuShowedTicking)
             {
                 uiRect.gameObject.SetActive(true);
                 LeanTween.alpha(uiRect, 1, openTime);
@@ -135,7 +136,6 @@ namespace IMAV.UI
                 player.Play();
                 audioSource.Play();
             }
-            _time = 0;
         }
 
         public void videoFrameHandlerDown(BaseEventData data)
@@ -161,16 +161,24 @@ namespace IMAV.UI
             playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
         }
 
+        void StopMenuShowedTicking()
+        {
+            menuShowedTicking = false;
+            menuShowedTime = 0;
+        }
+
+        public void SelectOn()
+        {
+            Debug.Log("onslect");
+        }
+
         void Update()
         {
-            if (menuShowed)
+            if (menuShowedTicking)
             {
-                _time += Time.deltaTime;
-                if (_time > showTime)
-                {
-                    _time = 0;
+                menuShowedTime += Time.deltaTime;
+                if (menuShowedTime > showTime)
                     ShowMenu(false);
-                }
             }
             if(player.isPrepared && player.isPlaying)
             {

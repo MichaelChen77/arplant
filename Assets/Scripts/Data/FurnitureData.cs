@@ -38,7 +38,8 @@ namespace IMAV
 
         public bool CheckModelExist()
         {
-            return File.Exists(DataUtility.GetLocalModelFile(this));
+            return true;
+            //return File.Exists(DataUtility.GetLocalModelFile(this));
         }
     }
 }

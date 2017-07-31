@@ -123,18 +123,20 @@ public class MagentoService : MonoBehaviour {
         }
         WWW www = new WWW(url);
         yield return www;
-        if(!existed)
-        {
-            File.WriteAllBytes(path, www.bytes);
-        }
+
         if (www.assetBundle != null)
         {
             System.Object[] objs = www.assetBundle.LoadAllAssets();
+            if (!existed)
+            {
+                File.WriteAllBytes(path, www.bytes);
+            }
             callback(sku, objs);
         }
         else
         {
-            Debug.Log("cannot download asset bundle from " + url);
+            System.Object[] objs = new System.Object[] { DataCenter.Singleton.defaultModel };
+            callback(sku, objs);
         }
     }
 

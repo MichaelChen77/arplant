@@ -74,25 +74,25 @@ namespace IMAV
             }
         }
 
-        public static string GetModelPath(FurnitureData _data)
-        {
-            return _data.category_name + "/" + _data.id + "/OBJ/";
-        }
+        //public static string GetModelPath(FurnitureData _data)
+        //{
+        //    return _data.category_name + "/" + _data.id + "/OBJ/";
+        //}
 
-        public static string GetLocalModelPath(FurnitureData _data)
-        {
-            return Application.persistentDataPath + "/Data/" + _data.category_name + "/" + _data.id + "/OBJ/";
-        }
+        //public static string GetLocalModelPath(FurnitureData _data)
+        //{
+        //    return Application.persistentDataPath + "/Data/" + _data.category_name + "/" + _data.id + "/OBJ/";
+        //}
 
-        public static string GetLocalModelFile(FurnitureData _data)
-        {
-            return GetLocalModelPath(_data) + _data.name + ".obj";
-        }
+        //public static string GetLocalModelFile(FurnitureData _data)
+        //{
+        //    return GetLocalModelPath(_data) + _data.name + ".obj";
+        //}
 
-        public static string GetImagePath(FurnitureData _data)
-        {
-            return _data.category_name + "/" + _data.id + "/" + _data.name;
-        }
+        //public static string GetImagePath(FurnitureData _data)
+        //{
+        //    return _data.category_name + "/" + _data.id + "/" + _data.name;
+        //}
 
         public static string GetScreenShotPath()
         {

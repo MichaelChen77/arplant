@@ -349,56 +349,56 @@ namespace IMAV
         //    }
         //}
 
-        public void DownloadFileCallback(string path, byte[] content)
-        {
-            try
-            {
-                FileInfo f = new FileInfo(path);
-                if (tempFiles.ContainsKey(path))
-                {
-                    tempFiles[path] = true;
-                    string mpath = DataUtility.GetLocalModelPath(furnitureDict[loadedModelID]) + f.Name;
-                    File.WriteAllBytes(mpath, content);
-                    loadedCount--;
-                    DownloadInvalidation();
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Log("error: " + ex.Message);
-            }
-        }
+        //public void DownloadFileCallback(string path, byte[] content)
+        //{
+        //    try
+        //    {
+        //        FileInfo f = new FileInfo(path);
+        //        if (tempFiles.ContainsKey(path))
+        //        {
+        //            tempFiles[path] = true;
+        //            string mpath = DataUtility.GetLocalModelPath(furnitureDict[loadedModelID]) + f.Name;
+        //            File.WriteAllBytes(mpath, content);
+        //            loadedCount--;
+        //            DownloadInvalidation();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.Log("error: " + ex.Message);
+        //    }
+        //}
 
-        void DownloadInvalidation()
-        {
-            if (loadedCount == 0)
-            {
-                int _count = 0;
-                foreach (KeyValuePair<string, bool> pair in tempFiles)
-                {
-                    if (!pair.Value)
-                    {
-                        ServerScriptUtil.DownloadBinaryFile(pair.Key, DownloadFileCallback);
-                    }
-                }
-                if (_count != 0)
-                {
-                    loadedCount = _count;
-                    ServerScript.Singleton.StartPHPRequests();
-                }
-                else
-                    StartLoadOBjFile(furnitureDict[loadedModelID]);
-            }
-        }
+        //void DownloadInvalidation()
+        //{
+        //    if (loadedCount == 0)
+        //    {
+        //        int _count = 0;
+        //        foreach (KeyValuePair<string, bool> pair in tempFiles)
+        //        {
+        //            if (!pair.Value)
+        //            {
+        //                ServerScriptUtil.DownloadBinaryFile(pair.Key, DownloadFileCallback);
+        //            }
+        //        }
+        //        if (_count != 0)
+        //        {
+        //            loadedCount = _count;
+        //            ServerScript.Singleton.StartPHPRequests();
+        //        }
+        //        else
+        //            StartLoadOBjFile(furnitureDict[loadedModelID]);
+        //    }
+        //}
 
 
-        void StartLoadOBjFile(FurnitureData _data)
-        {
-            if (loadingImage != null)
-                loadingImage.Show();
-            string file = DataUtility.GetLocalModelFile(_data);
-            OBJLoader.Singleton.LoadOBJ(file, AfterLoadOBJ);
-        }
+        //void StartLoadOBjFile(FurnitureData _data)
+        //{
+        //    if (loadingImage != null)
+        //        loadingImage.Show();
+        //    string file = DataUtility.GetLocalModelFile(_data);
+        //    OBJLoader.Singleton.LoadOBJ(file, AfterLoadOBJ);
+        //}
 
         void AfterLoadOBJ(GameObject obj)
         {
