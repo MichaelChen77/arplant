@@ -24,6 +24,7 @@ namespace IMAV.UI
         float menuShowedTime = 0;
         protected VideoPlayer player;
         protected AudioSource audioSource;
+        RectTransform playerRect;
         string currentURL;
 
         public VideoPlayer Player
@@ -41,6 +42,7 @@ namespace IMAV.UI
         {
             player = GetComponent<VideoPlayer>();
             audioSource = GetComponent<AudioSource>();
+            playerRect = GetComponent<RectTransform>();
         }
 
         void Start()
@@ -49,6 +51,7 @@ namespace IMAV.UI
             audioSource.playOnAwake = false;
             audioSource.Pause();
 
+            player.prepareCompleted += OnVideoPrepared;
             player.audioOutputMode = VideoAudioOutputMode.AudioSource;
             player.EnableAudioTrack(0, true);
             player.SetTargetAudioSource(0, audioSource);
@@ -80,19 +83,34 @@ namespace IMAV.UI
             player.url = str;
             player.source = VideoSource.Url;
             player.Prepare();
-            if (player.isPrepared)
-                Debug.Log("prepared");
         }
 
         void OnVideoPrepared(VideoPlayer vp)
         {
-            playTimeText.text = vp.time.ToString();
-            videoTimeText.text = (vp.frame / vp.frameRate).ToString();
+            image.texture = player.texture;
+            image.rectTransform.sizeDelta = new Vector2(player.texture.width, player.texture.height);
+            videoSlider.value = 0;
+            videoSlider.maxValue = player.frameCount;
+            videoTimeText.text = DataUtility.CovertToTimeString((int)(player.frameCount / player.frameRate));
+            PlayVideo();
+        }
+
+        public void SetAspectMode(bool isStretch)
+        {
+            if(isStretch)
+            {
+                image.rectTransform.sizeDelta = playerRect.rect.size;
+            }
+            else
+            {
+
+            }
         }
 
         public override void Close()
         {
             base.Close();
+            ShowMenu(false);
         }
 
         public void OnPointerClick(PointerEventData data)
@@ -129,10 +147,6 @@ namespace IMAV.UI
             }
             else
             {
-                image.texture = player.texture;
-                image.rectTransform.sizeDelta = new Vector2(player.texture.width, player.texture.height);
-                videoSlider.maxValue = player.frameCount;
-                videoTimeText.text = DataUtility.CovertToTimeString((int)(player.frameCount / player.frameRate));
                 player.Play();
                 audioSource.Play();
             }
