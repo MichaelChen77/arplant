@@ -206,6 +206,20 @@ namespace IMAV
             list[indexB] = tmp;
         }
 
+        public static Vector2 GetFitVector(bool isHorizontal, Vector2 source, Vector2 target)
+        {
+            if (isHorizontal)
+            {
+                float y = target.x * source.y / source.x;
+                return new Vector2(target.x, y);
+            }
+            else
+            {
+                float x = target.y * source.x / source.y;
+                return new Vector2(x, target.y);
+            }
+        }
+
         public static string CovertToTimeString(int t)
         {
             string str = "";

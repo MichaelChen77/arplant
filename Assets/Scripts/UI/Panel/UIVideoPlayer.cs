@@ -53,23 +53,15 @@ namespace IMAV.UI
 
             player.prepareCompleted += OnVideoPrepared;
             player.audioOutputMode = VideoAudioOutputMode.AudioSource;
+            player.controlledAudioTrackCount = 1;
             player.EnableAudioTrack(0, true);
             player.SetTargetAudioSource(0, audioSource);
             player.source = VideoSource.Url;
-
-            RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 24);
-            rt.Create();
-            player.targetTexture = rt;
+            player.aspectRatio = VideoAspectRatio.FitInside;
 
             //Load("file://D:/WorkSpace/AR/Test/big_buck_bunny.mp4");
             //Load("file://C:/WorkSpace/AR/TestImages/Videos/20170728/WhizHome_20170728_105225.mp4");
             Load("file://C:/WorkSpace/AR/TestImages/Videos/20170728/darker.mp4");
-        }
-
-        public override void Open()
-        {
-            base.Open();
-            player.Prepare();
         }
 
         public void Open(string str)
@@ -88,29 +80,44 @@ namespace IMAV.UI
         void OnVideoPrepared(VideoPlayer vp)
         {
             image.texture = player.texture;
-            image.rectTransform.sizeDelta = new Vector2(player.texture.width, player.texture.height);
+            SetAspectMode(player.aspectRatio);
             videoSlider.value = 0;
             videoSlider.maxValue = player.frameCount;
             videoTimeText.text = DataUtility.CovertToTimeString((int)(player.frameCount / player.frameRate));
-            PlayVideo();
+            player.Play();
+            audioSource.Play();
         }
 
-        public void SetAspectMode(bool isStretch)
+        public void LoopSetVideoAspectMode()
         {
-            if(isStretch)
+            switch(player.aspectRatio)
             {
-                image.rectTransform.sizeDelta = playerRect.rect.size;
-            }
-            else
-            {
-
+                case VideoAspectRatio.FitInside: SetAspectMode(VideoAspectRatio.Stretch); break;
+                case VideoAspectRatio.Stretch: SetAspectMode(VideoAspectRatio.NoScaling); break;
+                case VideoAspectRatio.NoScaling: SetAspectMode(VideoAspectRatio.FitInside); break;
             }
         }
 
-        public override void Close()
+        public void SetAspectMode(VideoAspectRatio mode)
         {
-            base.Close();
-            ShowMenu(false);
+            player.aspectRatio = mode;
+            switch (player.aspectRatio)
+            {
+                case VideoAspectRatio.Stretch: image.rectTransform.sizeDelta = playerRect.rect.size; break;
+                case VideoAspectRatio.NoScaling: image.rectTransform.sizeDelta = new Vector2(player.texture.width, player.texture.height); break;
+                case VideoAspectRatio.FitHorizontally: image.rectTransform.sizeDelta = DataUtility.GetFitVector(true, new Vector2(player.texture.width, player.texture.height), playerRect.rect.size); break;
+                case VideoAspectRatio.FitVertically: image.rectTransform.sizeDelta = DataUtility.GetFitVector(false, new Vector2(player.texture.width, player.texture.height), playerRect.rect.size); break;
+                case VideoAspectRatio.FitInside:
+                    float rateX = player.texture.width / playerRect.rect.size.x;
+                    float rateY = player.texture.height / playerRect.rect.size.y;
+                    image.rectTransform.sizeDelta = DataUtility.GetFitVector(rateX > rateY, new Vector2(player.texture.width, player.texture.height), playerRect.rect.size);
+                    break;
+                case VideoAspectRatio.FitOutside:
+                    float rateX1 = player.texture.width / playerRect.rect.size.x;
+                    float rateY1 = player.texture.height / playerRect.rect.size.y;
+                    image.rectTransform.sizeDelta = DataUtility.GetFitVector(rateX1 < rateY1, new Vector2(player.texture.width, player.texture.height), playerRect.rect.size);
+                    break;
+            }
         }
 
         public void OnPointerClick(PointerEventData data)
@@ -133,13 +140,9 @@ namespace IMAV.UI
             }
         }
 
-        public void Play(string str)
-        {
-
-        }
-
         public void PlayVideo()
         {
+            Debug.Log("Click");
             if (player.isPlaying)
             {
                 player.Pause();
@@ -175,7 +178,7 @@ namespace IMAV.UI
             playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
         }
 
-        void StopMenuShowedTicking()
+        public void StopMenuShowedTicking()
         {
             menuShowedTicking = false;
             menuShowedTime = 0;
@@ -199,6 +202,12 @@ namespace IMAV.UI
                 playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
                 videoSlider.value = player.frame;
             }
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            ShowMenu(false);
         }
     }
 }
