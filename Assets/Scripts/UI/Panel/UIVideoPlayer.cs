@@ -59,8 +59,6 @@ namespace IMAV.UI
             player.source = VideoSource.Url;
             player.aspectRatio = VideoAspectRatio.FitInside;
 
-            //Load("file://D:/WorkSpace/AR/Test/big_buck_bunny.mp4");
-            //Load("file://C:/WorkSpace/AR/TestImages/Videos/20170728/WhizHome_20170728_105225.mp4");
             Load("file://C:/WorkSpace/AR/TestImages/Videos/20170728/darker.mp4");
         }
 
@@ -178,9 +176,9 @@ namespace IMAV.UI
             playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
         }
 
-        public void StopMenuShowedTicking()
+        public void StartMenuShowedTicking(bool flag)
         {
-            menuShowedTicking = false;
+            menuShowedTicking = flag;
             menuShowedTime = 0;
         }
 
