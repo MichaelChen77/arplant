@@ -117,7 +117,7 @@ namespace IMAV.UI
 
         public override void Delete()
         {
-            ImageManager.Singleton.DeleteImageFolder(gridDir.Name);
+            MediaCenter.Singleton.DeleteImageFolder(gridDir.Name);
             base.Delete();
            
         }

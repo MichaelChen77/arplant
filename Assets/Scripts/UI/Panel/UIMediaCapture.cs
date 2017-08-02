@@ -48,10 +48,8 @@ namespace IMAV.UI
             isPaused = false;
             recordTime = 0;
             lastRecordSec = 0;
-            //if (HUDCam != null)
-            //    HUDCam.SetActive(true);
             ResourceManager.Singleton.DebugString("recording start");
-            ImageManager.Singleton.StartRecordVideo();
+            MediaCenter.Singleton.StartRecordVideo();
         }
 
         private void RecordingStopped()
@@ -61,24 +59,24 @@ namespace IMAV.UI
             SetRecordTimeText();
             ResourceManager.Singleton.DebugString("recording stop");
             //HUDCam.SetActive(false);
-            ImageManager.Singleton.StopRecordVideo(OnPostScreenCaptured);
+            MediaCenter.Singleton.StopRecordVideo(OnPostScreenCaptured);
         }
 
         public override void Open()
         {
             base.Open();
-            previewImage.sprite = ImageManager.Singleton.GetLatestThumbnail();
+            previewImage.sprite = MediaCenter.Singleton.GetLatestThumbnail();
         }
 
         public void CaptureImage()
         {
             thumbnailImage.transform.localScale = Vector3.zero;
-            ImageManager.Singleton.CaptureScreen(isRecording, OnPostScreenCaptured);
+            MediaCenter.Singleton.CaptureScreen(isRecording, OnPostScreenCaptured);
         }
 
         void OnPostScreenCaptured(string path)
         {
-            Sprite sp = ImageManager.Singleton.GetImage(path, true);
+            Sprite sp = MediaCenter.Singleton.GetImage(path, true);
             previewImage.sprite = sp;
             LeanTween.scale(thumbnailImage, Vector3.one, 0.3f);
         }
@@ -121,14 +119,14 @@ namespace IMAV.UI
 
         public void ShowImage()
         {
-            if (ImageManager.Singleton.ExistFile)
+            if (MediaCenter.Singleton.ExistFile)
             {
-                ImageManager.Singleton.ShowLatestImage();
+                MediaCenter.Singleton.ShowLatestImage();
                 Close();
             }
             else
             {
-                ImageManager.Singleton.msgDialog.Show("Not any image\video exist in the gallery!");
+                MediaCenter.Singleton.msgDialog.Show("Not any image\video exist in the gallery!");
             }
         }
 

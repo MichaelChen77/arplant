@@ -56,7 +56,7 @@ namespace IMAV.UI
         {
             Clear();
             imageTag = dir + "/" + f.Name;
-            if(ImageManager.Singleton.IsVideoImage(imageTag))
+            if(MediaCenter.Singleton.IsVideoImage(imageTag))
                 Instantiate(videoCover, transform);
             name = f.Name;
             if (animated > 0)
@@ -84,13 +84,13 @@ namespace IMAV.UI
         IEnumerator Load(string str)
         {
             yield return null;
-            image.sprite = ImageManager.Singleton.GetImage(str, true);
+            image.sprite = MediaCenter.Singleton.GetImage(str, true);
         }
 
         public void Delete(bool removeFile)
         {
             if (removeFile)
-                ImageManager.Singleton.DeleteFile(imageTag);
+                MediaCenter.Singleton.DeleteFile(imageTag);
             Clear();
             Delete();
         }

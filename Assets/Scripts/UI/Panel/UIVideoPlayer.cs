@@ -18,7 +18,10 @@ namespace IMAV.UI
         public float openTime = 0.15f;
         public Text playTimeText;
         public Text videoTimeText;
+        public Text nameText;
         public Slider videoSlider;
+        public GToggleButton playButton;
+        public DisableSelf buttonEffect;
 
         bool menuShowedTicking = false;
         float menuShowedTime = 0;
@@ -52,14 +55,21 @@ namespace IMAV.UI
             audioSource.Pause();
 
             player.prepareCompleted += OnVideoPrepared;
+            player.seekCompleted += Player_seekCompleted;
+            player.loopPointReached += Player_loopPointReached;
             player.audioOutputMode = VideoAudioOutputMode.AudioSource;
             player.controlledAudioTrackCount = 1;
             player.EnableAudioTrack(0, true);
             player.SetTargetAudioSource(0, audioSource);
             player.source = VideoSource.Url;
             player.aspectRatio = VideoAspectRatio.FitInside;
+            player.skipOnDrop = true;
+        }
 
-            Load("file://C:/WorkSpace/AR/TestImages/Videos/20170728/darker.mp4");
+        private void Player_loopPointReached(VideoPlayer source)
+        {
+            playButton.setTriggerWithoutAnimation(false);
+            ShowMenu(true);
         }
 
         public void Open(string str)
@@ -71,6 +81,7 @@ namespace IMAV.UI
         public void Load(string str)
         {
             player.url = str;
+            nameText.text = System.IO.Path.GetFileName(str);
             player.source = VideoSource.Url;
             player.Prepare();
         }
@@ -80,8 +91,9 @@ namespace IMAV.UI
             image.texture = player.texture;
             SetAspectMode(player.aspectRatio);
             videoSlider.value = 0;
+            int timeCount = (int)(player.frameCount / player.frameRate);
             videoSlider.maxValue = player.frameCount;
-            videoTimeText.text = DataUtility.CovertToTimeString((int)(player.frameCount / player.frameRate));
+            videoTimeText.text = DataUtility.CovertToTimeString(timeCount);
             player.Play();
             audioSource.Play();
         }
@@ -120,60 +132,56 @@ namespace IMAV.UI
 
         public void OnPointerClick(PointerEventData data)
         { 
-            ShowMenu(!menuShowedTicking);
+            ShowMenu(!uiRect.gameObject.activeSelf);
         }
 
         public void ShowMenu(bool flag)
         {
             menuShowedTicking = flag;
             menuShowedTime = 0;
-            if (menuShowedTicking)
-            {
-                uiRect.gameObject.SetActive(true);
-                LeanTween.alpha(uiRect, 1, openTime);
-            }
-            else
-            {
-                LeanTween.alpha(uiRect, 0, openTime).setOnComplete(() => uiRect.gameObject.SetActive(false));
-            }
+            uiRect.gameObject.SetActive(menuShowedTicking);
+            LeanTween.alpha(uiRect, flag ? 1 : 0, openTime);
         }
 
         public void PlayVideo()
         {
-            Debug.Log("Click");
             if (player.isPlaying)
             {
                 player.Pause();
                 audioSource.Pause();
+                playButton.setTrigger(false);
             }
             else
             {
                 player.Play();
                 audioSource.Play();
+                playButton.setTrigger(true);
+                StartMenuShowedTicking(true);
             }
         }
 
         public void videoFrameHandlerDown(BaseEventData data)
         {
             player.Pause();
+            playButton.gameObject.SetActive(false);
         }
 
         public void videoFrameHandlerUp(BaseEventData data)
         {
+            player.frame = (long)videoSlider.value;
             videoSlideOnDrag(data);
-            StartCoroutine(DelayPlay());
         }
 
-        IEnumerator DelayPlay()
+        private void Player_seekCompleted(VideoPlayer source)
         {
-            yield return new WaitUntil(() => !player.isPlaying);
             player.Play();
+            playButton.gameObject.SetActive(true);
         }
 
         public void videoSlideOnDrag(BaseEventData data)
         {
-            player.frame = (long)videoSlider.value;
-            playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
+            int _time = (int)(videoSlider.value / player.frameRate);
+            playTimeText.text = DataUtility.CovertToTimeString(_time);
         }
 
         public void StartMenuShowedTicking(bool flag)
@@ -182,30 +190,37 @@ namespace IMAV.UI
             menuShowedTime = 0;
         }
 
-        public void SelectOn()
+        public void ButtonDown(RectTransform rect)
         {
-            Debug.Log("onslect");
+            StartMenuShowedTicking(false);
+            buttonEffect.OpenBelow(rect);
         }
 
         void Update()
         {
-            if (menuShowedTicking)
+            if (menuShowedTicking && player.isPlaying)
             {
                 menuShowedTime += Time.deltaTime;
                 if (menuShowedTime > showTime)
                     ShowMenu(false);
             }
-            if(player.isPrepared && player.isPlaying)
+            if (player.isPrepared && player.isPlaying)
             {
                 playTimeText.text = DataUtility.CovertToTimeString((int)player.time);
                 videoSlider.value = player.frame;
             }
         }
 
+        public void StopVideo()
+        {
+            player.Stop();
+        }
+
         public override void Close()
         {
-            base.Close();
+            player.Stop();
             ShowMenu(false);
+            base.Close();
         }
     }
 }

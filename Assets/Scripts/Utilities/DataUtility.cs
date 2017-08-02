@@ -50,6 +50,26 @@ namespace IMAV
             return null;
         }
 
+        public static Texture2D CreateTexture(string str)
+        {
+            if (str != string.Empty)
+            {
+                try
+                {
+                    FileInfo fi = new FileInfo(str);
+                    if (fi.Exists)
+                    {
+                        byte[] content = File.ReadAllBytes(str);
+                        Texture2D tex = new Texture2D(10, 10);
+                        tex.LoadImage(content);
+                        return tex;
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);

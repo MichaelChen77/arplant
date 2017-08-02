@@ -152,7 +152,7 @@ namespace IMAV.UI
 			//System.DateTime dt = System.DateTime.Now.ToLocalTime ();
 			//string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
 
-            ImageManager.Singleton.CaptureScreen(false, null);
+            MediaCenter.Singleton.CaptureScreen(false, null);
             //ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, "", PostScreenShot);
         }
 

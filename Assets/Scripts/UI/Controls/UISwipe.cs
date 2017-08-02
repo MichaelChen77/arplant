@@ -32,15 +32,6 @@ namespace IMAV.UI
         public int CurrentPage
         {
             get { return curPage; }
-            //set
-            //{
-            //    if (curPage != value)
-            //    {
-            //        curPage = value;
-            //        //int index = curPage % transform.childCount;
-            //        //MovePage(-index);
-            //    }
-            //}
         }
 
         protected int pageCount = 0;

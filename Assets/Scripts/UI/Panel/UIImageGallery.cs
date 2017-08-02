@@ -196,7 +196,7 @@ namespace IMAV.UI
             else
             {
                 string path = DataUtility.GetScreenShotPath() + im.ImageTag;
-                ImageManager.Singleton.ShowScreenShot(im.ImageTag);
+                MediaCenter.Singleton.ShowScreenShot(im.ImageTag);
             }
         }
 

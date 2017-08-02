@@ -11,7 +11,7 @@ namespace IMAV.UI
 {
     public class UIARSceneController : MonoBehaviour
     {
-        public DisableSelf markerHint;
+        public TextDisableSelf markerHint;
         public GToggleButton clearBtn;
         //public GToggleButton markerlessBtn;
         //public GToggleButton placementBtn;

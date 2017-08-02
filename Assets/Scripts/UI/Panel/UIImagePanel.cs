@@ -9,6 +9,7 @@ namespace IMAV.UI
     {
         public UISwipe swipe;
         public RectTransform bottomRect;
+        public RectTransform topRect;
         public float moveTime = 0.2f;
         public Image tempImage;
 
@@ -21,7 +22,7 @@ namespace IMAV.UI
         {
             gameObject.SetActive(true);
             swipe.Open();
-            swipe.PageCount = ImageManager.Singleton.Images.Count;
+            swipe.PageCount = MediaCenter.Singleton.Images.Count;
             swipe.OnSwipeCompleted = updateImages;
             swipe.OnSwipeClicked = clickImage;
             GotoPage(index);
@@ -43,15 +44,15 @@ namespace IMAV.UI
                 ClearImage(m);
                 if (flag)
                 {
-                    m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage + 1));
-                    DetectVideo(m, swipe.CurrentPage + 1);
+                    m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage + 1));
+                    DetectVideo(m.transform, swipe.CurrentPage + 1);
                 }
                 else
                 {
-                    m.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(swipe.CurrentPage - 1));
-                    DetectVideo(m, swipe.CurrentPage - 1);
+                    m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage - 1));
+                    DetectVideo(m.transform, swipe.CurrentPage - 1);
                 }
-                AutosetImageColor(m);
+                AutoSetImageColor(m);
             }
         }
 
@@ -63,6 +64,12 @@ namespace IMAV.UI
                 targetPos = -bottomRect.sizeDelta.y;
             }
             LeanTween.moveY(bottomRect, targetPos, moveTime);
+            targetPos = 0;
+            if(topRect.anchoredPosition.y == 0)
+            {
+                targetPos = topRect.sizeDelta.y;
+            }
+            LeanTween.moveY(topRect, targetPos, moveTime);
         }
 
         public Sprite GetCurrentImage()
@@ -95,41 +102,36 @@ namespace IMAV.UI
             {
                 Image img = swipe.transform.GetChild(i).GetComponent<Image>();
                 ClearImage(img);
-                img.sprite = DataUtility.CreateSprite(ImageManager.Singleton.GetImagePath(index + i + changedInt));
-                DetectVideo(img, index + i + changedInt);
-                AutosetImageColor(img);
+                img.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(index + i + changedInt));
+                DetectVideo(img.transform, index + i + changedInt);
+                AutoSetImageColor(img);
             }
         }
 
-        public void DetectVideo(Image m, string str)
+        public void DetectVideo(Transform m, string str)
         {
-            if (ImageManager.Singleton.IsVideoImage(str))
-                m.transform.GetChild(0).gameObject.SetActive(true);
+            if (MediaCenter.Singleton.IsVideoImage(str))
+                m.GetChild(0).gameObject.SetActive(true);
             else
-                m.transform.GetChild(0).gameObject.SetActive(false);
+                m.GetChild(0).gameObject.SetActive(false);
         }
 
-        public void DetectVideo(Image m, int index)
+        public void DetectVideo(Transform m, int index)
         {
-            string str = ImageManager.Singleton.GetPath(index);
+            string str = MediaCenter.Singleton.GetPath(index);
             DetectVideo(m, str);
         }
 
         public void PlayVideo()
         {
-            string str = ImageManager.Singleton.GetPath(swipe.CurrentPage);
-            ImageManager.Singleton.PlayVideo(str);
-            //string fileName = ImageManager.Singleton.GetVideoFileName(str);
-            //string path = File.ReadAllText(DataUtility.GetScreenVideoPath() + fileName + ".json");
-            //ResourceManager.Singleton.DebugString("play: " + path);
-            //List<System.Object> videos = EveryplayMiniJSON.Json.Deserialize(path) as List<System.Object>;
-            //if (videos.Count == 1)
-            //{
-            //    foreach (Dictionary<string, object> video in videos)
-            //    {
-            //        Everyplay.PlayVideoWithDictionary(video);
-            //    }
-            //}
+            string str = MediaCenter.Singleton.GetPath(swipe.CurrentPage);
+            MediaCenter.Singleton.PlayVideo(str);
+        }
+
+        public void ShareFile()
+        {
+            string str = MediaCenter.Singleton.GetPath(swipe.CurrentPage);
+            MediaCenter.Singleton.ShareMedia(str);
         }
 
         void ClearImage(Image img)
@@ -139,7 +141,7 @@ namespace IMAV.UI
             Destroy(img.sprite);
         }
 
-        void AutosetImageColor(Image img)
+        void AutoSetImageColor(Image img)
         {
             if (img.sprite == null)
                 img.color = Color.clear;
@@ -149,36 +151,36 @@ namespace IMAV.UI
 
         public void SaveFile()
         {
-            if (ImageManager.Singleton.IsVideoImage(swipe.CurrentPage))
+            if (MediaCenter.Singleton.IsVideoImage(swipe.CurrentPage))
             {
-                ImageManager.Singleton.SaveVideo(swipe.CurrentPage);
+                MediaCenter.Singleton.SaveVideo(swipe.CurrentPage);
             }
             else
             {
-                string path = ImageManager.Singleton.GetPath(swipe.CurrentPage);
+                string path = MediaCenter.Singleton.GetPath(swipe.CurrentPage);
                 ResourceManager.Singleton.DebugString("save file: " + path);
                 if (path != string.Empty)
                 {
-                    ImageManager.Singleton.SaveScreenShot(path);
+                    MediaCenter.Singleton.SaveScreenShot(path);
                 }
             }
         }
 
         public void DeleteFile()
         {
-            ImageManager.Singleton.msgDialog.Show("Delete the selected item?","Cancel", "Delete", null, DeleteImageCallback);
+            MediaCenter.Singleton.msgDialog.Show("Delete the selected item?","Cancel", "Delete", null, DeleteImageCallback);
         }
 
         void DeleteImageCallback(int res, System.Object refobj)
         {
             if (res == 1)
             {
-                ImageManager.Singleton.DeleteImage(swipe.CurrentPage);
+                MediaCenter.Singleton.DeleteImage(swipe.CurrentPage);
                 tempImage.sprite = Instantiate(GetCurrentImage());
                 tempImage.transform.localScale = Vector3.one;
                 tempImage.gameObject.SetActive(true);
                 LeanTween.scaleY(tempImage.gameObject, 0, 0.5f).setOnComplete(FileDeleteCompleted);
-                swipe.PageCount = ImageManager.Singleton.Images.Count;
+                swipe.PageCount = MediaCenter.Singleton.Images.Count;
                 if (swipe.PageCount > 0)
                 {
                     if (swipe.CurrentPage == swipe.PageCount)
@@ -197,9 +199,9 @@ namespace IMAV.UI
 
         public override void Close()
         {
-            if (ImageManager.Singleton.imageGallery.isActiveAndEnabled)
+            if (MediaCenter.Singleton.imageGallery.isActiveAndEnabled)
             {
-                ImageManager.Singleton.imageGallery.DelayRefresh();
+                MediaCenter.Singleton.imageGallery.DelayRefresh();
             }
             gameObject.SetActive(false);
             //ResourceManager.Singleton.Resume();

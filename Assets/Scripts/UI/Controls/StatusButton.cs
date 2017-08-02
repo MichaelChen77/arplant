@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class StatusButton : MonoBehaviour, IPointerClickHandler {
+public class StatusButton : MonoBehaviour {
 	public Sprite[] statusSprites;
 	int buttonID = 0;
 	bool defaultType = true;
@@ -16,9 +16,6 @@ public class StatusButton : MonoBehaviour, IPointerClickHandler {
 	}
 
 	Image btnImage;
-
-	public delegate void RecIntCallback(int flag);
-	public RecIntCallback onButtonClick;
 
 	// Use this for initialization
 	void Awake () {
@@ -59,13 +56,5 @@ public class StatusButton : MonoBehaviour, IPointerClickHandler {
 		if (buttonID >= StatusCount)
 			buttonID = 0;
 		SetStatus (buttonID);
-	}
-
-	public void OnPointerClick(PointerEventData data)
-	{
-		SetNextStatus ();
-		if (onButtonClick != null) {
-			onButtonClick (buttonID);
-		}
 	}
 }

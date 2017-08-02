@@ -30,10 +30,13 @@ public class GToggleButton : MonoBehaviour
     public ToggleConstraint constraint;
     public VariableUI toggleOnVar;
     public VariableUI toggleOffVar;
+    Quaternion originRot;
 
     void Awake()
     {
         resetTrigger = trigger;
+        if (targetImage != null)
+            originRot = targetImage.transform.rotation;
     }
 
     public void Reset()
@@ -51,6 +54,14 @@ public class GToggleButton : MonoBehaviour
     {
         trigger = flag;
         UpdateToggle();
+    }
+
+    public void setTriggerWithoutAnimation(bool flag)
+    {
+        bool temp = IsAnimated;
+        IsAnimated = false;
+        setTrigger(flag);
+        IsAnimated = temp;
     }
 
     public void changeTrigger(bool flag)
@@ -88,7 +99,7 @@ public class GToggleButton : MonoBehaviour
     void UpdateSprite()
     {
         if (IsAnimated)
-            LeanTween.rotateAround(targetImage.gameObject, Vector3.forward, 180, transferTime).setOnComplete(ChangeSprite);
+            LeanTween.rotateAround(targetImage.gameObject, Vector3.back, 180, transferTime).setOnComplete(ChangeSprite);
         else
             ChangeSprite();
     }
@@ -97,6 +108,7 @@ public class GToggleButton : MonoBehaviour
     {
         if (targetImage != null)
         {
+            targetImage.transform.rotation = originRot;
             if (trigger)
                 targetImage.sprite = toggleOnVar.sprite;
             else

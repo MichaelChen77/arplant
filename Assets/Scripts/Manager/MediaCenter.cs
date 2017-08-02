@@ -8,15 +8,16 @@ using IMAV.UI;
 
 namespace IMAV
 {
-    public class ImageManager : MonoBehaviour
+    public class MediaCenter : MonoBehaviour
     {
         public UIImagePanel imagePanel;
         public UIImageGallery imageGallery;
+        public UIVideoPlayer videoPlayer;
         public UIDialog msgDialog;
-        public DisableSelf saveFileHint;
+        public TextDisableSelf saveFileHint;
 
-        private static ImageManager mSingleton;
-        public static ImageManager Singleton
+        private static MediaCenter mSingleton;
+        public static MediaCenter Singleton
         {
             get
             {
@@ -179,7 +180,7 @@ namespace IMAV
                 files.Add(str);
         }
 
-        void WalkSessions(string jsonfile, string videofile)
+        void WalkSessions(string videofile)
         {
             string[] dirs = System.IO.Directory.GetDirectories(DataUtility.GetSessionPath());
             if (dirs != null)
@@ -190,13 +191,9 @@ namespace IMAV
                     foreach (string f in files)
                     {
                         FileInfo file = new FileInfo(f);
-                        if (file.Extension == ".json")
+                        if (file.Extension == ".mp4")
                         {
-                            File.Copy(file.FullName, jsonfile);
-                        }
-                        else if (file.Extension == ".mp4")
-                        {
-                            File.Copy(file.FullName, videofile);
+                            File.Move(file.FullName, videofile);
                         }
                     }
                 }
@@ -229,11 +226,8 @@ namespace IMAV
 
         public void StopRecordVideo(Action<string> run)
         {
-            string jsonName = DataUtility.GetScreenVideoPath() + curRecordName + ".json";
             string videoName = DataUtility.GetScreenVideoPath() + curRecordName + ".mp4";
-            //string filename = curRecordName.Substring(curRecordName.IndexOf('/') + 1);
-            //ResourceManager.Singleton.DebugString("fullname: " + filename);
-            WalkSessions(jsonName, videoName);
+            WalkSessions(videoName);
 
             if (run != null)
                 run(curRecordName + "_video.jpg");
@@ -241,28 +235,9 @@ namespace IMAV
 
         public void PlayVideo(string str)
         {
-            StartCoroutine(CopyVideoToCacheAndPlay(str));
-        }
-
-        IEnumerator CopyVideoToCacheAndPlay(string str)
-        {
             string fileName = GetVideoFileName(str);
-            string jsonFile = DataUtility.GetScreenVideoPath() + fileName + ".json";
-            string videoFile = DataUtility.GetScreenVideoPath() + fileName + ".mp4";
-            string[] dirs = Directory.GetDirectories(DataUtility.GetSessionPath());
-            if (dirs != null && dirs.Length > 0)
-            {
-                string targetJson = dirs[0] + "/data.json";
-                string targetVideo = dirs[0] + "/screen-0.mp4";
-                ResourceManager.Singleton.DebugString("target: " + targetJson);
-                File.Delete(targetJson);
-                File.Delete(targetVideo);
-                File.Copy(videoFile, targetVideo);
-                File.Copy(jsonFile, targetJson);
-            }
-
-            yield return new WaitForEndOfFrame();
-            Everyplay.PlayLastRecording();
+            string videoFile = "file://" + DataUtility.GetScreenVideoPath() + fileName + ".mp4";
+            videoPlayer.Open(videoFile);
         }
 
         public void SaveScreenShot(string str)
@@ -323,6 +298,21 @@ namespace IMAV
             return uiList;
         }
         #endregion
+
+
+        public void ShareMedia(string str)
+        {
+            if(IsVideoImage(str))
+            {
+                string path = DataUtility.GetScreenVideoPath() + GetVideoFileName(str) + ".mp4";
+                NativeShare.Share("share video", path, "");
+            }
+            else
+            {
+                string path = DataUtility.GetScreenShotPath() + str;
+                NativeShare.Share("share image", path, "");
+            }
+        }
 
         public void ShowScreenShot(string str)
         {
