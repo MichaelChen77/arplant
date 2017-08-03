@@ -55,7 +55,7 @@ public enum VirtualMode
 namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
-        public ResController localResCtrl;
+        //public ResController localResCtrl;
         public BoundFrame frame;
         public DebugView debugview;
         public UIARSceneController arui;
@@ -132,10 +132,10 @@ namespace IMAV
 
         void Start()
         {
-            if (DataUtility.WorkOnLocal)
-            {
-                localResCtrl.LoadLocalResource(furcategories);
-            }
+            //if (DataUtility.WorkOnLocal)
+            //{
+            //    localResCtrl.LoadLocalResource(furcategories);
+            //}
         }
 
         public void SetVirtualMode(VirtualMode flag)
@@ -387,21 +387,20 @@ namespace IMAV
         public void Reset()
         {
             Clear();
-            SetVirtualMode(VirtualMode.Markerless);
-            //StartPlaceObject();
+            StartPlaceObject();
         }
 
         public void Quit()
         {
             AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
-            cls.Call("goToActivity");
+            cls.Call("quitActivity", "unityquit");
         }
 
 
-        public void AddModel()
+        public void Browse()
         {
             AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
-            cls.Call("goToActivity");
+            cls.Call("browse");
         }
 
         public void DeleteCurrentObject()

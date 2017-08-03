@@ -16,12 +16,8 @@ namespace IMAV.UI
         public GameObject stopButton;
         public GameObject recordTimePanel;
         public Text recordTimeText;
-        //public GameObject HUDCam;
-
-        public UIImagePanel imagePanel;
-
-
         public Image previewImage;
+
         float recordTime = 0;
         int lastRecordSec = 0;
 

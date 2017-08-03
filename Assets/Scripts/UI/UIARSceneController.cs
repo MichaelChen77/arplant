@@ -21,19 +21,17 @@ namespace IMAV.UI
 
         void Start()
         {
-            //try
-            //{
-            //    ResourceManager.Singleton.Clear();
-            //    ResourceManager.Singleton.DebugString("start 0");
-            //    SetVirtualMode(DataUtility.VirtualModeInt, true);
-            //    ResourceManager.Singleton.DebugString("start 1");
-            //    //StartCoroutine(resetObject());
-            //    ResourceManager.Singleton.DebugString("start 2");
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            //}
+            try
+            {
+                ResourceManager.Singleton.Clear();
+                SetVirtualMode(DataUtility.VirtualModeInt, false);
+                StartCoroutine(resetObject());
+                //ResourceManager.Singleton.DebugString("start 2");
+            }
+            catch (System.Exception ex)
+            {
+                ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            }
         }
 
         #region UI
@@ -184,24 +182,27 @@ namespace IMAV.UI
 
         IEnumerator resetObject()
         {
-            if (ResourceManager.Singleton.VMode == VirtualMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+            if (DataUtility.dontdestroy.transform.childCount > 0)
             {
-                yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+                //if (ResourceManager.Singleton.VMode == VirtualMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+                //{
+                //    yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+                //}
+                yield return new WaitForSeconds(0.5f);
+                List<Transform> temp = new List<Transform>();
+                ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
+                foreach (Transform tr in DataUtility.dontdestroy.transform)
+                {
+                    temp.Add(tr);
+                }
+                foreach (Transform tran in temp)
+                {
+                    tran.gameObject.SetActive(true);
+                    ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
+                    ResourceManager.Singleton.DebugString("add object: " + tran.name);
+                }
+                DataUtility.CurrentObject = null;
             }
-            yield return new WaitForSeconds(0.5f);
-            List<Transform> temp = new List<Transform>();
-            ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
-            foreach (Transform tr in DataUtility.dontdestroy.transform)
-            {
-                temp.Add(tr);
-            }
-            foreach (Transform tran in temp)
-            {
-                tran.gameObject.SetActive(true);
-                ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
-                ResourceManager.Singleton.DebugString("add object: " + tran.name);
-            }
-            DataUtility.CurrentObject = null;
         }
 
         public void GotoHomeScene()
