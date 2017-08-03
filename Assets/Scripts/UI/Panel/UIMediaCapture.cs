@@ -10,7 +10,7 @@ namespace IMAV.UI
     {
         public GameObject thumbnailImage;
         public GameObject imageCaptureButton;
-        public GameObject videoRecordButton;
+        public GStateButton videoRecordButton;
         public GameObject closeButton;
         public GameObject pauseButton;
         public GameObject stopButton;
@@ -26,16 +26,42 @@ namespace IMAV.UI
 
         Texture2D thumbnailTex;
 
-        void Start()
+        private void Awake()
+        {
+#if UNITY_EDITOR
+            InitEvents();
+#else
+            if (Everyplay.IsSupported())
+            {
+                videoRecordButton.gameObject.SetActive(true);
+                InitEvents();
+            }
+            else
+            {
+                videoRecordButton.gameObject.SetActive(false);
+                DestroyEvents();
+            }
+#endif
+
+        }
+
+        void InitEvents()
         {
             Everyplay.RecordingStarted += RecordingStarted;
             Everyplay.RecordingStopped += RecordingStopped;
+            Everyplay.ReadyForRecording += Everyplay_ReadyForRecording;
         }
 
-        void Destroy()
+        void DestroyEvents()
         {
             Everyplay.RecordingStarted -= RecordingStarted;
             Everyplay.RecordingStopped -= RecordingStopped;
+            Everyplay.ReadyForRecording -= Everyplay_ReadyForRecording;
+        }
+
+        void OnDestroy()
+        {
+            DestroyEvents();
         }
 
         private void RecordingStarted()
@@ -44,7 +70,6 @@ namespace IMAV.UI
             isPaused = false;
             recordTime = 0;
             lastRecordSec = 0;
-            ResourceManager.Singleton.DebugString("recording start");
             MediaCenter.Singleton.StartRecordVideo();
         }
 
@@ -53,8 +78,6 @@ namespace IMAV.UI
             SetIsRecording(false);
             recordTime = 0;
             SetRecordTimeText();
-            ResourceManager.Singleton.DebugString("recording stop");
-            //HUDCam.SetActive(false);
             MediaCenter.Singleton.StopRecordVideo(OnPostScreenCaptured);
         }
 
@@ -79,14 +102,23 @@ namespace IMAV.UI
 
         public void StartVideoRecord()
         {
-            Everyplay.StartRecording();
+            if (Everyplay.IsReadyForRecording())
+                Everyplay.StartRecording();
+        }
+
+        private void Everyplay_ReadyForRecording(bool enabled)
+        {
+            if (enabled)
+                videoRecordButton.SetStatusWithCheck(1);
+            else
+                videoRecordButton.SetStatusWithCheck(0);
         }
 
         void SetIsRecording(bool flag)
         {
             isRecording = flag;
             thumbnailImage.SetActive(!isRecording);
-            videoRecordButton.SetActive(!isRecording);
+            videoRecordButton.gameObject.SetActive(!isRecording);
             closeButton.SetActive(!isRecording);
             pauseButton.SetActive(isRecording);
             stopButton.SetActive(isRecording);
@@ -95,7 +127,6 @@ namespace IMAV.UI
 
         public void StopVideoRecord()
         {
-            ResourceManager.Singleton.DebugString("Stop video");
             Everyplay.StopRecording();
         }
 
@@ -133,6 +164,8 @@ namespace IMAV.UI
                 recordTime += Time.deltaTime;
                 SetRecordTimeText();
             }
+            if (Everyplay.IsReadyForRecording())
+                videoRecordButton.gameObject.SetActive(true);
         }
 
         void SetRecordTimeText()

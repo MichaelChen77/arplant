@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace IMAV.UI
 {
@@ -44,16 +44,41 @@ namespace IMAV.UI
                 ClearImage(m);
                 if (flag)
                 {
-                    m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage + 1));
-                    DetectVideo(m.transform, swipe.CurrentPage + 1);
+                    //m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage + 1));
+                    //DetectVideo(m.transform, swipe.CurrentPage + 1);
+                    StartCoroutine(startLoadSprite(m, swipe.CurrentPage + 1));
                 }
                 else
                 {
-                    m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage - 1));
-                    DetectVideo(m.transform, swipe.CurrentPage - 1);
+                    //m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage - 1));
+                    StartCoroutine(startLoadSprite(m, swipe.CurrentPage - 1));
+                    //DetectVideo(m.transform, swipe.CurrentPage - 1);
                 }
                 AutoSetImageColor(m);
             }
+        }
+
+        IEnumerator startLoadSprite(Image m, int id)
+        {
+            //string str = "file://" + MediaCenter.Singleton.GetImagePath(id);
+            string str = "file://C:/WorkSpace/AR/TestImages/ScreenShots/20170802/WhizHome 20170802_152610.jpg";
+            Debug.Log("load: " + str);
+            WWW www = new WWW(str);
+            yield return www;
+
+            //byte[] bytes = www.bytes;
+
+            m.sprite = DataUtility.CreateSprite(www.texture);
+
+            //FileInfo fi = new FileInfo(str);
+            //if (fi.Exists)
+            //{
+            //    byte[] content = File.ReadAllBytes(str);
+            //    yield return new WaitForEndOfFrame();
+            //    Sprite sp = DataUtility.CreateSprite(content);
+            //    yield return new WaitForEndOfFrame();
+            //    m.sprite = sp;
+            //}
         }
 
         void clickImage()
@@ -158,7 +183,6 @@ namespace IMAV.UI
             else
             {
                 string path = MediaCenter.Singleton.GetPath(swipe.CurrentPage);
-                ResourceManager.Singleton.DebugString("save file: " + path);
                 if (path != string.Empty)
                 {
                     MediaCenter.Singleton.SaveScreenShot(path);

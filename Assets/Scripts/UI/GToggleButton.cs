@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-    [System.Serializable]
-    public struct VariableUI
-    {
-        public Sprite sprite;
-        public Color color;
-        public string text;
-    }
+[System.Serializable]
+public struct VariableUI
+{
+    public Sprite sprite;
+    public Color color;
+    public string text;
+}
 
-    public enum ToggleConstraint
-    {
-        None, Sprite, Color, Text, SpriteAndColor, SpriteAndText, ColorAndText, All
-    }
+public enum ToggleConstraint
+{
+    None, Sprite, Color, Text, SpriteAndColor, SpriteAndText, ColorAndText, All
+}
 
 public class GToggleButton : MonoBehaviour
 {
@@ -122,6 +122,5 @@ public class GToggleButton : MonoBehaviour
             targetText.text = toggleOnVar.text;
         else
             targetText.text = toggleOffVar.text;
-        Debug.Log("update text: " + toggleOffVar.text + " ; " + targetText.text);
     }
 }

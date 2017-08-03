@@ -63,7 +63,6 @@ namespace IMAV.UI
             player.SetTargetAudioSource(0, audioSource);
             player.source = VideoSource.Url;
             player.aspectRatio = VideoAspectRatio.FitInside;
-            player.skipOnDrop = true;
         }
 
         private void Player_loopPointReached(VideoPlayer source)

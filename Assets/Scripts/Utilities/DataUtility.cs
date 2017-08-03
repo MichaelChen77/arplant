@@ -266,9 +266,9 @@ namespace IMAV
                 obj.transform.localScale = obj.transform.localScale * 100;
                 if (ResourceManager.Singleton.VMode == VirtualMode.Markerless)
                 {
-                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.position = ResourceManager.Singleton.TrackPos;
                     Quaternion quat = obj.transform.rotation;
-                    obj.transform.localRotation = quat;
+                    obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
                 }
                 else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
                 {

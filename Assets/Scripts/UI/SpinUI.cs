@@ -5,6 +5,14 @@ public class SpinUI : MonoBehaviour {
 
     bool start = false;
     int _count = 0;
+    public bool SpinOnAwake = false;
+
+    void Awake()
+    {
+        if (SpinOnAwake)
+            Show();
+    }
+
     public void Show()
     {
         gameObject.SetActive(true);

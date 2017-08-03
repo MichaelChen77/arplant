@@ -21,17 +21,17 @@ namespace IMAV.UI
 
         void Start()
         {
-            try
-            {
-                ResourceManager.Singleton.Clear();
-                SetVirtualMode(DataUtility.VirtualModeInt, false);
-                StartCoroutine(resetObject());
-                //ResourceManager.Singleton.DebugString("start 2");
-            }
-            catch (System.Exception ex)
-            {
-                ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            }
+            //try
+            //{
+            //    //ResourceManager.Singleton.Clear();
+            //    //SetVirtualMode(DataUtility.VirtualModeInt, false);
+            //    //StartCoroutine(resetObject());
+            //    //ResourceManager.Singleton.DebugString("start 2");
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
+            //}
         }
 
         #region UI

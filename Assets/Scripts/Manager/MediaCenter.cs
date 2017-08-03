@@ -247,7 +247,6 @@ namespace IMAV
             {
                 string source = DataUtility.GetScreenShotPath() + str;
                 string file = str.Substring(id + 1);
-                ResourceManager.Singleton.DebugString("source: " + source + " ; target: " + file);
                 GallerySaver.CopyToGallery(source, file);
                 saveFileHint.Open("Image Saved");
             }
@@ -268,7 +267,6 @@ namespace IMAV
             {
                 string source = DataUtility.GetScreenVideoPath() + fullname + ".mp4";
                 string file = fullname.Substring(fullname.IndexOf('/') + 1) + ".mp4";
-                ResourceManager.Singleton.DebugString("source: " + source + " ; target: " + file);
                 GallerySaver.CopyToGallery(source, file);
                 saveFileHint.Open("Video Saved");
             }

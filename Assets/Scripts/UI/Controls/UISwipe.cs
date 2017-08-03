@@ -187,7 +187,12 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
-                LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted).setEase(LeanTweenType.linear);
+                Debug.Log("last pos: " + lastTargetPos);
+                float m = lastTargetPos - rt.anchoredPosition.x;
+                speed = m / moveTime;
+                currentRt = rt;
+                startMove = true;
+                //LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
             }
             else
             {
@@ -203,7 +208,7 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
-                LeanTween.moveY(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted).setEase(LeanTweenType.linear);
+                //LeanTween.moveY(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
             }
         }
 
@@ -216,6 +221,24 @@ namespace IMAV.UI
         public override void Close()
         {
             base.Close();
+        }
+
+        RectTransform currentRt;
+        bool startMove = false;
+        float speed = 0;
+        void Update()
+        {
+            if(startMove)
+            {
+                currentRt.anchoredPosition = new Vector2(currentRt.anchoredPosition.x + speed * Time.deltaTime, currentRt.anchoredPosition.y);
+                float _t = currentRt.anchoredPosition.x - lastTargetPos;
+                if(Math.Abs(_t)<200)
+                {
+                    currentRt.anchoredPosition = new Vector2(lastTargetPos, currentRt.anchoredPosition.y);
+                    startMove = false;
+                    OnSwipeCompleted();
+                }
+            }
         }
     }
 }

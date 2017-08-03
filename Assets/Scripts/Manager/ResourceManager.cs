@@ -68,6 +68,7 @@ namespace IMAV
         public Transform driverTransform;
         public float defaultMinSize;
         public float defaultMaxSize;
+        public Transform testTransform;
 
         FurCategory[] furcategories;
         public FurCategory[] FurCategories
@@ -136,6 +137,8 @@ namespace IMAV
             //{
             //    localResCtrl.LoadLocalResource(furcategories);
             //}
+            _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
+            //StartPlaceObject();
         }
 
         public void SetVirtualMode(VirtualMode flag)
@@ -300,22 +303,19 @@ namespace IMAV
 			objlist.Add(obj);
             if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
-                int cost = 0;
-                while (!_kudanTracker.ArbiTrackIsTracking() && cost == 15)
-                {
-                    yield return new WaitForEndOfFrame();
-                    cost++;
-                }
-                if (cost >= 15)
-                {
-                    StartPlaceObject();
-                    yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
-                }
-                yield return new WaitForEndOfFrame();
+                StartPlaceObject();
+                yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+                DebugString("has trackingdata0: " + _kudanTracker.HasActiveTrackingData() + " ; " + _markerlessTracking.TrackingEnabled);
             }
             try
             {
+                //Vector3 trackPos1;
+                //Quaternion trackRot1;
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                DebugString("trackPos: "+trackPos+" ; test: " + testTransform.position + " ; " + testTransform.localPosition);
+                if (currentObj != null)
+                    DebugString("current: " + currentObj.transform.position + " ; " + currentObj.transform.localPosition);
+                DebugString("has trackingdata1: " + _kudanTracker.HasActiveTrackingData() + " ; " + _markerlessTracking.TrackingEnabled);
                 if (init)
                 {
                     SceneObject sobj = obj.AddComponent<SceneObject>();
@@ -324,7 +324,6 @@ namespace IMAV
                 ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
                 ResourceManager.Singleton.DebugString("set as markerless");
                 SetCurrentObject(m);
-                //ResetTouchMode();
             }
             catch (System.Exception ex)
             {
@@ -353,30 +352,28 @@ namespace IMAV
 
         public void StartPlaceObject()
         {
-            if (!_kudanTracker.ArbiTrackIsTracking())
-            {
-                Vector3 floorPosition;          // The current position in 3D space of the floor
-                Quaternion floorOrientation;    // The current orientation of the floor in 3D space, relative to the device
+            Vector3 floorPosition;
+            Quaternion floorOrientation;
 
-                _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
-                _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);              // Starts markerless tracking based upon the given floor position and orientations
-            }
+            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
+            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);              // Starts markerless tracking based upon the given floor position and orientations
+        }
+
+        public void StopTracking()
+        {
+            _kudanTracker.ArbiTrackStop();
         }
 
         public void Clear()
         {
             try
             {
-                DebugString("Clear 0");
                 SetCurrentObject(null);
-                DebugString("Clear 1");
                 foreach (GameObject obj in objlist)
                 {
                     Destroy(obj);
                 }
-                DebugString("Clear 2");
                 objlist.Clear();
-                DebugString("Clear 3");
             }
             catch(System.Exception ex)
             {
@@ -387,7 +384,7 @@ namespace IMAV
         public void Reset()
         {
             Clear();
-            StartPlaceObject();
+            StopTracking();
         }
 
         public void Quit()
