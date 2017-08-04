@@ -378,6 +378,19 @@ namespace IMAV
                 return string.Empty;
         }
 
+        public string GetAbsolutePath(int index)
+        {
+            if (index > -1 && index < files.Count)
+            {
+                if (IsVideoImage(files[index]))
+                    return DataUtility.GetScreenVideoPath() + GetVideoFileName(files[index]) + ".mp4";
+                else
+                    return DataUtility.GetScreenShotPath() + files[index];
+            }
+            else
+                return string.Empty;
+        }
+
         public void DeleteFile(string str)
         {
             files.Remove(str);

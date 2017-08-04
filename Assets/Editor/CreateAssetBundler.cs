@@ -32,6 +32,6 @@ public class CreateAssetBundler{
     [UnityEditor.MenuItem("AssetsBundle/Clear Cache")]
     static void ClearCache()
     {
-        Caching.CleanCache();
+        Caching.ClearCache();
     }
 } 

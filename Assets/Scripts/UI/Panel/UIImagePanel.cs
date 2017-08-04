@@ -12,6 +12,7 @@ namespace IMAV.UI
         public RectTransform topRect;
         public float moveTime = 0.2f;
         public Image tempImage;
+        public UIFileInforDialog infoDlg;
 
         public override void Open()
         {
@@ -60,24 +61,10 @@ namespace IMAV.UI
 
         IEnumerator startLoadSprite(Image m, int id)
         {
-            string str = "file:///" + MediaCenter.Singleton.GetImagePath(id);
-            //Debug.Log("load: " + str);
+            string str = MediaCenter.Singleton.GetImagePath(id);
             WWW www = new WWW(str);
             yield return www;
-
-            //byte[] bytes = www.bytes;
-
             m.sprite = DataUtility.CreateSprite(www.texture);
-
-            //FileInfo fi = new FileInfo(str);
-            //if (fi.Exists)
-            //{
-            //    byte[] content = File.ReadAllBytes(str);
-            //    yield return new WaitForEndOfFrame();
-            //    Sprite sp = DataUtility.CreateSprite(content);
-            //    yield return new WaitForEndOfFrame();
-            //    m.sprite = sp;
-            //}
         }
 
         void clickImage()
@@ -227,7 +214,15 @@ namespace IMAV.UI
                 MediaCenter.Singleton.imageGallery.DelayRefresh();
             }
             gameObject.SetActive(false);
-            //ResourceManager.Singleton.Resume();
+        }
+
+        public void ShowDetails()
+        {
+            string path = MediaCenter.Singleton.GetAbsolutePath(swipe.CurrentPage);
+            if(path != string.Empty)
+            {
+                infoDlg.Open(path);
+            }
         }
     }
 }
