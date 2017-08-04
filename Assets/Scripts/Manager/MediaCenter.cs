@@ -105,12 +105,7 @@ namespace IMAV
             DataUtility.SetDirectory(filePath);
             DataUtility.SetDirectory(thumbPath);
 
-            string filename = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss") + ".jpg";
-            //if (duringRecord)
-            //    filename = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss") + "_video.jpg";
-            //    //ScreenshotDuringRecord(Screen.width, Screen.height, date + "/" + filename);
-            //    StartCoroutine(Screenshot(date + "/" + filename + "_video.jpg", run));
-            //else
+            string filename = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss") + ".png";
             StartCoroutine(Screenshot(date + "/" + filename, run));
         }
 
@@ -125,7 +120,7 @@ namespace IMAV
 
         //private void OnThumbnailReady(Texture2D tex, bool portrait)
         //{
-        //    byte[] thumbbytes = tex.EncodeToJPG();
+        //    byte[] thumbbytes = tex.EncodeToPNG();
         //    File.WriteAllBytes(DataUtility.GetScreenShotPath() + tex.name, thumbbytes);
         //    SaveThumbnail(tex, tex.name);
         //}
@@ -146,7 +141,7 @@ namespace IMAV
             Camera.main.Render();
             Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
             screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
-            byte[] bytes = screen.EncodeToJPG();
+            byte[] bytes = screen.EncodeToPNG();
             System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath() + filepath, bytes);
 
             SaveThumbnail(screen, filepath);
@@ -167,7 +162,7 @@ namespace IMAV
             int h = DataUtility.GetRelatedHeight(Tags.ThumbnailWidth);
             Texture2D newTex = Instantiate(screen);
             TextureScale.Point(newTex, Tags.ThumbnailWidth, h);
-            byte[] thumbbytes = newTex.EncodeToJPG();
+            byte[] thumbbytes = newTex.EncodeToPNG();
             File.WriteAllBytes(DataUtility.GetScreenThumbnailPath() + filepath, thumbbytes);
             Destroy(screen);
             AddThumbnail(filepath, newTex);
@@ -220,8 +215,8 @@ namespace IMAV
             string fileName = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss");
             curRecordName = date + "/" + fileName;
 
-            StartCoroutine(Screenshot(curRecordName + "_video.jpg", null));
-            //ScreenshotDuringRecord(Screen.width, Screen.height, curRecordName + ".jpg");
+            StartCoroutine(Screenshot(curRecordName + "_video.png", null));
+            //ScreenshotDuringRecord(Screen.width, Screen.height, curRecordName + ".png");
         }
 
         public void StopRecordVideo(Action<string> run)
@@ -230,13 +225,13 @@ namespace IMAV
             WalkSessions(videoName);
 
             if (run != null)
-                run(curRecordName + "_video.jpg");
+                run(curRecordName + "_video.png");
         }
 
         public void PlayVideo(string str)
         {
             string fileName = GetVideoFileName(str);
-            string videoFile = "file://" + DataUtility.GetScreenVideoPath() + fileName + ".mp4";
+            string videoFile = DataUtility.GetScreenVideoPath() + fileName + ".mp4";
             videoPlayer.Open(videoFile);
         }
 
@@ -298,18 +293,20 @@ namespace IMAV
         #endregion
 
 
-        public void ShareMedia(string str)
+        public void ShareMedia(bool absolutePath, string str)
         {
-            if(IsVideoImage(str))
+            string path = str;
+            if (!absolutePath)
             {
-                string path = DataUtility.GetScreenVideoPath() + GetVideoFileName(str) + ".mp4";
-                NativeShare.Share("share video", path, "");
+                if (IsVideoImage(str))
+                    path = DataUtility.GetScreenVideoPath() + GetVideoFileName(str) + ".mp4";
+                else
+                    path = DataUtility.GetScreenShotPath() + str;
             }
+            if (str.EndsWith(".mp4"))
+                NativeShare.Share("share video", path, "", FileType.Video);
             else
-            {
-                string path = DataUtility.GetScreenShotPath() + str;
-                NativeShare.Share("share image", path, "");
-            }
+                NativeShare.Share("share image", path, "", FileType.Image);
         }
 
         public void ShowScreenShot(string str)
@@ -334,9 +331,9 @@ namespace IMAV
             int id = files.IndexOf(source);
             if (id != -1)
             {
-                files[id] = path + "/" + filename+".jpg";
+                files[id] = path + "/" + filename+".png";
                 if (IsVideoImage(source))
-                    files[id] += path + "/" + filename + "_video.jpg";
+                    files[id] += path + "/" + filename + "_video.png";
                 
                 if(thumbnails.ContainsKey(source))
                 {
@@ -412,7 +409,7 @@ namespace IMAV
         {
             int index = str.LastIndexOf('_');
             string end = str.Substring(index + 1);
-            if (end.Equals("video.jpg"))
+            if (end.Equals("video.png"))
                 return str.Substring(0, index);
             else
                 return string.Empty;
@@ -426,7 +423,7 @@ namespace IMAV
 
         public bool IsVideoImage(string str)
         {
-            return str.EndsWith("_video.jpg");
+            return str.EndsWith("_video.png");
         }
 
         public void DeleteImage(int index)

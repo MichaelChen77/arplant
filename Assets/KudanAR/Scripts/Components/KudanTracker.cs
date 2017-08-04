@@ -843,9 +843,9 @@ namespace Kudan.AR
 			Texture2D screen = new Texture2D (RT.width, RT.height, TextureFormat.RGB24, false);
 			screen.ReadPixels (new Rect (0, 0, RT.width, RT.height), 0, 0);
 
-			byte[] bytes = screen.EncodeToJPG ();
+			byte[] bytes = screen.EncodeToPNG ();
 
-			string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".jpg";
+			string filePath = Application.dataPath + "/Screenshot - " + Time.unscaledTime + ".png";
 			System.IO.File.WriteAllBytes (filePath, bytes);
 
 			Debug.Log ("Saved screenshot at: " + filePath);

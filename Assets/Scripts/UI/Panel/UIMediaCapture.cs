@@ -10,7 +10,7 @@ namespace IMAV.UI
     {
         public GameObject thumbnailImage;
         public GameObject imageCaptureButton;
-        public GStateButton videoRecordButton;
+        public GToggleButton videoRecordButton;
         public GameObject closeButton;
         public GameObject pauseButton;
         public GameObject stopButton;
@@ -28,21 +28,16 @@ namespace IMAV.UI
 
         private void Awake()
         {
-#if UNITY_EDITOR
-            InitEvents();
-#else
-            if (Everyplay.IsSupported())
+            if (Everyplay.IsSupported() && Everyplay.IsRecordingSupported())
             {
-                videoRecordButton.gameObject.SetActive(true);
+                videoRecordButton.setTrigger(true);
                 InitEvents();
             }
             else
             {
-                videoRecordButton.gameObject.SetActive(false);
+                videoRecordButton.setTrigger(false);
                 DestroyEvents();
             }
-#endif
-
         }
 
         void InitEvents()
@@ -97,21 +92,27 @@ namespace IMAV.UI
         {
             Sprite sp = MediaCenter.Singleton.GetImage(path, true);
             previewImage.sprite = sp;
-            LeanTween.scale(thumbnailImage, Vector3.one, 0.3f);
+            LeanTween.scale(thumbnailImage, Vector3.one, 0.4f);
         }
 
         public void StartVideoRecord()
         {
-            if (Everyplay.IsReadyForRecording())
-                Everyplay.StartRecording();
+            if (Everyplay.IsSupported() && Everyplay.IsRecordingSupported())
+            {
+                if (Everyplay.IsReadyForRecording())
+                    Everyplay.StartRecording();
+                else
+                    MediaCenter.Singleton.msgDialog.Show("Video recording is not ready yet, please try again later");
+            }
+            else
+            {
+                MediaCenter.Singleton.msgDialog.Show("Video recording is not supported in this device");
+            }
         }
 
         private void Everyplay_ReadyForRecording(bool enabled)
         {
-            if (enabled)
-                videoRecordButton.SetStatusWithCheck(1);
-            else
-                videoRecordButton.SetStatusWithCheck(0);
+            videoRecordButton.setTrigger(enabled);
         }
 
         void SetIsRecording(bool flag)

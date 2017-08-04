@@ -78,11 +78,14 @@ namespace IMAV
         void loadInitData(string json)
         {
             List<Category> cats = JsonConvert.DeserializeObject<List<Category>>(json);
-            foreach (Category c in cats)
+            if (cats != null)
             {
-                CategoryData d = new CategoryData(c);
-                d.LoadIcon();
-                categories.Add(d);
+                foreach (Category c in cats)
+                {
+                    CategoryData d = new CategoryData(c);
+                    d.LoadIcon();
+                    categories.Add(d);
+                }
             }
         }
 

@@ -44,7 +44,7 @@ public class CaptureAndSaveCamera : MonoBehaviour {
 
 		if(GUI.Button(new Rect(Screen.width/2 - 120, Screen.height-120,240,120),"Save in double resolution"))
 		{
-			snapShot.CaptureAndSaveToAlbum(Screen.width * 2, Screen.height * 2, Camera.main,ImageType.JPG);
+			snapShot.CaptureAndSaveToAlbum(Screen.width * 2, Screen.height * 2, Camera.main,ImageType.PNG);
 		}
 
 	}

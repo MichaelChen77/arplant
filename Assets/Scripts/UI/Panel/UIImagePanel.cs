@@ -45,14 +45,14 @@ namespace IMAV.UI
                 if (flag)
                 {
                     //m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage + 1));
-                    //DetectVideo(m.transform, swipe.CurrentPage + 1);
                     StartCoroutine(startLoadSprite(m, swipe.CurrentPage + 1));
+                    DetectVideo(m.transform, swipe.CurrentPage + 1);
                 }
                 else
                 {
                     //m.sprite = DataUtility.CreateSprite(MediaCenter.Singleton.GetImagePath(swipe.CurrentPage - 1));
                     StartCoroutine(startLoadSprite(m, swipe.CurrentPage - 1));
-                    //DetectVideo(m.transform, swipe.CurrentPage - 1);
+                    DetectVideo(m.transform, swipe.CurrentPage - 1);
                 }
                 AutoSetImageColor(m);
             }
@@ -60,9 +60,8 @@ namespace IMAV.UI
 
         IEnumerator startLoadSprite(Image m, int id)
         {
-            //string str = "file://" + MediaCenter.Singleton.GetImagePath(id);
-            string str = "file://C:/WorkSpace/AR/TestImages/ScreenShots/20170802/WhizHome 20170802_152610.jpg";
-            Debug.Log("load: " + str);
+            string str = "file:///" + MediaCenter.Singleton.GetImagePath(id);
+            //Debug.Log("load: " + str);
             WWW www = new WWW(str);
             yield return www;
 
@@ -156,7 +155,7 @@ namespace IMAV.UI
         public void ShareFile()
         {
             string str = MediaCenter.Singleton.GetPath(swipe.CurrentPage);
-            MediaCenter.Singleton.ShareMedia(str);
+            MediaCenter.Singleton.ShareMedia(false, str);
         }
 
         void ClearImage(Image img)

@@ -47,9 +47,9 @@ public class ResObject
     }
 }
 
-public enum VirtualMode
+public enum ARTrackingMode
 {
-    Markerless = 0, Marker, Placement
+    Marker = 0, Markerless, Placement
 }
 
 namespace IMAV
@@ -74,12 +74,6 @@ namespace IMAV
         public FurCategory[] FurCategories
         {
             get { return furcategories; }
-        }
-
-        VirtualMode vMode = VirtualMode.Markerless;
-        public VirtualMode VMode
-        {
-            get { return vMode; }
         }
 
         Vector3 trackPos;
@@ -133,30 +127,25 @@ namespace IMAV
 
         void Start()
         {
-            //if (DataUtility.WorkOnLocal)
-            //{
-            //    localResCtrl.LoadLocalResource(furcategories);
-            //}
-            _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
-            //StartPlaceObject();
+            SetTrackingMode(DataUtility.TrackingMode);
         }
 
-        public void SetVirtualMode(VirtualMode flag)
+        public void SetTrackingMode(ARTrackingMode flag)
         {
-            vMode = flag;
-            if (vMode == VirtualMode.Placement)
+            DataUtility.TrackingMode = flag;
+            if (DataUtility.TrackingMode == ARTrackingMode.Placement)
             {
+                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 _kudanTracker.StopTracking();
                 //_kudanTracker.ArbiTrackStop();
             }
-            else if(vMode == VirtualMode.Markerless)
+            else if(DataUtility.TrackingMode == ARTrackingMode.Markerless)
             {
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 StartPlaceObject();
             }
-            else if(vMode == VirtualMode.Marker)
+            else if(DataUtility.TrackingMode == ARTrackingMode.Marker)
             {
-                _kudanTracker.ChangeTrackingMethod(_markerTracking);
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
         }
@@ -211,12 +200,6 @@ namespace IMAV
             GameObject newObj = Instantiate(obj);
             AddMarkerlessLocalObject(str, newObj, true);
         }
-
-        //void ResetTouchMode()
-        //{
-        //    touchMove = true;
-        //    constraintID = 0;
-        //}
 
         public void SetDefaultSize(GameObject obj)
         {
@@ -301,16 +284,13 @@ namespace IMAV
         IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, string _id, string _content)
         {
 			objlist.Add(obj);
-            if (vMode == VirtualMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
+            if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
-                DebugString("has trackingdata0: " + _kudanTracker.HasActiveTrackingData() + " ; " + _markerlessTracking.TrackingEnabled);
             }
             try
             {
-                //Vector3 trackPos1;
-                //Quaternion trackRot1;
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
                 DebugString("trackPos: "+trackPos+" ; test: " + testTransform.position + " ; " + testTransform.localPosition);
                 if (currentObj != null)

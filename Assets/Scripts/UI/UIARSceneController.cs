@@ -11,7 +11,7 @@ namespace IMAV.UI
 {
     public class UIARSceneController : MonoBehaviour
     {
-        public TextDisableSelf markerHint;
+        
         public GToggleButton clearBtn;
         //public GToggleButton markerlessBtn;
         //public GToggleButton placementBtn;
@@ -26,7 +26,6 @@ namespace IMAV.UI
             //    //ResourceManager.Singleton.Clear();
             //    //SetVirtualMode(DataUtility.VirtualModeInt, false);
             //    //StartCoroutine(resetObject());
-            //    //ResourceManager.Singleton.DebugString("start 2");
             //}
             //catch (System.Exception ex)
             //{
@@ -66,7 +65,7 @@ namespace IMAV.UI
 
         public void HideUI()
         {
-            if (Everyplay.IsRecording() || Everyplay.IsPaused())
+            if (currentPanel is UIMediaCapture)
                 return;
             mainMenu.Close();
             closeCurrentPanel();
@@ -114,43 +113,6 @@ namespace IMAV.UI
             }
         }
 
-        public void SetVirtualMode(int m)
-        {
-            SetVirtualMode(m, true);
-        }
-
-        public void SetVirtualMode(int m, bool showHint)
-        {
-            if (System.Enum.IsDefined(typeof(VirtualMode), m))
-            {
-                DataUtility.VirtualModeInt = m;
-                VirtualMode vm = (VirtualMode)m;
-                //if (vm == VirtualMode.Markerless)
-                //{
-                //    markerlessBtn.setTrigger(true);
-                //    placementBtn.setTrigger(false);
-                //}
-                //else if (vm == VirtualMode.Placement)
-                //{
-                //    markerlessBtn.setTrigger(false);
-                //    placementBtn.setTrigger(true);
-                //}
-                ResourceManager.Singleton.SetVirtualMode(vm);
-                if (showHint)
-                    SetMarkerHint();
-            }
-        }
-
-        void SetMarkerHint()
-        {
-            if (ResourceManager.Singleton.VMode == VirtualMode.Marker)
-                markerHint.Open("AR Mode Marker On");
-            else if (ResourceManager.Singleton.VMode == VirtualMode.Markerless)
-                markerHint.Open("AR Mode Marker Off");
-            else if (ResourceManager.Singleton.VMode == VirtualMode.Placement)
-                markerHint.Open("Placement Mode On");
-        }
-
         #region functions
 
         public void ClearScene()
@@ -161,7 +123,7 @@ namespace IMAV.UI
 
         public void GotoVRRoom()
         {
-            DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject.gameObject;
+            DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             if (DataUtility.CurrentObject != null)
             {
                 List<Transform> temp = new List<Transform>();

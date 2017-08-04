@@ -41,7 +41,7 @@ public class CaptureAndSaveScreen : MonoBehaviour {
 		if(GUI.Button(new Rect(20,300,150,50),"Save Full Screen"))
 		{
 			snapShot.CaptureAndSaveToAlbum(ImageType.PNG);
-			//snapShot.CaptureAndSaveAtPath(System.IO.Path.Combine(Application.persistentDataPath,"Image.jpg"),ImageType.JPG);
+			//snapShot.CaptureAndSaveAtPath(System.IO.Path.Combine(Application.persistentDataPath,"Image.png"),ImageType.PNG);
 		}
 	}
 }

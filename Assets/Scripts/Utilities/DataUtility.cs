@@ -7,9 +7,9 @@ namespace IMAV
 {
     public class DataUtility
     {
-        public static GameObject CurrentObject = null;
+        public static ARModel CurrentObject = null;
         public static DontDestroy dontdestroy = null;
-        public static int VirtualModeInt = 0;
+        public static ARTrackingMode TrackingMode = ARTrackingMode.Markerless;
         public static bool WorkOnLocal = false;
 
         public static Sprite CreateSprite(byte[] bytes)
@@ -264,13 +264,13 @@ namespace IMAV
             {
                 obj.layer = 8;
                 obj.transform.localScale = obj.transform.localScale * 100;
-                if (ResourceManager.Singleton.VMode == VirtualMode.Markerless)
+                if (TrackingMode == ARTrackingMode.Markerless)
                 {
                     obj.transform.position = ResourceManager.Singleton.TrackPos;
                     Quaternion quat = obj.transform.rotation;
                     obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
                 }
-                else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
+                else if(TrackingMode == ARTrackingMode.Placement)
                 {
                     obj.transform.position = ResourceManager.Singleton.TrackPos;
 

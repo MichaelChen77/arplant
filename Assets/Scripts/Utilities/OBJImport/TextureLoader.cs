@@ -81,7 +81,7 @@ public class TextureLoader : MonoBehaviour {
         if (!File.Exists(fn))
             return null;
         string ext = Path.GetExtension(fn).ToLower();
-        if (ext == ".png" || ext == ".jpg")
+        if (ext == ".png" || ext == ".png")
         {
             Texture2D t2d = new Texture2D(1, 1);
             t2d.LoadImage(File.ReadAllBytes(fn));

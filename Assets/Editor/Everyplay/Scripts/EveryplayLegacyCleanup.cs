@@ -141,7 +141,7 @@ public class EveryplayLegacyCleanup
         "Plugins/Everyplay/iOS/Everyplay.bundle/slider-trackBackground-loading@2x.png",
         "Plugins/Everyplay/iOS/Everyplay.bundle/slider-trackBackground.png",
         "Plugins/Everyplay/iOS/Everyplay.bundle/slider-trackBackground@2x.png",
-        "Plugins/Everyplay/iOS/Everyplay.bundle/splash-screen-bg.jpg",
+        "Plugins/Everyplay/iOS/Everyplay.bundle/splash-screen-bg.png",
         "Plugins/Everyplay/iOS/Everyplay.bundle/topbar-shadow.png",
         "Plugins/Everyplay/iOS/Everyplay.bundle/topbar-shadow@2x.png",
         "Plugins/Android/everyplay/res/drawable/everyplay_sidemenu_bg.png",

@@ -47,13 +47,13 @@ public class PreviewAndSave : MonoBehaviour {
 	{
 		if(GUI.Button(new Rect(0,5,150,50),"Get Screenshot"))
 		{
-			snapShot.GetFullScreenShot(ImageType.JPG);
+			snapShot.GetFullScreenShot(ImageType.PNG);
 		}
 
 		if(tex != null && GUI.Button(new Rect(160,5,150,50),"Save"))
 		{
 			// save screenshot
-			snapShot.SaveTextureToGallery(tex,ImageType.JPG);
+			snapShot.SaveTextureToGallery(tex,ImageType.PNG);
 		}
 
 		// preview

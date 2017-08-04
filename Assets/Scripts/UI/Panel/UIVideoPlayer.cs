@@ -28,17 +28,11 @@ namespace IMAV.UI
         protected VideoPlayer player;
         protected AudioSource audioSource;
         RectTransform playerRect;
-        string currentURL;
+        string videoPath;
 
         public VideoPlayer Player
         {
             get { return player; }
-        }
-
-        public string VideoURL
-        {
-            get { return currentURL; }
-            set { currentURL = value; }
         }
 
         private void Awake()
@@ -63,6 +57,7 @@ namespace IMAV.UI
             player.SetTargetAudioSource(0, audioSource);
             player.source = VideoSource.Url;
             player.aspectRatio = VideoAspectRatio.FitInside;
+            player.skipOnDrop = true;
         }
 
         private void Player_loopPointReached(VideoPlayer source)
@@ -79,14 +74,17 @@ namespace IMAV.UI
 
         public void Load(string str)
         {
-            player.url = str;
+            videoPath = str;
+            player.url = "file:///" + str;
             nameText.text = System.IO.Path.GetFileName(str);
-            player.source = VideoSource.Url;
             player.Prepare();
         }
 
         void OnVideoPrepared(VideoPlayer vp)
         {
+            //player.renderMode = VideoRenderMode.RenderTexture;
+            //RenderTexture rt = new RenderTexture(player.texture.width, player.texture.height, 24);
+            //player.targetTexture = rt;
             image.texture = player.texture;
             SetAspectMode(player.aspectRatio);
             videoSlider.value = 0;
@@ -95,6 +93,7 @@ namespace IMAV.UI
             videoTimeText.text = DataUtility.CovertToTimeString(timeCount);
             player.Play();
             audioSource.Play();
+            playButton.setTriggerWithoutAnimation(true);
         }
 
         public void LoopSetVideoAspectMode()
@@ -175,6 +174,7 @@ namespace IMAV.UI
         {
             player.Play();
             playButton.gameObject.SetActive(true);
+            playButton.setTriggerWithoutAnimation(true);
         }
 
         public void videoSlideOnDrag(BaseEventData data)
@@ -213,6 +213,11 @@ namespace IMAV.UI
         public void StopVideo()
         {
             player.Stop();
+        }
+
+        public void ShareVideo()
+        {
+            MediaCenter.Singleton.ShareMedia(true, videoPath);
         }
 
         public override void Close()

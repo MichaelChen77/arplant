@@ -29,44 +29,44 @@ namespace IMAV.UI
 
         void Start()
         {
-            try {
-                ResourceManager.Singleton.Reset();
-                SetVirtualMode(DataUtility.VirtualModeInt, false);
-                StartCoroutine(resetObject());
-                ResourceManager.Singleton.DebugString("FurUI start end");
-            }
-            catch(System.Exception ex)
-            {
-                ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            }
-        }
-
-        public void SetVirtualMode(int m)
-        {
-            SetVirtualMode(m, true);
-        }
-
-        public void SetVirtualMode(int m, bool showHint)
-        {
-            //if (System.Enum.IsDefined(typeof(VirtualMode), m))
+            //try {
+            //    ResourceManager.Singleton.Reset();
+            //    SetVirtualMode(DataUtility.TrackingMode, false);
+            //    StartCoroutine(resetObject());
+            //    ResourceManager.Singleton.DebugString("FurUI start end");
+            //}
+            //catch(System.Exception ex)
             //{
-                DataUtility.VirtualModeInt = m;
-                VirtualMode vm = (VirtualMode)m;
-                if (vm == VirtualMode.Markerless)
-                {
-                    markerlessBtn.setTrigger(true);
-                    placementBtn.setTrigger(false);
-                }
-                else if (vm == VirtualMode.Placement)
-                {
-                    markerlessBtn.setTrigger(false);
-                    placementBtn.setTrigger(true);
-                }
-                ResourceManager.Singleton.SetVirtualMode(vm);
-                if (showHint)
-                    SetMarkerHint();
+            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
             //}
         }
+
+        //public void SetVirtualMode(int m)
+        //{
+        //    SetVirtualMode(m, true);
+        //}
+
+        //public void SetVirtualMode(int m, bool showHint)
+        //{
+        //    //if (System.Enum.IsDefined(typeof(VirtualMode), m))
+        //    //{
+        //        DataUtility.TrackingMode = m;
+        //        ARTrackingMode vm = (ARTrackingMode)m;
+        //        if (vm == ARTrackingMode.Markerless)
+        //        {
+        //            markerlessBtn.setTrigger(true);
+        //            placementBtn.setTrigger(false);
+        //        }
+        //        else if (vm == ARTrackingMode.Placement)
+        //        {
+        //            markerlessBtn.setTrigger(false);
+        //            placementBtn.setTrigger(true);
+        //        }
+        //        ResourceManager.Singleton.SetTrackingMode(vm);
+        //        if (showHint)
+        //            SetMarkerHint();
+        //    //}
+        //}
 
         public void ShowControlButtons(bool flag)
         {
@@ -150,7 +150,7 @@ namespace IMAV.UI
    //         }
 
 			//System.DateTime dt = System.DateTime.Now.ToLocalTime ();
-			//string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".jpg";
+			//string filePath = DataUtility.GetScreenShotPath() + "FurAR " + System.DateTime.Now.ToLocalTime().ToString("yyyy-M-d H:mm:ss") + ".png";
 
             MediaCenter.Singleton.CaptureScreen(false, null);
             //ResourceManager.Singleton._kudanTracker.takeScreenshot (filePath, "", PostScreenShot);
@@ -158,7 +158,7 @@ namespace IMAV.UI
 
 		void PostScreenShot(Texture2D tex, string path)
 		{
-			snapShot.SaveTextureToGallery (tex, ImageType.JPG);
+			snapShot.SaveTextureToGallery (tex, ImageType.PNG);
 			imageSaved.Open ();
 		}
 
@@ -176,17 +176,17 @@ namespace IMAV.UI
             imageGallery.Open();
         }
 
-        void SetMarkerHint()
-        {
-            markerHint.gameObject.SetActive(true);
-            if (ResourceManager.Singleton.VMode == VirtualMode.Marker)
-                markerHint.text = "AR Mode Marker On";
-            else if(ResourceManager.Singleton.VMode == VirtualMode.Markerless)
-                markerHint.text = "AR Mode Marker Off";
-            else if(ResourceManager.Singleton.VMode == VirtualMode.Placement)
-                markerHint.text = "Simple Placement Mode";
-            StartCoroutine(closeHint());
-        }
+        //void SetMarkerHint()
+        //{
+        //    markerHint.gameObject.SetActive(true);
+        //    if (ResourceManager.Singleton.VMode == ARTrackingMode.Marker)
+        //        markerHint.text = "AR Mode Marker On";
+        //    else if(ResourceManager.Singleton.VMode == ARTrackingMode.Markerless)
+        //        markerHint.text = "AR Mode Marker Off";
+        //    else if(ResourceManager.Singleton.VMode == ARTrackingMode.Placement)
+        //        markerHint.text = "Simple Placement Mode";
+        //    StartCoroutine(closeHint());
+        //}
 
         IEnumerator closeHint()
         {
@@ -196,7 +196,7 @@ namespace IMAV.UI
 
         public void OpenDetailMode()
         {
-			DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject.gameObject;
+			DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             if (DataUtility.CurrentObject != null)
             {
                 List<Transform> temp = new List<Transform>();
@@ -227,10 +227,10 @@ namespace IMAV.UI
 
         IEnumerator resetObject()
         {
-            if (ResourceManager.Singleton.VMode == VirtualMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
-            {
-                yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
-            }
+            //if (ResourceManager.Singleton.VMode == ARTrackingMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+            //{
+            //    yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+            //}
             yield return new WaitForSeconds(1f);
             List<Transform> temp = new List<Transform>();
             ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);

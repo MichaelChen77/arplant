@@ -19,6 +19,7 @@ namespace IMAV.UI
     {
         public UIDirectionType dirType = UIDirectionType.Horizontal;
         public float moveTime = 0.3f;
+        public float intervalWidth = 60;
 
         public Action OnSwipeCompleted;
         public Action OnSwipeStart;
@@ -63,14 +64,14 @@ namespace IMAV.UI
             rt.offsetMax = rt.offsetMin = Vector2.zero;
             if (dirType == UIDirectionType.Horizontal)
             {
-                pageSize = rt.rect.width;
+                pageSize = rt.rect.width + intervalWidth;
                 rt.offsetMax = new Vector2(pageSize * (transform.childCount - 1), 0);
                 SetPosX(pageSize);
                 originRtPos = rt.anchoredPosition.x;
             }
             else
             {
-                pageSize = rt.rect.height;
+                pageSize = rt.rect.height + intervalWidth;
                 rt.offsetMax = new Vector2(0, pageSize * (transform.childCount - 1));
                 SetPosY(pageSize);
                 originRtPos = rt.anchoredPosition.y;
@@ -187,12 +188,11 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
-                Debug.Log("last pos: " + lastTargetPos);
-                float m = lastTargetPos - rt.anchoredPosition.x;
-                speed = m / moveTime;
-                currentRt = rt;
-                startMove = true;
-                //LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
+                //float m = lastTargetPos - rt.anchoredPosition.x;
+                //speed = m / moveTime;
+                //currentRt = rt;
+                //startMove = true;
+                LeanTween.moveX(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
             }
             else
             {
@@ -208,7 +208,7 @@ namespace IMAV.UI
                     lastTargetPos -= pageSize;
                     curMove = UIMoveToType.Next;
                 }
-                //LeanTween.moveY(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
+                LeanTween.moveY(rt, lastTargetPos, moveTime).setOnComplete(OnSwipeCompleted);
             }
         }
 
@@ -223,22 +223,22 @@ namespace IMAV.UI
             base.Close();
         }
 
-        RectTransform currentRt;
-        bool startMove = false;
-        float speed = 0;
-        void Update()
-        {
-            if(startMove)
-            {
-                currentRt.anchoredPosition = new Vector2(currentRt.anchoredPosition.x + speed * Time.deltaTime, currentRt.anchoredPosition.y);
-                float _t = currentRt.anchoredPosition.x - lastTargetPos;
-                if(Math.Abs(_t)<200)
-                {
-                    currentRt.anchoredPosition = new Vector2(lastTargetPos, currentRt.anchoredPosition.y);
-                    startMove = false;
-                    OnSwipeCompleted();
-                }
-            }
-        }
+        //RectTransform currentRt;
+        //bool startMove = false;
+        //float speed = 0;
+        //void Update()
+        //{
+        //    if(startMove)
+        //    {
+        //        currentRt.anchoredPosition = new Vector2(currentRt.anchoredPosition.x + speed * Time.deltaTime, currentRt.anchoredPosition.y);
+        //        float _t = currentRt.anchoredPosition.x - lastTargetPos;
+        //        if(Math.Abs(_t)<200)
+        //        {
+        //            currentRt.anchoredPosition = new Vector2(lastTargetPos, currentRt.anchoredPosition.y);
+        //            startMove = false;
+        //            OnSwipeCompleted();
+        //        }
+        //    }
+        //}
     }
 }

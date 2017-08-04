@@ -6,6 +6,11 @@ using System.IO;
 /*
  * https://github.com/ChrisMaire/unity-native-sharing
  */
+public enum FileType
+{
+    Image, Video, Text, Bytes
+}
+
 
 public class NativeShare : MonoBehaviour {
 	public string ScreenshotName = "screenshot.png";
@@ -18,31 +23,35 @@ public class NativeShare : MonoBehaviour {
         Application.CaptureScreenshot(ScreenshotName);
     }
 
-	public static void Share(string shareText, string imagePath, string url, string subject = "")
-	{
+    public static void Share(string shareText, string filePath, string url, FileType _type, string subject = "")
+    {
 #if UNITY_ANDROID
-		AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-		AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+        AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
+        AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 
-		intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + imagePath);
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-		intentObject.Call<AndroidJavaObject>("setType", "image/png");
+        intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
+        AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
+        AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePath);
+        intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
+        switch (_type)
+        {
+            case FileType.Image: intentObject.Call<AndroidJavaObject>("setType", "video/mp4"); break;
+            case FileType.Video: intentObject.Call<AndroidJavaObject>("setType", "image/png"); break;
+        }
 
-		intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
+        intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
 
-		AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
 
-		AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
-		currentActivity.Call("startActivity", jChooser);
+        AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, subject);
+        currentActivity.Call("startActivity", jChooser);
 #elif UNITY_IOS
 		CallSocialShareAdvanced(shareText, subject, url, imagePath);
 #else
 		Debug.Log("No sharing set up for this platform.");
 #endif
-	}
+    }
 
 #if UNITY_IOS
 	public struct ConfigStruct

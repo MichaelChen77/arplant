@@ -44,8 +44,8 @@ namespace IMAV
         void Start()
         {
 			if (DataUtility.CurrentObject != null) {
-				roomObj = Instantiate (DataUtility.CurrentObject);
-				DataUtility.CurrentObject.SetActive (false);
+				roomObj = Instantiate (DataUtility.CurrentObject.gameObject);
+				DataUtility.CurrentObject.gameObject.SetActive (false);
 			}
 			if (roomObj != null)
             {
@@ -112,7 +112,7 @@ namespace IMAV
         {
             if (selectedObj.materialID != -1)
             {
-                DataUtility.CurrentObject.SetActive(true);
+                DataUtility.CurrentObject.gameObject.SetActive(true);
                 SceneObject obj = DataUtility.CurrentObject.GetComponent<SceneObject>();
                 if (obj != null)
                 {

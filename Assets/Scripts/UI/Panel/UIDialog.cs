@@ -13,9 +13,16 @@ namespace IMAV.UI
         public Text secondBtnText;
         public Button firstButton;
         public Button secondButton;
+        public float externHeight = 120f;
 
         Action<int, System.Object> msgHandler;
         System.Object referObject;
+        RectTransform dlgRect;
+
+        private void Awake()
+        {
+            dlgRect = GetComponent<RectTransform>();
+        }
 
         public void Show(string content)
         {
@@ -40,6 +47,14 @@ namespace IMAV.UI
             SetButton(firstButton, firstBtnText, button1Text);
             SetButton(secondButton, secondBtnText, button2Text);
             contentText.text = content;
+            StartCoroutine(DelayRefresh());
+        }
+
+        IEnumerator DelayRefresh()
+        {
+            yield return new WaitForEndOfFrame();
+            float h = contentText.preferredHeight + externHeight;
+            dlgRect.sizeDelta = new Vector2(dlgRect.sizeDelta.x, h);
         }
 
         public void OnBtnClicked(int i)
