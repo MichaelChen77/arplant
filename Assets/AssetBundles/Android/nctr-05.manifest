@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2692635193
+CRC: 3006752079
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fef647b6e08f289dbe26faba17d7bb14
+    Hash: 04a2d46f800f2a0d836997ff88ed7074
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/NCTR-05.prefab
+- Assets/Prefab/Furnitures/Sunray/NCTR-05.prefab
 Dependencies: []

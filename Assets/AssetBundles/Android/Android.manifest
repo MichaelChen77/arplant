@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 341284379
+CRC: 472614087
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -63,17 +63,20 @@ AssetBundleManifest:
       Name: wardrobe
       Dependencies: {}
     Info_20:
-      Name: duval
+      Name: chair
       Dependencies: {}
     Info_21:
       Name: dualtable
       Dependencies: {}
     Info_22:
-      Name: barcelona
+      Name: duval
       Dependencies: {}
     Info_23:
-      Name: chair
+      Name: barcelona
       Dependencies: {}
     Info_24:
       Name: barcelona_daybed
+      Dependencies: {}
+    Info_25:
+      Name: angelstatue
       Dependencies: {}

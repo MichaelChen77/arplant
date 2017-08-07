@@ -62,9 +62,8 @@ namespace IMAV.UI
                 transform.rotation = target.transform.rotation;
                 renderers = obj.GetComponentsInChildren<Renderer>();
                 bool flag = calculateBounds(target);
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z + 1, target.transform.localPosition.z);
+                obj.InitTransform(-backBottom.localPosition.z + 1);
                 refresh();
-                obj.SaveTransform();
             }
             else
             {

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1933684947
+CRC: 443063348
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 78491f2bffc0a2cf3a227b58d43e920e
+    Hash: 7d88ac7fd218a7fd9cfa9e8e0d2b932f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Chairs/Barcelona_Daybed.prefab
+- Assets/Prefab/Furnitures/Chairs/Barcelona_Daybed.prefab
 Dependencies: []

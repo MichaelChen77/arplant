@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3550910694
+CRC: 3638895201
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3e0968a2fa94917d704132e97baae3a6
+    Hash: 8bf46f20e1f3f3008eed1bd74bee44ff
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/DualTable.prefab
+- Assets/Prefab/Furnitures/Sunray/DualTable.prefab
 Dependencies: []

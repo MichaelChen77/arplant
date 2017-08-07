@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2892616418
+CRC: 1468063809
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 989fc342eacd0064471a7f7b456f9e01
+    Hash: 6c2e6668b6883260b353eb5fd125c85f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/SH4.prefab
+- Assets/Prefab/Furnitures/Sunray/SH4.prefab
 Dependencies: []

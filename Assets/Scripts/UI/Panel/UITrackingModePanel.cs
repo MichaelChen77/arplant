@@ -48,7 +48,7 @@ namespace IMAV.UI
 
         public void SetTrackingMode(ARTrackingMode m, bool showHint)
         {
-            DataUtility.TrackingMode = m;
+            ResourceManager.Singleton.SetTrackingMode(m);
             if (!updateUI)
             {
                 if (showHint)

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1920697913
+CRC: 2788706996
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d80c4132fa9f24139c272f279a01c929
+    Hash: fcf3e56f8f0bdc4210da26f4ec1fe7ac
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/JK02-Type2.prefab
+- Assets/Prefab/Furnitures/Sunray/JK02-Type2.prefab
 Dependencies: []

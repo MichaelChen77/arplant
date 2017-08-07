@@ -81,20 +81,23 @@ namespace IMAV
 
         public void SetTrackingMode(ARTrackingMode flag)
         {
-            DataUtility.TrackingMode = flag;
-            if (DataUtility.TrackingMode == ARTrackingMode.Placement)
+            if (flag == ARTrackingMode.Placement)
             {
-                _kudanTracker.StopTracking();
+                _kudanTracker.ArbiTrackStop();
             }
-            else if(DataUtility.TrackingMode == ARTrackingMode.Markerless)
+            else if (flag == ARTrackingMode.Markerless)
             {
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
-                StopTracking();
+                if (DataUtility.TrackingMode == ARTrackingMode.Placement)
+                    StartPlaceObject();
+                else
+                    StopTracking();
             }
-            else if(DataUtility.TrackingMode == ARTrackingMode.Marker)
+            else if (flag == ARTrackingMode.Marker)
             {
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
+            DataUtility.TrackingMode = flag;
         }
 
         public void SetDefaultSize(GameObject obj)
@@ -127,6 +130,11 @@ namespace IMAV
             }
         }
 
+        public void QuitApplication()
+        {
+            Application.Quit();
+        }
+
         public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
         {
             if (currentObj != null)
@@ -143,13 +151,17 @@ namespace IMAV
             if (currentObj != null)
             {
                 currentObj.Selected = st;
+                TestCenter.Singleton.Log("current object0: " + currentObj.name);
                 frame.SetObject(currentObj);
+                TestCenter.Singleton.Log("current object1: " + currentObj.name);
                 arui.OpenProductMenu();
+                TestCenter.Singleton.Log("current object2: " + currentObj.name);
             }
             else
             {
                 frame.SetObject(null);
                 arui.CloseProductMenu();
+                TestCenter.Singleton.Log("current object: null");
             }
         }
 
@@ -161,20 +173,21 @@ namespace IMAV
                 currentObj.Selected = st;
 		}
 
-        public void AddMarkerlessObject(GameObject obj)
+        public void SetAsARObject(GameObject obj)
         {
+            obj.transform.parent = markerlessTransform;
             objlist.Add(obj);
-            SetCurrentObject(obj.GetComponent<ARModel>());
+            ARModel m = obj.GetComponent<ARModel>();
+            SetCurrentObject(m);
         }
 
-        public void AddMarkerlessRemoteObject(string id, GameObject obj, bool init)
+        public void AddARObject(string id, GameObject obj, bool init)
         {
             StartCoroutine(AddingMarkerlessObject(obj, init, id));
         }
 
-        IEnumerator AddingMarkerlessObject(GameObject obj, bool init, string _id)
+        IEnumerator AddingMarkerlessObject(GameObject model, bool init, string _id)
         {
-			objlist.Add(obj);
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
@@ -183,13 +196,15 @@ namespace IMAV
             }
             try
             {
+                GameObject target = Instantiate(model);
+                objlist.Add(target);
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                //if(init)
+                //if (init)
                 //{
-                //    SceneObject s = obj.AddComponent<SceneObject>();
+                //    SceneObject s = target.AddComponent<SceneObject>();
                 //    s.Init(_id);
                 //}
-                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init);
+                ARModel m = DataUtility.SetAsMarkerlessObject(target, init);
                 m.SKU = _id;
                 SetCurrentObject(m);
             }

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 43674358
+CRC: 1822810683
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 50455558756927eebefc9775748d3728
+    Hash: 3244366ead8eeb0c6dbc1c67e990d11e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/CRT-01.prefab
+- Assets/Prefab/Furnitures/Sunray/CRT-01.prefab
 Dependencies: []

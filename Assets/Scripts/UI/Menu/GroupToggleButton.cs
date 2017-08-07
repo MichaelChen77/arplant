@@ -18,9 +18,8 @@ namespace IMAV.UI
             get { return toggle; }
         }
 
-        private void Awake()
+        void Awake()
         {
-            rect = GetComponent<RectTransform>();
             SetToggle(toggle);
         }
 
@@ -28,6 +27,8 @@ namespace IMAV.UI
         {
             toggle = flag;
             float w = 10f;
+            if(rect == null)
+                rect = GetComponent<RectTransform>();
             foreach (TextToggle t in targetTexts)
             {
                 t.SetToggle(toggle);

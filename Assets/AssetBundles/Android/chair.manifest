@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1494708649
+CRC: 4175198995
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 10a191a17c5652f841ea7ec1a9a5347f
+    Hash: 04db658b68c7aed506486867be12a1b1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,6 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/Chair.prefab
+- Assets/Prefab/Furnitures/Sunray/Chair.prefab
+- Assets/Resources/Chair.prefab
 Dependencies: []

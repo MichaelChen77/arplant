@@ -21,6 +21,12 @@ namespace IMAV.UI
         ARModel currentObject;
         ProductData product;
         int loadingProductCount = 0;
+        RectTransform contentRect;
+
+        private void Awake()
+        {
+            contentRect = contentGroup.GetComponent<RectTransform>();
+        }
 
         public override void Open()
         {
@@ -109,6 +115,7 @@ namespace IMAV.UI
         void LoadObject(string cat, System.Object sku)
         {
             DataCenter.Singleton.LoadModelData((string)sku);
+            BacktoMenu();
         }
 
         public void OpenMaterialMenu()
@@ -124,8 +131,10 @@ namespace IMAV.UI
         public void DuplicateObject()
         {
             GameObject obj = Instantiate(currentObject.gameObject, currentObject.transform.parent);
-            obj.transform.position += new Vector3(0, 0, 5);
-            ResourceManager.Singleton.AddMarkerlessObject(obj);
+            ARModel m = obj.GetComponent<ARModel>();
+            m.SKU = currentObject.SKU;
+            obj.transform.position += new Vector3(0, 0, 10);
+            ResourceManager.Singleton.SetAsARObject(obj);
         }
 
         public void DeleteObject()
@@ -147,8 +156,8 @@ namespace IMAV.UI
 
         public override void Refresh()
         {
-            bodyRect.anchoredPosition = new Vector2(0, bodyRect.anchoredPosition.y);
-            bodyRect.sizeDelta = new Vector2(contentGroup.preferredWidth + 10, bodyRect.sizeDelta.y);
+            contentRect.anchoredPosition = new Vector2(0, contentRect.anchoredPosition.y);
+            contentRect.sizeDelta = new Vector2(contentGroup.preferredWidth + 10, contentRect.sizeDelta.y);
         }
 
         public void Clear()

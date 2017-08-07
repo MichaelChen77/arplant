@@ -68,13 +68,14 @@ namespace IMAV
             }
         }
 
-        public void SaveTransform()
+        public void InitTransform(float y)
         {
             if (!init)
             {
+                transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
                 originalSize = transform.localScale;
-                originalRot = transform.rotation;
-                originalPos = transform.position;
+                originalRot = transform.localRotation;
+                originalPos = transform.localPosition;
                 init = true;
             }
         }
@@ -82,8 +83,8 @@ namespace IMAV
         public void Reset()
         {
             transform.localScale = originalSize;
-            transform.position = originalPos;
-            transform.rotation = originalRot;
+            transform.localPosition = originalPos;
+            transform.localRotation = originalRot;
         }
 
         public void Delete()

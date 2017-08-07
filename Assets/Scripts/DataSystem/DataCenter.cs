@@ -193,9 +193,7 @@ namespace IMAV
 
         void LoadModelToScene(ProductData p)
         {
-            GameObject obj = Instantiate(p.model);
-            obj.transform.position = Vector3.zero;
-            ResourceManager.Singleton.AddMarkerlessRemoteObject(p.ProductInfo.sku, obj, true);
+            ResourceManager.Singleton.AddARObject(p.ProductInfo.sku, p.model, true);
         }
     }
 }

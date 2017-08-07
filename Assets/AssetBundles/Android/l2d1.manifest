@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1230484545
+CRC: 1961878293
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cbbd2663ce96a67cdbc2cd51d4ff45fc
+    Hash: 4413de75a08b551a91379aad13e3b534
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/L2D1.prefab
+- Assets/Prefab/Furnitures/Sunray/L2D1.prefab
 Dependencies: []

@@ -17,6 +17,10 @@ namespace IMAV.UI
         public UIMenuPanel mainMenu;
         UIControl currentPanel = null;
 
+        private void Start()
+        {
+            //StartCoroutine(resetObject());
+        }
 
         #region UI
         public void OpenMenu()
@@ -128,7 +132,6 @@ namespace IMAV.UI
         public void GotoVRRoom()
         {
             MediaCenter.Singleton.msgDialog.Show("The VR function is temporary removed!");
-
             //DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             //if (DataUtility.CurrentObject != null)
             //{
@@ -157,7 +160,7 @@ namespace IMAV.UI
                     ResourceManager.Singleton.StartPlaceObject();
                     yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
                 }
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 List<Transform> temp = new List<Transform>();
                 foreach (Transform tr in DataUtility.dontdestroy.transform)
                 {
@@ -166,7 +169,7 @@ namespace IMAV.UI
                 foreach (Transform tran in temp)
                 {
                     tran.gameObject.SetActive(true);
-                    ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
+                    ResourceManager.Singleton.SetAsARObject(tran.gameObject);
                 }
                 DataUtility.CurrentObject = null;
             }

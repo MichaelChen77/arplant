@@ -311,7 +311,7 @@ namespace IMAV
 
         public void ShareString(string str)
         {
-            NativeShare.Share("Whiz Home product: "+str, string.Empty, string.Empty, FileType.None);
+            NativeShare.Share("Whiz Home product: "+str, string.Empty, string.Empty, FileType.Text);
         }
 
         public void ShowScreenShot(string str)

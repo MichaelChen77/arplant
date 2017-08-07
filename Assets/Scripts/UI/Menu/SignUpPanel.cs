@@ -35,6 +35,7 @@ namespace IMAV.UI
 
         public void Open(Action run, bool isSignUp)
         {
+            gameObject.SetActive(true);
             signUpToggle.SetToggle(isSignUp);
             ChangeSignStyle();
             Open(run);

@@ -8,7 +8,7 @@ using System.IO;
  */
 public enum FileType
 {
-    Image, Video, Text, Bytes, None
+    Image, Video, Text, Bytes
 }
 
 
@@ -30,7 +30,7 @@ public class NativeShare : MonoBehaviour {
         AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 
         intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-        if (_type != FileType.None)
+        if (_type != FileType.Text)
         {
             AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
             AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePath);
@@ -40,9 +40,13 @@ public class NativeShare : MonoBehaviour {
                 case FileType.Image: intentObject.Call<AndroidJavaObject>("setType", "video/mp4"); break;
                 case FileType.Video: intentObject.Call<AndroidJavaObject>("setType", "image/png"); break;
             }
+            
         }
-
         intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);
+        if (_type == FileType.Text)
+        {
+            intentObject.Call<AndroidJavaObject>("setType", "text/plain");
+        }
 
         AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");

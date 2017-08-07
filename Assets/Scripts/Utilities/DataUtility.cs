@@ -263,7 +263,7 @@ namespace IMAV
             if (init)
             {
                 obj.layer = 8;
-                obj.transform.localScale = obj.transform.localScale * 100;
+                obj.transform.localScale = obj.transform.localScale * 50;
                 if (TrackingMode == ARTrackingMode.Markerless)
                 {
                     obj.transform.position = ResourceManager.Singleton.TrackPos;

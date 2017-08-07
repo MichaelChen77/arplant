@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1288411074
+CRC: 987515986
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: adc9b4c3bcc9ae6259fbe2c9ed377f5f
+    Hash: 16bbb08ae891b78cd15f320aeb6f682f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 07909080f476ae96bb9ccdbb6891692a
+    Hash: f451c2fa900e9178a57db1d033fd31a7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Resources/Furnitures/Sunray/PantryTallboy.prefab
+- Assets/Prefab/Furnitures/Sunray/PantryTallboy.prefab
 Dependencies: []
