@@ -31,10 +31,17 @@ namespace IMAV.UI
 
         public override void Open()
         {
+            ResourceManager.Singleton.Pause();
             base.Open();
             topPos = -spaceY;
             DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath());
             StartCoroutine(LoadDirectory(dir));
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            ResourceManager.Singleton.Resume();
         }
 
         IEnumerator LoadDirectory(DirectoryInfo dir)

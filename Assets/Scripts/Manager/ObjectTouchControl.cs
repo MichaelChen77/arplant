@@ -23,22 +23,6 @@ namespace IMAV
 		/// </summary>
 		public float rotSpeed = 15f;
 
-        /// <summary>
-        /// Save the orignalSize.
-        /// </summary>
-		Vector3 originalSize;
-
-		/// <summary>
-		/// Save the Oiginal Rotation
-		/// </summary>
-        Quaternion originalRot;
-
-		/// <summary>
-		/// Save the Original Position
-		/// </summary>
-		Vector3 originalPos;
-
-		//BoundBoxes_BoundBox boundbox;
 		ARModel target;
 		bool startDrag = false;
 
@@ -49,8 +33,6 @@ namespace IMAV
         /// </summary>
 		public void Init(ARModel model)
 		{
-            //heightPos = height;
-			SaveTransform ();
 			target = model;
 		}
 
@@ -163,50 +145,11 @@ namespace IMAV
                     {
                         transform.position = hit.point;
                         transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
-                        ResourceManager.Singleton.DebugString("hit point: " + hit.point+" ; "+transform.position);
                     }
                     //transform.position = ray.GetPoint(rayDistance);
                     //ResourceManager.Singleton.DebugString("Plane: " + hPlane.normal + " ; " + transform.position + " ; ");
                 }
             }
         }
-
-		/// <summary>
-		/// Save original transform data: scale, position, rotation
-		/// </summary>
-		public void SaveTransform()
-		{
-			originalSize = transform.localScale;
-			originalRot = transform.rotation;
-			originalPos = transform.position;
-        }
-
-		/// <summary>
-		/// Reset to the original transform data: scale, position, rotation
-		/// </summary>
-		public void Reset()
-		{
-			transform.localScale = originalSize;
-			transform.position = originalPos;
-			transform.rotation = originalRot;
-		}
-
-		public void SetActive(bool flag)
-		{
-			this.enabled = flag;
-			//if (flag)
-			//	boundbox.init ();
-			//else
-			//	boundbox.Delete ();
-			if (Input.touchCount == 1)
-				startDrag = flag;
-			//boundbox.enabled = flag;
-		}
-
-		public void Delete()
-		{
-			//boundbox.Delete ();
-		}
-
     }
 }

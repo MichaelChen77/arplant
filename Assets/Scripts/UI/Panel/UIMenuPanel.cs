@@ -5,7 +5,18 @@ namespace IMAV.UI
     public class UIMenuPanel : UIControl
     {
         public GameObject controlButton;
+        public RectTransform productRect;
         RectTransform panelRect;
+        public RectTransform PanelRect
+        {
+            get { return panelRect; }
+        }
+
+        bool isOpened = false;
+        public bool IsOpened
+        {
+            get { return isOpened; }
+        }
 
         void Awake()
         {
@@ -14,13 +25,19 @@ namespace IMAV.UI
 
         public override void Open()
         {
-            LeanTween.move(panelRect, new Vector2(-panelRect.rect.width, 0f), 0.25f).setEaseOutQuad();
+            isOpened = true;
+            LeanTween.moveX(panelRect, -panelRect.rect.width, 0.25f).setEaseOutQuad();
+            if (productRect.gameObject.activeSelf)
+                productRect.offsetMax = new Vector2(-panelRect.rect.width, productRect.offsetMax.y);
             controlButton.SetActive(false);
         }
 
         public override void Close()
         {
-            LeanTween.move(panelRect, Vector2.zero, 0.25f).setEaseInQuad();
+            isOpened = false;
+            LeanTween.moveX(panelRect, 0, 0.25f).setEaseInQuad();
+            if (productRect.gameObject.activeSelf)
+                productRect.offsetMax = new Vector2(0, productRect.offsetMax.y);
             controlButton.SetActive(true);
         }
     }

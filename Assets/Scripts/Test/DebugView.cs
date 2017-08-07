@@ -19,7 +19,7 @@ public class DebugView : MonoBehaviour {
         UpdateContentSize();
     }
 
-    public void AppendTextLog(string str)
+    public void Log(string str)
     {
         debugText.text += "\n" + str;
         UpdateContentSize();

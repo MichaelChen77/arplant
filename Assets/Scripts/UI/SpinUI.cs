@@ -6,9 +6,11 @@ public class SpinUI : MonoBehaviour {
     bool start = false;
     int _count = 0;
     public bool SpinOnAwake = false;
+    RectTransform rect;
 
     void Awake()
     {
+        rect = GetComponent<RectTransform>();
         if (SpinOnAwake)
             Show();
     }
@@ -19,6 +21,14 @@ public class SpinUI : MonoBehaviour {
         transform.rotation = Quaternion.identity;
         start = true;
     }
+
+    //public void Show(RectTransform tran)
+    //{
+    //    transform.SetParent(tran);
+    //    transform.SetAsLastSibling();
+    //    rect.anchoredPosition = tran.rect.center;
+    //    Show();
+    //}
 
     public void Hide()
     {

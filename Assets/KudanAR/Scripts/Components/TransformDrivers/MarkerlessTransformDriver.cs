@@ -47,17 +47,20 @@ namespace Kudan.AR
 			}
 		}
 
-		/// <summary>
-		/// Method called every frame ArbiTrack is running.
-		/// Updates the position and orientation of the trackable.
-		/// </summary>
-		/// <param name="trackable">Trackable.</param>
-		public void OnTrackingUpdate(Trackable trackable)
-		{
+        /// <summary>
+        /// Method called every frame ArbiTrack is running.
+        /// Updates the position and orientation of the trackable.
+        /// </summary>
+        /// <param name="trackable">Trackable.</param>
+        public void OnTrackingUpdate(Trackable trackable)
+        {
             this.transform.localPosition = trackable.position;
             this.transform.localRotation = trackable.orientation;
 
-            this.gameObject.SetActive(trackable.isDetected);
-		}
+            if (IMAV.DataUtility.TrackingMode == ARTrackingMode.Placement)
+                gameObject.SetActive(true);
+            else
+                this.gameObject.SetActive(trackable.isDetected);
+        }
 	}
 };

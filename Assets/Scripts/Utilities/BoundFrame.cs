@@ -64,7 +64,7 @@ namespace IMAV.UI
                 bool flag = calculateBounds(target);
                 target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z + 1, target.transform.localPosition.z);
                 refresh();
-                
+                obj.SaveTransform();
             }
             else
             {

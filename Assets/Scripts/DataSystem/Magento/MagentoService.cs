@@ -16,6 +16,7 @@ public delegate void MagentoAssetBundleDownloadCallback(string sku, System.Objec
 public class MagentoService : MonoBehaviour {
 
     public const string baseUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com:9000";
+    public const string webPageUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com/index.php/";
     private static MagentoService mInstance = null;
 
     public static MagentoService Instance

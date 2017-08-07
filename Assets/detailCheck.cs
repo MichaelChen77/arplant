@@ -11,6 +11,6 @@ public class detailCheck : MonoBehaviour {
 
 	// Update is called once per frame
 	void Onclick () {
-		SceneManager.LoadScene ("VRRoom", LoadSceneMode.Additive);
+		SceneManager.LoadScene ("VRPlugin", LoadSceneMode.Additive);
 	}
 }

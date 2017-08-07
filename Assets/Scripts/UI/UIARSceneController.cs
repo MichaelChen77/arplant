@@ -11,27 +11,12 @@ namespace IMAV.UI
 {
     public class UIARSceneController : MonoBehaviour
     {
-        
         public GToggleButton clearBtn;
-        //public GToggleButton markerlessBtn;
-        //public GToggleButton placementBtn;
+        public Button VRButton;
+        public UIObjectMenu productMenu;
+        public UIMenuPanel mainMenu;
+        UIControl currentPanel = null;
 
-        public UIControl mainMenu;
-        UIControl currentPanel;
-
-        void Start()
-        {
-            //try
-            //{
-            //    //ResourceManager.Singleton.Clear();
-            //    //SetVirtualMode(DataUtility.VirtualModeInt, false);
-            //    //StartCoroutine(resetObject());
-            //}
-            //catch (System.Exception ex)
-            //{
-            //    ResourceManager.Singleton.DebugString("error: " + ex.Message);
-            //}
-        }
 
         #region UI
         public void OpenMenu()
@@ -40,12 +25,29 @@ namespace IMAV.UI
             mainMenu.Open();
         }
 
+        public void OpenProductMenu()
+        {
+            if (currentPanel == null || !currentPanel.gameObject.activeSelf)
+            {
+                float f = mainMenu.IsOpened ? -mainMenu.PanelRect.rect.width : 0;
+                productMenu.Open(f);
+            }
+            VRButton.interactable = true;
+        }
+
+        public void CloseProductMenu()
+        {
+            productMenu.Close();
+            VRButton.interactable = false;
+        }
+
         void closeCurrentPanel()
         {
             if (currentPanel != null)
             {
                 currentPanel.Close();
                 currentPanel = null;
+                OpenProductMenu();
             }
         }
 
@@ -54,6 +56,8 @@ namespace IMAV.UI
             mainMenu.Close();
             currentPanel = ui;
             ui.Open();
+            if (ui != productMenu)
+                productMenu.Close();
         }
 
         public void CloseUI(bool openMenu)
@@ -123,36 +127,38 @@ namespace IMAV.UI
 
         public void GotoVRRoom()
         {
-            DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
-            if (DataUtility.CurrentObject != null)
-            {
-                List<Transform> temp = new List<Transform>();
-                foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
-                {
-                    if (tr.tag != "static")
-                        temp.Add(tr);
-                }
-                foreach (Transform tran in temp)
-                {
-                    tran.parent = DataUtility.dontdestroy.transform;
-                    tran.gameObject.SetActive(false);
-                }
+            MediaCenter.Singleton.msgDialog.Show("The VR function is temporary removed!");
 
-                SceneManager.LoadSceneAsync("VRRoom");
-            }
+            //DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
+            //if (DataUtility.CurrentObject != null)
+            //{
+            //    List<Transform> temp = new List<Transform>();
+            //    foreach (Transform tr in ResourceManager.Singleton.markerlessTransform)
+            //    {
+            //        if (tr.tag != "static")
+            //            temp.Add(tr);
+            //    }
+            //    foreach (Transform tran in temp)
+            //    {
+            //        tran.parent = DataUtility.dontdestroy.transform;
+            //        tran.gameObject.SetActive(false);
+            //    }
+
+            //    SceneManager.LoadSceneAsync("VRPlugin");
+            //}
         }
 
         IEnumerator resetObject()
         {
             if (DataUtility.dontdestroy.transform.childCount > 0)
             {
-                //if (ResourceManager.Singleton.VMode == VirtualMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
-                //{
-                //    yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
-                //}
+                if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
+                {
+                    ResourceManager.Singleton.StartPlaceObject();
+                    yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
+                }
                 yield return new WaitForSeconds(0.5f);
                 List<Transform> temp = new List<Transform>();
-                ResourceManager.Singleton.DebugString("add object num: " + DataUtility.dontdestroy.transform.childCount);
                 foreach (Transform tr in DataUtility.dontdestroy.transform)
                 {
                     temp.Add(tr);
@@ -161,7 +167,6 @@ namespace IMAV.UI
                 {
                     tran.gameObject.SetActive(true);
                     ResourceManager.Singleton.AddMarkerlessObject(tran.gameObject);
-                    ResourceManager.Singleton.DebugString("add object: " + tran.name);
                 }
                 DataUtility.CurrentObject = null;
             }

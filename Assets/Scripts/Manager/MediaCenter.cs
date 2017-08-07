@@ -105,7 +105,7 @@ namespace IMAV
             DataUtility.SetDirectory(filePath);
             DataUtility.SetDirectory(thumbPath);
 
-            string filename = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss") + ".png";
+            string filename = "WhizHome_" + dt.ToString("yyMMdd_HHmmss") + ".png";
             StartCoroutine(Screenshot(date + "/" + filename, run));
         }
 
@@ -212,10 +212,10 @@ namespace IMAV
             DataUtility.SetDirectory(thumbPath);
             DataUtility.SetDirectory(shotPath);
 
-            string fileName = "WhizHome " + dt.ToString("yyyyMMdd_HHmmss");
+            string fileName = "WhizHome_" + dt.ToString("yyMMdd_HHmmss");
             curRecordName = date + "/" + fileName;
 
-            StartCoroutine(Screenshot(curRecordName + "_video.png", null));
+            StartCoroutine(Screenshot(curRecordName + "_v$d.png", null));
             //ScreenshotDuringRecord(Screen.width, Screen.height, curRecordName + ".png");
         }
 
@@ -225,7 +225,7 @@ namespace IMAV
             WalkSessions(videoName);
 
             if (run != null)
-                run(curRecordName + "_video.png");
+                run(curRecordName + "_v$d.png");
         }
 
         public void PlayVideo(string str)
@@ -309,6 +309,11 @@ namespace IMAV
                 NativeShare.Share("share image", path, "", FileType.Image);
         }
 
+        public void ShareString(string str)
+        {
+            NativeShare.Share("Whiz Home product: "+str, string.Empty, string.Empty, FileType.None);
+        }
+
         public void ShowScreenShot(string str)
         {
             try
@@ -321,7 +326,7 @@ namespace IMAV
             }
             catch (System.Exception ex)
             {
-                Debug.Log("show screen shot error: " + ex.Message);
+                TestCenter.Singleton.Log("show screen shot error: " + ex.Message);
             }
         }
 
@@ -333,7 +338,7 @@ namespace IMAV
             {
                 files[id] = path + "/" + filename+".png";
                 if (IsVideoImage(source))
-                    files[id] += path + "/" + filename + "_video.png";
+                    files[id] += path + "/" + filename + "_v$d.png";
                 
                 if(thumbnails.ContainsKey(source))
                 {
@@ -422,7 +427,7 @@ namespace IMAV
         {
             int index = str.LastIndexOf('_');
             string end = str.Substring(index + 1);
-            if (end.Equals("video.png"))
+            if (end.Equals("v$d.png"))
                 return str.Substring(0, index);
             else
                 return string.Empty;
@@ -436,7 +441,7 @@ namespace IMAV
 
         public bool IsVideoImage(string str)
         {
-            return str.EndsWith("_video.png");
+            return str.EndsWith("_v$d.png");
         }
 
         public void DeleteImage(int index)

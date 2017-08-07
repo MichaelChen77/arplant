@@ -15,6 +15,7 @@ namespace IMAV.UI
         public RectTransform contentRect;
         public HorizontalLayoutGroup catGroup;
         public HorizontalLayoutGroup furGroup;
+        public SpinUI loadingUI;
         RectTransform catRect;
         RectTransform furRect;
         float originPos;
@@ -63,8 +64,8 @@ namespace IMAV.UI
         public override void Refresh()
         {
             furRect.anchoredPosition = new Vector2(0, furRect.anchoredPosition.y);
-            catRect.sizeDelta = new Vector2(catGroup.preferredWidth, catRect.sizeDelta.y);
-            furRect.sizeDelta = new Vector2(furGroup.preferredWidth, furRect.sizeDelta.y);
+            catRect.sizeDelta = new Vector2(catGroup.preferredWidth+20, catRect.sizeDelta.y);
+            furRect.sizeDelta = new Vector2(furGroup.preferredWidth+20, furRect.sizeDelta.y);
         }
 
         void AddResObj(CategoryProduct res)
@@ -82,6 +83,7 @@ namespace IMAV.UI
             loadingProductCount--;
             if (loadingProductCount == 0)
             {
+                loadingUI.Hide();
                 StartCoroutine(DelayRefresh());
             }
         }
@@ -103,6 +105,7 @@ namespace IMAV.UI
         int loadingProductCount = 0;
         IEnumerator LoadCategory(CategoryData c)
         {
+            loadingUI.Show();
             if (!c.IsLoaded())
                 c.LoadProducts();
             yield return new WaitUntil(c.IsLoaded);

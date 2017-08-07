@@ -5,48 +5,6 @@ using Kudan.AR;
 using System.Linq;
 using IMAV.UI;
 
-[System.Serializable]
-public class FurCategory
-{
-    public string name;
-    public Sprite thumbnail;
-    List<ResObject> furObjects = new List<ResObject>();
-    public List<ResObject> Furnitures
-    {
-        get
-        {
-            if (furObjects == null)
-                furObjects = new List<ResObject>();
-            return furObjects;
-        }
-    }
-
-    public FurCategory(string _name, Sprite sp)
-    {
-        name = _name;
-        thumbnail = sp;
-    }
-}
-
-public class ResObject
-{
-    public GameObject resource;
-    public string name;
-    public Sprite thumbnail;
-    string cat;
-    public string Category
-    {
-        get { return cat; }
-        set { cat = value; }
-    }
-
-    public ResObject(string _cat, string _name)
-    {
-        cat = _cat;
-        name = _name;
-    }
-}
-
 public enum ARTrackingMode
 {
     Marker = 0, Markerless, Placement
@@ -55,11 +13,9 @@ public enum ARTrackingMode
 namespace IMAV
 {
     public class ResourceManager : MonoBehaviour {
-        //public ResController localResCtrl;
         public BoundFrame frame;
-        public DebugView debugview;
         public UIARSceneController arui;
-        public UIControl selectedFrame;
+        //public UIControl selectedFrame;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
         public TrackingMethodMarkerless _markerlessTracking;
@@ -68,13 +24,6 @@ namespace IMAV
         public Transform driverTransform;
         public float defaultMinSize;
         public float defaultMaxSize;
-        public Transform testTransform;
-
-        FurCategory[] furcategories;
-        public FurCategory[] FurCategories
-        {
-            get { return furcategories; }
-        }
 
         Vector3 trackPos;
         Quaternion trackRot;
@@ -135,70 +84,17 @@ namespace IMAV
             DataUtility.TrackingMode = flag;
             if (DataUtility.TrackingMode == ARTrackingMode.Placement)
             {
-                _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 _kudanTracker.StopTracking();
-                //_kudanTracker.ArbiTrackStop();
             }
             else if(DataUtility.TrackingMode == ARTrackingMode.Markerless)
             {
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
-                StartPlaceObject();
+                StopTracking();
             }
             else if(DataUtility.TrackingMode == ARTrackingMode.Marker)
             {
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
-        }
-
-        public void DebugString(string str)
-        {
-            if (debugview != null)
-                debugview.AppendTextLog(str);
-        }
-
-        public GameObject GetGameObject(string _type, string str)
-        {
-            FurCategory cat = GetCategory(_type);
-            if (cat != null)
-            {
-                foreach (ResObject obj in cat.Furnitures)
-                {
-                    if (obj.name == str)
-                        return obj.resource;
-                }
-            }
-            return null;
-        }
-
-        public FurCategory GetCategory(string _type)
-        {
-            foreach(FurCategory cat in furcategories)
-            {
-                if (cat.name == _type)
-                    return cat;
-            }
-            return null;
-        }
-
-        public void loadnextlevel()
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("AR");
-        }
-
-        public void LoadGameObject(string _type, string str)
-        {
-            GameObject obj = GetGameObject(_type, str);
-            string _content = _type + "-" + str;
-            if (obj != null)
-            {
-                LoadGameObject(obj, _content);
-            }
-        }
-
-        public void LoadGameObject(GameObject obj, string str)
-        {
-            GameObject newObj = Instantiate(obj);
-            AddMarkerlessLocalObject(str, newObj, true);
         }
 
         public void SetDefaultSize(GameObject obj)
@@ -243,18 +139,17 @@ namespace IMAV
                 else
                     currentObj.Selected = SelectState.None;
             }
-
             currentObj = obj;
             if (currentObj != null)
             {
                 currentObj.Selected = st;
                 frame.SetObject(currentObj);
-                arui.OpenUI(selectedFrame);
+                arui.OpenProductMenu();
             }
             else
             {
                 frame.SetObject(null);
-                arui.CloseUI(false);
+                arui.CloseProductMenu();
             }
         }
 
@@ -268,75 +163,83 @@ namespace IMAV
 
         public void AddMarkerlessObject(GameObject obj)
         {
-            StartCoroutine(AddingMarkerlessObject(obj, false, false, "0", ""));
+            objlist.Add(obj);
+            SetCurrentObject(obj.GetComponent<ARModel>());
         }
 
         public void AddMarkerlessRemoteObject(string id, GameObject obj, bool init)
         {
-            StartCoroutine(AddingMarkerlessObject(obj, init, false, id, ""));
+            StartCoroutine(AddingMarkerlessObject(obj, init, id));
         }
 
-        public void AddMarkerlessLocalObject(string _content, GameObject obj, bool init)
-        {
-            StartCoroutine(AddingMarkerlessObject(obj, init, true, "0", _content));
-        }
-
-        IEnumerator AddingMarkerlessObject(GameObject obj, bool init, bool _islocal, string _id, string _content)
+        IEnumerator AddingMarkerlessObject(GameObject obj, bool init, string _id)
         {
 			objlist.Add(obj);
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+                yield return new WaitForSeconds(0.2f);
             }
             try
             {
                 _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                DebugString("trackPos: "+trackPos+" ; test: " + testTransform.position + " ; " + testTransform.localPosition);
-                if (currentObj != null)
-                    DebugString("current: " + currentObj.transform.position + " ; " + currentObj.transform.localPosition);
-                DebugString("has trackingdata1: " + _kudanTracker.HasActiveTrackingData() + " ; " + _markerlessTracking.TrackingEnabled);
-                if (init)
-                {
-                    SceneObject sobj = obj.AddComponent<SceneObject>();
-                    sobj.Init(_islocal, _id, _content);
-                }
-                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init, _islocal, _content);
-                ResourceManager.Singleton.DebugString("set as markerless");
+                //if(init)
+                //{
+                //    SceneObject s = obj.AddComponent<SceneObject>();
+                //    s.Init(_id);
+                //}
+                ARModel m = DataUtility.SetAsMarkerlessObject(obj, init);
+                m.SKU = _id;
                 SetCurrentObject(m);
             }
             catch (System.Exception ex)
             {
-                DebugString("error: " + ex.Message);
+                TestCenter.Singleton.Log("error: " + ex.Message);
             }
         }
 
 		ARModel storeObj = null;
+        int pauseIndex = 0;
         public void Pause()
         {
-            if (currentObj != null) {
-                storeObj = currentObj;
-				currentObj.Selected = SelectState.None;
-                currentObj = null;
+            if (pauseIndex == 0)
+            {
+                if (currentObj != null)
+                {
+                    storeObj = currentObj;
+                    currentObj.Selected = SelectState.None;
+                    currentObj = null;
+                }
+                _kudanTracker.enabled = false;
             }
+            pauseIndex++;
         }
 
         public void Resume()
         {
-            if (storeObj != null)
+            pauseIndex--;
+            if (pauseIndex == 0)
             {
-                currentObj = storeObj;
-				currentObj.Selected = SelectState.Actived;
+                if (storeObj != null)
+                {
+                    currentObj = storeObj;
+                    currentObj.Selected = SelectState.Actived;
+                }
+                _kudanTracker.enabled = true;
             }
         }
 
         public void StartPlaceObject()
         {
-            Vector3 floorPosition;
-            Quaternion floorOrientation;
+            if (!_kudanTracker.ArbiTrackIsTracking())
+            {
+                Vector3 floorPosition;
+                Quaternion floorOrientation;
 
-            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);   // Gets the position and orientation of the floor and assigns the referenced Vector3 and Quaternion those values
-            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);              // Starts markerless tracking based upon the given floor position and orientations
+                _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
+                _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+            }
         }
 
         public void StopTracking()
@@ -357,7 +260,7 @@ namespace IMAV
             }
             catch(System.Exception ex)
             {
-                DebugString("Clear error: " + ex.Message);
+                TestCenter.Singleton.Log("Clear error: " + ex.Message);
             }
         }
 
@@ -372,7 +275,6 @@ namespace IMAV
             AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
             cls.Call("quitActivity", "unityquit");
         }
-
 
         public void Browse()
         {

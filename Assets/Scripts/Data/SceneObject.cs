@@ -9,18 +9,6 @@ public class SceneObject : MonoBehaviour {
     {
         get { return id; }
     }
-    [SerializeField]
-    bool isLocal = false;
-    public bool IsLocal
-    {
-        get { return isLocal; }
-    }
-    [SerializeField]
-    string localID = "";
-    public string LocalID
-    {
-        get { return localID; }
-    }
 
     public int materialID = -1;
     List<MeshRenderer> renders = new List<MeshRenderer>();
@@ -39,11 +27,9 @@ public class SceneObject : MonoBehaviour {
 		get{ return originRotation; }
 	}
 
-    public void Init(bool _islocal, string _id, string str)
+    public void Init(string _id)
 	{
         id = _id;
-        isLocal = _islocal;
-        localID = str;
         InitObject();
         //InitCollider();
     }
@@ -64,8 +50,7 @@ public class SceneObject : MonoBehaviour {
 
     public string ToDataString()
     {
-        string idstr = isLocal ? localID : id.ToString();
-        Debug.Log("init: " + name + " ; " + isLocal + " ; " + localID+" ; "+id);
+        string idstr = id.ToString();
         string str = string.Format("{0},{1},{2},{3},{4};", idstr, VectorToString(transform.localPosition), VectorToString(transform.localEulerAngles), VectorToString(transform.localScale), materialID);
         return str;
     }

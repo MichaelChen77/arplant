@@ -30,13 +30,13 @@ namespace IMAV.UI
         public void Refresh()
         {
             Clear();
-            if (DataManager.Singleton.Scenes != null)
-            {
-                foreach (SceneData d in DataManager.Singleton.Scenes.data)
-                {
-                    AddItem(d);
-                }
-            }
+            //if (DataManager.Singleton.Scenes != null)
+            //{
+            //    foreach (SceneData d in DataManager.Singleton.Scenes.data)
+            //    {
+            //        AddItem(d);
+            //    }
+            //}
         }
 
         void AddItem(SceneData _data)
@@ -59,7 +59,7 @@ namespace IMAV.UI
 
         public void ClickSceneItem(SceneItem _item)
         {
-            DataManager.Singleton.LoadSceneItem(_item.Data);
+            //DataManager.Singleton.LoadSceneItem(_item.Data);
             Close();
         }
     }

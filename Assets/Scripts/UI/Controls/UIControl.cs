@@ -63,10 +63,5 @@ namespace IMAV.UI
         {
             ctrl.Delete();
         }
-
-        public virtual void Refresh()
-        {
-
-        }
     }
 }

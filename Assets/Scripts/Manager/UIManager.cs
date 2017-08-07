@@ -12,6 +12,8 @@ namespace IMAV
         public Text lightText;
         public ObjectGroup lights;
 
+        //public GameObject targetObject;
+
         private static UIManager mSingleton;
         public static UIManager Singleton
         {
@@ -43,10 +45,11 @@ namespace IMAV
 
         void Start()
         {
-			if (DataUtility.CurrentObject != null) {
-				roomObj = Instantiate (DataUtility.CurrentObject.gameObject);
-				DataUtility.CurrentObject.gameObject.SetActive (false);
-			}
+            if (DataUtility.CurrentObject != null)
+            {
+                roomObj = Instantiate(DataUtility.CurrentObject.gameObject);
+                DataUtility.CurrentObject.gameObject.SetActive(false);
+            }
 			if (roomObj != null)
             {
 				roomObj.transform.parent = room;
@@ -119,7 +122,7 @@ namespace IMAV
                     obj.SetMaterial(selectedObj.materialID, MaterialManager.Singleton.materails[selectedObj.materialID]);
                 }
             }
-            SceneManager.LoadScene("AR");
+            SceneManager.LoadScene("ARPlugin");
         }
 
     }

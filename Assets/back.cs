@@ -11,6 +11,6 @@ public class back : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Onclick () {
-		SceneManager.LoadScene ("AR", LoadSceneMode.Additive);
+		SceneManager.LoadScene ("ARPlugin", LoadSceneMode.Additive);
 	}
 }

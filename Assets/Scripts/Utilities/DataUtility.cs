@@ -257,7 +257,7 @@ namespace IMAV
             return str;
         }
 
-        public static ARModel SetAsMarkerlessObject(GameObject obj, bool init, bool isLocal, string _content)
+        public static ARModel SetAsMarkerlessObject(GameObject obj, bool init)
         {
             obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
             if (init)
@@ -268,7 +268,7 @@ namespace IMAV
                 {
                     obj.transform.position = ResourceManager.Singleton.TrackPos;
                     Quaternion quat = obj.transform.rotation;
-                    obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
+                    obj.transform.localRotation = quat;
                 }
                 else if(TrackingMode == ARTrackingMode.Placement)
                 {
@@ -279,7 +279,7 @@ namespace IMAV
                     obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
                 }
 
-                ResourceManager.Singleton.DebugString("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
+                TestCenter.Singleton.Log("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
 				return obj.AddComponent<ARModel>();
             }
 			return obj.GetComponent<ARModel>();

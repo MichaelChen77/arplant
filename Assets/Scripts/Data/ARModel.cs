@@ -10,13 +10,15 @@ namespace IMAV
 	}
 
 	public class ARModel : MonoBehaviour {
-
 		ObjectTouchControl touchCtrl;
+        Vector3 originalSize;
+        Quaternion originalRot;
+        Vector3 originalPos;
 
-		/// <summary>
-		/// Whether the object is selected
-		/// </summary>
-		SelectState selected = SelectState.Actived;
+        /// <summary>
+        /// Whether the object is selected
+        /// </summary>
+        SelectState selected = SelectState.Actived;
 		public SelectState Selected {
 			get{ return selected; }
 			set { 
@@ -29,6 +31,15 @@ namespace IMAV
 					touchCtrl.enabled = false;
 			}
 		}
+
+        protected string sku;
+        public string SKU
+        {
+            get { return sku; }
+            set { sku = value; }
+        }
+
+        bool init = false;
 
 
         void Start()
@@ -43,31 +54,7 @@ namespace IMAV
                 touchCtrl.Init(this);
                 CloseShadowCast();
             }
-		}
-
-        //float calculateBounds(GameObject obj)
-        //{
-        //    BoxCollider box = obj.GetComponent<BoxCollider>();
-        //    if (box != null)
-        //    {
-        //        GameObject co = new GameObject("dummy");
-        //        co.transform.position = obj.transform.position;
-        //        co.transform.localScale = obj.transform.lossyScale;
-        //        BoxCollider cobc = co.AddComponent<BoxCollider>();
-        //        Quaternion quat = obj.transform.rotation;
-        //        cobc.center = box.center;
-        //        cobc.size = box.size;
-        //        Bounds bound = cobc.bounds;
-        //        Destroy(co);
-        //        Vector3 boundDiff = bound.center - transform.position;
-        //        Vector3 boundExtents = bound.extents;
-
-        //        Vector3 delta = quat * boundDiff + quat * Vector3.Scale(boundExtents, new Vector3(0, 0, -1));
-        //        ResourceManager.Singleton.DebugString("delta: " + delta);
-        //        return -delta.y;
-        //    }
-        //    return 0;
-        //}
+        }
 
         public void CloseShadowCast()
         {
@@ -81,10 +68,33 @@ namespace IMAV
             }
         }
 
-		public void Delete()
+        public void SaveTransform()
+        {
+            if (!init)
+            {
+                originalSize = transform.localScale;
+                originalRot = transform.rotation;
+                originalPos = transform.position;
+                init = true;
+            }
+        }
+
+        public void Reset()
+        {
+            transform.localScale = originalSize;
+            transform.position = originalPos;
+            transform.rotation = originalRot;
+        }
+
+        public void Delete()
 		{
-			touchCtrl.Delete();
 			Destroy (gameObject);
 		}
-	}
+
+
+        public void SetMaterial()
+        {
+
+        }
+    }
 }

@@ -8,7 +8,7 @@ using System.IO;
  */
 public enum FileType
 {
-    Image, Video, Text, Bytes
+    Image, Video, Text, Bytes, None
 }
 
 
@@ -30,13 +30,16 @@ public class NativeShare : MonoBehaviour {
         AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 
         intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
-        AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
-        AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePath);
-        intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-        switch (_type)
+        if (_type != FileType.None)
         {
-            case FileType.Image: intentObject.Call<AndroidJavaObject>("setType", "video/mp4"); break;
-            case FileType.Video: intentObject.Call<AndroidJavaObject>("setType", "image/png"); break;
+            AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
+            AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", "file://" + filePath);
+            intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
+            switch (_type)
+            {
+                case FileType.Image: intentObject.Call<AndroidJavaObject>("setType", "video/mp4"); break;
+                case FileType.Video: intentObject.Call<AndroidJavaObject>("setType", "image/png"); break;
+            }
         }
 
         intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TEXT"), shareText);

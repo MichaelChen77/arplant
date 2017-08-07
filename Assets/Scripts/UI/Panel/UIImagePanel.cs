@@ -21,6 +21,7 @@ namespace IMAV.UI
 
         public void Open(int index)
         {
+            ResourceManager.Singleton.Pause();
             gameObject.SetActive(true);
             swipe.Open();
             swipe.PageCount = MediaCenter.Singleton.Images.Count;
@@ -61,7 +62,11 @@ namespace IMAV.UI
 
         IEnumerator startLoadSprite(Image m, int id)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE
             string str = MediaCenter.Singleton.GetImagePath(id);
+#else
+            string str = "file:///"+ MediaCenter.Singleton.GetImagePath(id);
+#endif
             WWW www = new WWW(str);
             yield return www;
             m.sprite = DataUtility.CreateSprite(www.texture);
@@ -214,6 +219,7 @@ namespace IMAV.UI
                 MediaCenter.Singleton.imageGallery.DelayRefresh();
             }
             gameObject.SetActive(false);
+            ResourceManager.Singleton.Resume();
         }
 
         public void ShowDetails()
