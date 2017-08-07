@@ -151,17 +151,13 @@ namespace IMAV
             if (currentObj != null)
             {
                 currentObj.Selected = st;
-                TestCenter.Singleton.Log("current object0: " + currentObj.name);
                 frame.SetObject(currentObj);
-                TestCenter.Singleton.Log("current object1: " + currentObj.name);
                 arui.OpenProductMenu();
-                TestCenter.Singleton.Log("current object2: " + currentObj.name);
             }
             else
             {
                 frame.SetObject(null);
                 arui.CloseProductMenu();
-                TestCenter.Singleton.Log("current object: null");
             }
         }
 
@@ -287,14 +283,24 @@ namespace IMAV
 
         public void Quit()
         {
-            AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
-            cls.Call("quitActivity", "unityquit");
+            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    jo.Call("quitActivity", "unityquit");
+                }
+            }    
         }
 
         public void Browse()
         {
-            AndroidJavaClass cls = new AndroidJavaClass("eu.kudan.ar.UnityPlayerActivity");
-            cls.Call("browse");
+            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    jo.Call("browse");
+                }
+            }
         }
 
         public void DeleteCurrentObject()
