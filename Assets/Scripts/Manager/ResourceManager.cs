@@ -21,9 +21,9 @@ namespace IMAV
         public TrackingMethodMarkerless _markerlessTracking;
         public Transform markerTransform;
         public Transform markerlessTransform;
-        public Transform driverTransform;
         public float defaultMinSize;
         public float defaultMaxSize;
+        public float markerSize;
 
         Vector3 trackPos;
         Quaternion trackRot;
@@ -76,6 +76,7 @@ namespace IMAV
 
         void Start()
         {
+
             SetTrackingMode(DataUtility.TrackingMode);
         }
 
@@ -85,10 +86,7 @@ namespace IMAV
             {
                 if (DataUtility.TrackingMode == ARTrackingMode.Marker)
                 {
-                    foreach (Transform tran in markerTransform)
-                    {
-                        tran.SetParent(markerlessTransform);
-                    }
+                    MoveChildrenTo(markerTransform, markerlessTransform);
                 }
                 _kudanTracker.ArbiTrackStop();
             }
@@ -96,10 +94,7 @@ namespace IMAV
             {
                 if (DataUtility.TrackingMode == ARTrackingMode.Marker)
                 {
-                    foreach (Transform tran in markerTransform)
-                    {
-                        tran.SetParent(markerlessTransform);
-                    }
+                    MoveChildrenTo(markerTransform, markerlessTransform);
                 }
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 if (DataUtility.TrackingMode == ARTrackingMode.Placement)
@@ -111,14 +106,36 @@ namespace IMAV
             {
                 if(DataUtility.TrackingMode != ARTrackingMode.Marker)
                 {
-                    foreach(Transform tran in markerlessTransform)
-                    {
-                        tran.SetParent(markerTransform);
-                    }
+                    MoveChildrenTo(markerlessTransform, markerTransform);
                 }
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
             DataUtility.TrackingMode = flag;
+        }
+
+        public void SetScaleFromMarkerSize(Transform tran)
+        {
+            if (markerSize > 0)
+            {
+                this.transform.localScale = this.transform.localScale * 12 * markerSize;
+            }
+            else
+                tran.localScale = tran.localScale * 100;
+        }
+
+        void MoveChildrenTo(Transform from, Transform target)
+        {
+            int _count = from.childCount-1;
+            for (int i = _count; i > -1; i--)
+            {
+                Transform tran = from.GetChild(i);
+                Vector3 pos = tran.localPosition;
+                Quaternion rot = tran.localRotation;
+                tran.SetParent(target);
+                tran.localPosition = pos;
+                tran.localRotation = rot;
+            }
+            
         }
 
         public void SetDefaultSize(GameObject obj)

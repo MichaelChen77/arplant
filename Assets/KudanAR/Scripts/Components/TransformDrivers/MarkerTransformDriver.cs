@@ -168,7 +168,8 @@ namespace Kudan.AR
 		{
 			if (_markerPlaneWidth > 0 && _markerPlaneHeight > 0)
 			{
-				this.transform.localScale = new Vector3(_markerPlaneHeight / UnityScaleFactor, 1f, _markerPlaneWidth / UnityScaleFactor);
+                this.transform.localScale = this.transform.localScale * 120 * _markerPlaneHeight / UnityScaleFactor;
+                //this.transform.localScale = new Vector3(_markerPlaneHeight / UnityScaleFactor, 1f, _markerPlaneWidth / UnityScaleFactor);
 			}
 		}
 
