@@ -257,32 +257,27 @@ namespace IMAV
             return str;
         }
 
-        public static ARModel SetAsMarkerlessObject(GameObject obj, bool init)
+        public static ARModel InitARObject(GameObject obj, Transform parentTransform)
         {
-            obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
-            if (init)
+            obj.transform.parent = parentTransform;
+            obj.layer = 8;
+            obj.transform.localScale = obj.transform.localScale * 50;
+            if (TrackingMode == ARTrackingMode.Markerless)
             {
-                obj.layer = 8;
-                obj.transform.localScale = obj.transform.localScale * 50;
-                if (TrackingMode == ARTrackingMode.Markerless)
-                {
-                    obj.transform.position = ResourceManager.Singleton.TrackPos;
-                    Quaternion quat = obj.transform.rotation;
-                    obj.transform.localRotation = quat;
-                }
-                else if(TrackingMode == ARTrackingMode.Placement)
-                {
-                    obj.transform.position = ResourceManager.Singleton.TrackPos;
-
-                    BoxCollider box = obj.GetComponent<BoxCollider>();
-                    Quaternion quat = obj.transform.rotation;
-                    obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
-                }
-
-                TestCenter.Singleton.Log("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
-				return obj.AddComponent<ARModel>();
+                obj.transform.position = ResourceManager.Singleton.TrackPos;
+                Quaternion quat = obj.transform.rotation;
+                obj.transform.localRotation = quat;
             }
-			return obj.GetComponent<ARModel>();
+            else if (TrackingMode == ARTrackingMode.Placement)
+            {
+                obj.transform.position = ResourceManager.Singleton.TrackPos;
+
+                BoxCollider box = obj.GetComponent<BoxCollider>();
+                Quaternion quat = obj.transform.rotation;
+                obj.transform.rotation = ResourceManager.Singleton.TrackRotation * quat;
+            }
+            //TestCenter.Singleton.Log("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
+            return obj.AddComponent<ARModel>();
         }
     }
 }

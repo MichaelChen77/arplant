@@ -193,7 +193,7 @@ namespace IMAV
 
         void LoadModelToScene(ProductData p)
         {
-            ResourceManager.Singleton.AddARObject(p.ProductInfo.sku, p.model, true);
+            ResourceManager.Singleton.AddARObject(p.ProductInfo.sku, p.model);
         }
     }
 }

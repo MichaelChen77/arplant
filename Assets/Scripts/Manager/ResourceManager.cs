@@ -83,10 +83,24 @@ namespace IMAV
         {
             if (flag == ARTrackingMode.Placement)
             {
+                if (DataUtility.TrackingMode == ARTrackingMode.Marker)
+                {
+                    foreach (Transform tran in markerTransform)
+                    {
+                        tran.SetParent(markerlessTransform);
+                    }
+                }
                 _kudanTracker.ArbiTrackStop();
             }
             else if (flag == ARTrackingMode.Markerless)
             {
+                if (DataUtility.TrackingMode == ARTrackingMode.Marker)
+                {
+                    foreach (Transform tran in markerTransform)
+                    {
+                        tran.SetParent(markerlessTransform);
+                    }
+                }
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 if (DataUtility.TrackingMode == ARTrackingMode.Placement)
                     StartPlaceObject();
@@ -95,6 +109,13 @@ namespace IMAV
             }
             else if (flag == ARTrackingMode.Marker)
             {
+                if(DataUtility.TrackingMode != ARTrackingMode.Marker)
+                {
+                    foreach(Transform tran in markerlessTransform)
+                    {
+                        tran.SetParent(markerTransform);
+                    }
+                }
                 _kudanTracker.ChangeTrackingMethod(_markerTracking);
             }
             DataUtility.TrackingMode = flag;
@@ -177,12 +198,12 @@ namespace IMAV
             SetCurrentObject(m);
         }
 
-        public void AddARObject(string id, GameObject obj, bool init)
+        public void AddARObject(string id, GameObject obj)
         {
-            StartCoroutine(AddingMarkerlessObject(obj, init, id));
+            StartCoroutine(AddARObject(obj, id));
         }
 
-        IEnumerator AddingMarkerlessObject(GameObject model, bool init, string _id)
+        IEnumerator AddARObject(GameObject model, string _id)
         {
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
@@ -194,15 +215,23 @@ namespace IMAV
             {
                 GameObject target = Instantiate(model);
                 objlist.Add(target);
-                _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                //if (init)
-                //{
+                ARModel m = null;
+                if (DataUtility.TrackingMode == ARTrackingMode.Marker)
+                {
+                    m = DataUtility.InitARObject(target, markerTransform);
+                }
+                else
+                {
+                    _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                    m = DataUtility.InitARObject(target, markerlessTransform);
+                }
                 //    SceneObject s = target.AddComponent<SceneObject>();
                 //    s.Init(_id);
-                //}
-                ARModel m = DataUtility.SetAsMarkerlessObject(target, init);
-                m.SKU = _id;
-                SetCurrentObject(m);
+                if (m != null)
+                {
+                    m.SKU = _id;
+                    SetCurrentObject(m);
+                }
             }
             catch (System.Exception ex)
             {
