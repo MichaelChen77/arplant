@@ -1,27 +1,15 @@
 fileFormatVersion: 2
-guid: 3f27276e0c8d389418767de3d5b4a301
-timeCreated: 1502420580
+guid: 48be248e2470d0d4b930f13e1bd55170
+timeCreated: 1502433501
 licenseType: Pro
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: ' Blend [140609]'
-    100002: //RootNode
-    100004: CSW-Sunray_Casework_ANCTR-05_Carcass CSW-Sunray_Casework_ANCTR-
-    100006: CSW-Sunray_Casework_ANCTR-05_Countertop CSW-Sunray_Casework_ANC
-    400000: ' Blend [140609]'
-    400002: //RootNode
-    400004: CSW-Sunray_Casework_ANCTR-05_Carcass CSW-Sunray_Casework_ANCTR-
-    400006: CSW-Sunray_Casework_ANCTR-05_Countertop CSW-Sunray_Casework_ANC
-    2300000: ' Blend [140609]'
-    2300002: CSW-Sunray_Casework_ANCTR-05_Carcass CSW-Sunray_Casework_ANCTR-
-    2300004: CSW-Sunray_Casework_ANCTR-05_Countertop CSW-Sunray_Casework_ANC
-    3300000: ' Blend [140609]'
-    3300002: CSW-Sunray_Casework_ANCTR-05_Carcass CSW-Sunray_Casework_ANCTR-
-    3300004: CSW-Sunray_Casework_ANCTR-05_Countertop CSW-Sunray_Casework_ANC
-    4300000: CSW-Sunray_Casework_ANCTR-05_Countertop CSW-Sunray_Casework_ANC
-    4300002: CSW-Sunray_Casework_ANCTR-05_Carcass CSW-Sunray_Casework_ANCTR-
-    4300004: ' Blend [140609]'
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Tables1 Tables [412483]
   materials:
     importMaterials: 0
     materialName: 0
