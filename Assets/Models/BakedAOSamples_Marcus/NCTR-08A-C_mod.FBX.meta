@@ -1,0 +1,134 @@
+fileFormatVersion: 2
+guid: 219e91d7961f0d64996124f14a9f46e1
+timeCreated: 1502427641
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: ' Joined Solid Geometry [9409326]'
+    100002: ' Joined Solid Geometry [9409871]'
+    100004: ' Joined Solid Geometry [9409912]'
+    100006: ' Joined Solid Geometry [9410324]'
+    100008: ' Joined Solid Geometry [9410325]'
+    100010: Casework-Sunray_AV-Cabinet Left Corner Module [9409385]
+    100012: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409610]
+    100014: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409611]
+    100016: Family2 Family2 [9409989]
+    100018: Family2 Family2 [9409992]
+    100020: //RootNode
+    400000: ' Joined Solid Geometry [9409326]'
+    400002: ' Joined Solid Geometry [9409871]'
+    400004: ' Joined Solid Geometry [9409912]'
+    400006: ' Joined Solid Geometry [9410324]'
+    400008: ' Joined Solid Geometry [9410325]'
+    400010: Casework-Sunray_AV-Cabinet Left Corner Module [9409385]
+    400012: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409610]
+    400014: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409611]
+    400016: Family2 Family2 [9409989]
+    400018: Family2 Family2 [9409992]
+    400020: //RootNode
+    2300000: ' Joined Solid Geometry [9409326]'
+    2300002: ' Joined Solid Geometry [9409871]'
+    2300004: ' Joined Solid Geometry [9409912]'
+    2300006: ' Joined Solid Geometry [9410324]'
+    2300008: ' Joined Solid Geometry [9410325]'
+    2300010: Casework-Sunray_AV-Cabinet Left Corner Module [9409385]
+    2300012: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409610]
+    2300014: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409611]
+    2300016: Family2 Family2 [9409989]
+    2300018: Family2 Family2 [9409992]
+    3300000: ' Joined Solid Geometry [9409326]'
+    3300002: ' Joined Solid Geometry [9409871]'
+    3300004: ' Joined Solid Geometry [9409912]'
+    3300006: ' Joined Solid Geometry [9410324]'
+    3300008: ' Joined Solid Geometry [9410325]'
+    3300010: Casework-Sunray_AV-Cabinet Left Corner Module [9409385]
+    3300012: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409610]
+    3300014: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409611]
+    3300016: Family2 Family2 [9409989]
+    3300018: Family2 Family2 [9409992]
+    4300000: Family2 Family2 [9409992]
+    4300002: Family2 Family2 [9409989]
+    4300004: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409611]
+    4300006: Casework-Sunray_AV-Cabinet_face-based AV Cabinet [9409610]
+    4300008: Casework-Sunray_AV-Cabinet Left Corner Module [9409385]
+    4300010: ' Joined Solid Geometry [9410325]'
+    4300012: ' Joined Solid Geometry [9410324]'
+    4300014: ' Joined Solid Geometry [9409912]'
+    4300016: ' Joined Solid Geometry [9409871]'
+    4300018: ' Joined Solid Geometry [9409326]'
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 0
+    keepQuads: 0
+    weldVertices: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
