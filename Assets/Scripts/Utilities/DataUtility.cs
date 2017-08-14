@@ -261,7 +261,7 @@ namespace IMAV
         {
             obj.transform.parent = parentTransform;
             obj.layer = 8;
-            obj.transform.localScale = obj.transform.localScale * 100;
+            obj.transform.localScale = obj.transform.localScale * 164;
             if (TrackingMode != ARTrackingMode.Marker)
             {
                 

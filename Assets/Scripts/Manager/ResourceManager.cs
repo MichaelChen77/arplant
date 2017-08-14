@@ -76,7 +76,7 @@ namespace IMAV
 
         void Start()
         {
-
+            Application.targetFrameRate = 45;
             SetTrackingMode(DataUtility.TrackingMode);
         }
 
@@ -242,8 +242,8 @@ namespace IMAV
                     _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
                     m = DataUtility.InitARObject(target, markerlessTransform);
                 }
-                //    SceneObject s = target.AddComponent<SceneObject>();
-                //    s.Init(_id);
+                //SceneObject s = target.AddComponent<SceneObject>();
+                //s.Init(_id);
                 if (m != null)
                 {
                     m.SKU = _id;

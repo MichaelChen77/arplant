@@ -79,6 +79,7 @@ namespace IMAV
                     //transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y * rate, transform.localPosition.z);
                     //heightPos = heightPos * rate;
 					this.transform.localScale = new Vector3 (scaleChange, scaleChange, scaleChange);
+                    //TestCenter.Singleton.Log(name + " scale: " + transform.localScale);
 				} else {
 					if (delta1 > 1f)
 						TouchRotate (fing1);
