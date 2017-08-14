@@ -52,7 +52,7 @@ namespace IMAV
             {
                 touchCtrl = gameObject.AddComponent<ObjectTouchControl>();
                 touchCtrl.Init(this);
-                CloseShadowCast();
+                //CloseShadowCast();
             }
         }
 
