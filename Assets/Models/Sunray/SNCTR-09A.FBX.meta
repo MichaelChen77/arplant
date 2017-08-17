@@ -3,7 +3,7 @@ guid: 208f741f71c59d34ebc8e83a506cf9f9
 timeCreated: 1494320087
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Joined Solid Geometry [22152]'
     100002: ' Joined Solid Geometry [7518]'
@@ -55,6 +55,7 @@ ModelImporter:
       [46192]
     2300020: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [46248]
+    2300022: //RootNode
     3300000: ' Joined Solid Geometry [22152]'
     3300002: ' Joined Solid Geometry [7518]'
     3300004: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [37458]
@@ -71,6 +72,7 @@ ModelImporter:
       [46192]
     3300020: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [46248]
+    3300022: //RootNode
     4300000: ' Joined Solid Geometry [7518]'
     4300002: ' Joined Solid Geometry [22152]'
     4300004: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [37458]
@@ -109,20 +111,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -132,7 +138,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

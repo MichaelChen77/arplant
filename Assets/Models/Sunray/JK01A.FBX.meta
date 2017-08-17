@@ -3,7 +3,7 @@ guid: 37cea0cfd6a38a9499b497c2f6ffb10e
 timeCreated: 1494320104
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Extrusion [2461883]'
     100002: ' Extrusion [2461950]'
@@ -58,6 +58,7 @@ ModelImporter:
       3 [2462079]
     2300028: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
       3 [2462086]
+    2300030: //RootNode
     3300000: ' Extrusion [2461883]'
     3300002: ' Extrusion [2461950]'
     3300004: ' Extrusion [2461962]'
@@ -75,6 +76,7 @@ ModelImporter:
       3 [2462079]
     3300028: CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove CSW_Sunray_Cab-Dbl-Dr_instance_FingerGroove
       3 [2462086]
+    3300030: //RootNode
     4300000: ' Extrusion [2461883]'
     4300002: ' Extrusion [2461950]'
     4300004: ' Extrusion [2461962]'
@@ -114,20 +116,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -137,7 +143,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
