@@ -43,6 +43,8 @@ ModelImporter:
     4300004: Tables1 Tables [412483]
     4300006: FURN_Office Chair FABRIC_Polished Base [703807]
     4300008: FURN_Office Chair FABRIC_Polished Base [703807].001
+    6400000: FURN_Office Chair FABRIC_Polished Base [703807]
+    6400002: FURN_Office Chair FABRIC_Polished Base [703807].001
   materials:
     importMaterials: 0
     materialName: 0
@@ -67,22 +69,22 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 0
-    importBlendShapes: 0
+    importBlendShapes: 1
     importCameras: 0
-    importLights: 0
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 0
+    optimizeMeshForGPU: 1
     keepQuads: 0
-    weldVertices: 0
+    weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2934296575
+CRC: 715596614
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b34716d21f2c0f99f6807abc6f5003a3
+    Hash: e181e868089e5b33d0fed90defc049b6
   TypeTreeHash:
     serializedVersion: 2
     Hash: f451c2fa900e9178a57db1d033fd31a7
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/Furnitures/Sunray/ANCTR-05.prefab
+- Assets/Prefab/BakedAOSamples_Marcus/ANCTR-05_mod.prefab
 Dependencies: []

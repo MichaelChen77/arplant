@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1156133855
+CRC: 169905959
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a14b3ecfa7ad9567892795b1d7bfae7e
+    Hash: 78ba55da0bcb41386fdd78505457cfd6
   TypeTreeHash:
     serializedVersion: 2
     Hash: f451c2fa900e9178a57db1d033fd31a7
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/Furnitures/Sunray/Duval.prefab
+- Assets/Prefab/BakedAOSamples_Marcus/Duval_mod.prefab
 Dependencies: []

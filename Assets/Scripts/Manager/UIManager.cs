@@ -54,7 +54,7 @@ namespace IMAV
             {
 				roomObj.transform.parent = room;
 				roomObj.SetActive(true);
-				ARModel model = roomObj.GetComponent<ARModel> ();
+				ARProduct model = roomObj.GetComponent<ARProduct> ();
 				StartCoroutine(SetObjectState (model, SelectState.None));
 				selectedObj = roomObj.GetComponent<SceneObject>();
 				SceneObject s = DataUtility.CurrentObject.GetComponent<SceneObject> ();
@@ -67,7 +67,7 @@ namespace IMAV
                 lightText.text = lobj.name;
         }
 
-		IEnumerator SetObjectState(ARModel mo, SelectState _state)
+		IEnumerator SetObjectState(ARProduct mo, SelectState _state)
 		{
 			yield return new WaitForEndOfFrame ();
 			mo.Selected = _state;

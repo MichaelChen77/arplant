@@ -12,7 +12,7 @@ public class TestTouch : MonoBehaviour {
 
 	Quaternion originalRot;
 
-	ARModel currentTc;
+	ARProduct currentTc;
 	// Use this for initialization
 	void Start () {
 		originalRot = transform.localRotation;
@@ -40,7 +40,7 @@ public class TestTouch : MonoBehaviour {
 				if (Physics.Raycast (ray, out hit)) {
 					GameObject touchedObject = hit.transform.gameObject;
 					if (touchedObject != null) {
-						ResourceManager.Singleton.SetCurrentObject (touchedObject.GetComponent<ARModel> ());
+						ResourceManager.Singleton.SetCurrentObject (touchedObject.GetComponent<ARProduct> ());
 					} else {
 						ResourceManager.Singleton.SetCurrentObjectState (SelectState.None);
 					}

@@ -109,7 +109,7 @@ namespace IMAV.UI
                         GameObject touchedObject = hit.transform.gameObject;
                         if (touchedObject != null)
                         {
-                            ResourceManager.Singleton.SetCurrentObject(touchedObject.GetComponent<ARModel>());
+                            ResourceManager.Singleton.SetCurrentObject(touchedObject.GetComponent<ARProduct>());
                         }
                         else
                         {
