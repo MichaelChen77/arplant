@@ -1,82 +1,52 @@
 ManifestFileVersion: 0
-CRC: 1844534855
+CRC: 1718383551
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: l1d1
-      Dependencies: {}
-    Info_1:
-      Name: nctr-08a-a
-      Dependencies: {}
-    Info_2:
-      Name: jk01a
-      Dependencies: {}
-    Info_3:
       Name: pantrytallboy
       Dependencies: {}
-    Info_4:
-      Name: l2d1
-      Dependencies: {}
-    Info_5:
-      Name: nctr-08a-b
-      Dependencies: {}
-    Info_6:
-      Name: nctr-05
-      Dependencies: {}
-    Info_7:
+    Info_1:
       Name: anctr-05
       Dependencies: {}
-    Info_8:
-      Name: jk02-type2
-      Dependencies: {}
-    Info_9:
-      Name: crt-01
-      Dependencies: {}
-    Info_10:
+    Info_2:
       Name: nctr-08a-c
       Dependencies: {}
-    Info_11:
-      Name: jd-02
-      Dependencies: {}
-    Info_12:
+    Info_3:
       Name: phr-01
       Dependencies: {}
-    Info_13:
+    Info_4:
       Name: sh2d2
       Dependencies: {}
-    Info_14:
+    Info_5:
       Name: sh4
       Dependencies: {}
-    Info_15:
+    Info_6:
       Name: snctr-09a
       Dependencies: {}
-    Info_16:
+    Info_7:
       Name: snctr-09b
       Dependencies: {}
-    Info_17:
+    Info_8:
       Name: snctr-10
       Dependencies: {}
-    Info_18:
+    Info_9:
       Name: w2d1-rfa
       Dependencies: {}
-    Info_19:
+    Info_10:
       Name: wardrobe
       Dependencies: {}
-    Info_20:
-      Name: duval
-      Dependencies: {}
-    Info_21:
-      Name: dualtable
-      Dependencies: {}
-    Info_22:
-      Name: barcelona
-      Dependencies: {}
-    Info_23:
+    Info_11:
       Name: chair
       Dependencies: {}
-    Info_24:
-      Name: barcelona_daybed
+    Info_12:
+      Name: dualtable
       Dependencies: {}
-    Info_25:
+    Info_13:
+      Name: duval
+      Dependencies: {}
+    Info_14:
       Name: angelstatue
+      Dependencies: {}
+    Info_15:
+      Name: table_wood
       Dependencies: {}

@@ -50,49 +50,46 @@ namespace IMAV
 				}
             }
         }
-			
-		void processZoomAndRotate (Touch fing1, Touch fing2)
-		{
-			if (fing1.phase == TouchPhase.Moved && fing2.phase == TouchPhase.Moved) {
-				float delta1 = fing1.deltaPosition.sqrMagnitude;
-				float delta2 = fing2.deltaPosition.sqrMagnitude;
-				if (delta1 > 1f && delta2 > 1f) {	//If either finger has moved since the last frame
-					//Get previous positions
-					Vector2 fing1Prev = fing1.position - fing1.deltaPosition;
-					Vector2 fing2Prev = fing2.position - fing2.deltaPosition;
 
-					//Find vector magnitude between touches in each frame
-					float prevTouchDeltaMag = (fing1Prev - fing2Prev).magnitude;		
-					float touchDeltaMag = (fing1.position - fing2.position).magnitude;
+        void processZoomAndRotate(Touch fing1, Touch fing2)
+        {
+            if (fing1.phase == TouchPhase.Moved && fing2.phase == TouchPhase.Moved)
+            {
+                float diffDelta = (fing1.deltaPosition - fing2.deltaPosition).magnitude;
+                if (diffDelta < 0.2f)
+                {
+                    TouchRotate(fing1);
+                }
+                else
+                {
+                    float delta1 = fing1.deltaPosition.sqrMagnitude;
+                    float delta2 = fing2.deltaPosition.sqrMagnitude;
+                    if (delta1 > 1f && delta2 > 1f)
+                    {   //If either finger has moved since the last frame
+                        //Get previous positions
+                        Vector2 fing1Prev = fing1.position - fing1.deltaPosition;
+                        Vector2 fing2Prev = fing2.position - fing2.deltaPosition;
 
-					//Find difference in distances
-					float deltaDistance = prevTouchDeltaMag - touchDeltaMag;
+                        //Find vector magnitude between touches in each frame
+                        float prevTouchDeltaMag = (fing1Prev - fing2Prev).magnitude;
+                        float touchDeltaMag = (fing1.position - fing2.position).magnitude;
 
-					//Create appropriate vector
-					float scaleChange = this.transform.localScale.x - this.transform.localScale.x * deltaDistance * zoomSpeed / 200;
+                        //Find difference in distances
+                        float deltaDistance = prevTouchDeltaMag - touchDeltaMag;
 
-					//To avoid the scale being negative
-					if (scaleChange < 1) {
-						scaleChange = 1;
-					}
-                    //float rate = scaleChange / transform.localScale.x;
-                    //transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y * rate, transform.localPosition.z);
-                    //heightPos = heightPos * rate;
-					this.transform.localScale = new Vector3 (scaleChange, scaleChange, scaleChange);
-                    //TestCenter.Singleton.Log(name + " scale: " + transform.localScale);
-				} else {
-					if (delta1 > 1f)
-						TouchRotate (fing1);
-					else
-						TouchRotate (fing2);
-				}
-			} else if (fing1.phase == TouchPhase.Moved || fing2.phase == TouchPhase.Moved) {
-				if (fing1.phase != TouchPhase.Moved)
-					TouchRotate (fing2);
-				else
-					TouchRotate (fing1);
-			}
-		}
+                        //Create appropriate vector
+                        float scaleChange = this.transform.localScale.x - this.transform.localScale.x * deltaDistance * zoomSpeed / 200;
+
+                        //To avoid the scale being negative
+                        if (scaleChange < 1)
+                        {
+                            scaleChange = 1;
+                        }
+                        this.transform.localScale = new Vector3(scaleChange, scaleChange, scaleChange);
+                    }
+                }
+            }
+        }
 
 		void TouchRotate(Touch fing)
 		{
