@@ -76,6 +76,7 @@ namespace IMAV
 
         void Start()
         {
+            TestCenter.Singleton.Log("ResourceManager Start");
             SetTrackingMode(DataUtility.TrackingMode);
         }
 
@@ -99,7 +100,10 @@ namespace IMAV
                 if (DataUtility.TrackingMode == ARTrackingMode.Placement)
                     StartPlaceObject();
                 else
+                {
                     StopTracking();
+                    TestCenter.Singleton.Log("SetTrackingMode: stop tracking");
+                }
             }
             else if (flag == ARTrackingMode.Marker)
             {
@@ -225,7 +229,6 @@ namespace IMAV
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
-                yield return new WaitForSeconds(0.2f);
             }
             try
             {
@@ -239,7 +242,9 @@ namespace IMAV
                 else
                 {
                     _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                    TestCenter.Singleton.Log("ResourceManager floor Pos 1: " + trackPos+" ; "+trackRot);
                     m = DataUtility.InitARObject(target, markerlessTransform);
+                    TestCenter.Singleton.Log("ResourceManager Add object pos 0: " + target.transform.position+" ; "+target.transform.localPosition);
                 }
                 //SceneObject s = target.AddComponent<SceneObject>();
                 //s.Init(_id);
@@ -248,11 +253,22 @@ namespace IMAV
                     m.SKU = _id;
                     SetCurrentObject(m);
                 }
+                TestCenter.Singleton.Log("ResourceManager Add object pos 1: " + target.transform.position + " ; " + target.transform.localPosition);
             }
             catch (System.Exception ex)
             {
                 TestCenter.Singleton.Log("error: " + ex.Message);
             }
+        }
+
+        public void ChangeTestIndex()
+        {
+            Vector3 position;
+            Quaternion orientation;
+
+            _kudanTracker.ArbiTrackGetPose(out position, out orientation);
+            _kudanTracker.FloorPlaceGetPose(out position, out orientation);
+            TestCenter.Singleton.Log("tracking: " + _kudanTracker.ArbiTrackIsTracking()+" ; floor: "+position+" ; "+markerlessTransform.parent.localPosition);
         }
 
 		ARProduct storeObj = null;
@@ -288,14 +304,17 @@ namespace IMAV
 
         public void StartPlaceObject()
         {
-            if (!_kudanTracker.ArbiTrackIsTracking())
-            {
-                Vector3 floorPosition;
-                Quaternion floorOrientation;
+            StartCoroutine(startArbiTracking());
+        }
 
-                _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
-                _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
-            }
+        IEnumerator startArbiTracking()
+        {
+            yield return new WaitForSeconds(0.2f);
+            Vector3 floorPosition;
+            Quaternion floorOrientation;
+            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
+            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+            TestCenter.Singleton.Log("start place object: " + _kudanTracker.ArbiTrackIsTracking());
         }
 
         public void StopTracking()

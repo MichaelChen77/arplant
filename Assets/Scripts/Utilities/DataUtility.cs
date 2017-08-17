@@ -264,17 +264,16 @@ namespace IMAV
             obj.transform.localScale = obj.transform.localScale * 164;
             if (TrackingMode != ARTrackingMode.Marker)
             {
-                
                 obj.transform.position = ResourceManager.Singleton.TrackPos;
+                Quaternion quat = obj.transform.rotation;
+                obj.transform.localRotation = quat;
             }
             else
             {
-                //ResourceManager.Singleton.SetScaleFromMarkerSize(obj.transform);
                 obj.transform.localPosition = Vector3.zero;
+                Quaternion quat = obj.transform.rotation;
+                obj.transform.localRotation = quat;
             }
-            Quaternion quat = obj.transform.rotation;
-            obj.transform.localRotation = quat;
-            //TestCenter.Singleton.Log("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
             return obj.AddComponent<ARProduct>();
         }
     }

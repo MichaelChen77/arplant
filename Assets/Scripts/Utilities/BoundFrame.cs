@@ -62,7 +62,7 @@ namespace IMAV.UI
                 transform.rotation = target.transform.rotation;
                 renderers = obj.GetComponentsInChildren<Renderer>();
                 bool flag = calculateBounds(target);
-                obj.InitTransform(-backBottom.localPosition.z + 1);
+                obj.InitTransform(-backBottom.localPosition.z -9);
                 refresh();
             }
             else
@@ -188,7 +188,7 @@ namespace IMAV.UI
                 //bottomPlane.localPosition = bottomPlane.localPosition * rate;
 
                 scalelines();
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z + 1, target.transform.localPosition.z);
+                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z -9, target.transform.localPosition.z);
             }
         }
 

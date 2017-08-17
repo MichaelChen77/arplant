@@ -40,7 +40,6 @@ public class MagentoService : MonoBehaviour {
         else
         {
             Destroy(gameObject);
-            Debug.Log("Should not reach here");
         }
     }
 

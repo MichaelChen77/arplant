@@ -133,7 +133,6 @@ namespace IMAV
                 //transform.position = pos1;
 
                 //hPlane = new Plane(ResourceManager.Singleton.markerlessTransform.position.normalized, transform.position);
-
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
                 RaycastHit hit;
                 float f = transform.localPosition.y;

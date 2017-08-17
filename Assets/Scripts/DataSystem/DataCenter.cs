@@ -174,6 +174,7 @@ namespace IMAV
 
         public void LoadModelData(string sku)
         {
+            TestCenter.Singleton.Log("Load Model Data");
             GetProduct(sku, GetProductModel);
         }
 
@@ -184,6 +185,7 @@ namespace IMAV
                 StartCoroutine(MagentoService.Instance.DownloadAssetBundle(p.ProductInfo.sku, (psku, objs) =>
                 {
                     p.model = (GameObject)objs[0];
+                    TestCenter.Singleton.Log("Load Model To Scene");
                     LoadModelToScene(p);
                 }));
             }
