@@ -15,7 +15,6 @@ namespace IMAV
     public class ResourceManager : MonoBehaviour {
         public BoundFrame frame;
         public UIARSceneController arui;
-        //public UIControl selectedFrame;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
         public TrackingMethodMarkerless _markerlessTracking;
@@ -36,8 +35,8 @@ namespace IMAV
             get { return trackRot; }
         }
 
-		ARModel currentObj;
-		public ARModel CurrentObject
+		ARProduct currentObj;
+		public ARProduct CurrentObject
         {
             get { return currentObj; }
         }
@@ -71,12 +70,13 @@ namespace IMAV
             else
             {
                 mSingleton = this;
+                Application.targetFrameRate = 45;
             }
         }
 
         void Start()
         {
-            Application.targetFrameRate = 45;
+            TestCenter.Singleton.Log("ResourceManager Start");
             SetTrackingMode(DataUtility.TrackingMode);
         }
 
@@ -100,7 +100,10 @@ namespace IMAV
                 if (DataUtility.TrackingMode == ARTrackingMode.Placement)
                     StartPlaceObject();
                 else
+                {
                     StopTracking();
+                    TestCenter.Singleton.Log("SetTrackingMode: stop tracking");
+                }
             }
             else if (flag == ARTrackingMode.Marker)
             {
@@ -173,7 +176,7 @@ namespace IMAV
             Application.Quit();
         }
 
-        public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
+        public void SetCurrentObject(ARProduct obj, SelectState st = SelectState.Actived)
         {
             if (currentObj != null)
             {
@@ -211,7 +214,7 @@ namespace IMAV
         {
             obj.transform.parent = markerlessTransform;
             objlist.Add(obj);
-            ARModel m = obj.GetComponent<ARModel>();
+            ARProduct m = obj.GetComponent<ARProduct>();
             SetCurrentObject(m);
         }
 
@@ -226,13 +229,12 @@ namespace IMAV
             {
                 StartPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
-                yield return new WaitForSeconds(0.2f);
             }
             try
             {
                 GameObject target = Instantiate(model);
                 objlist.Add(target);
-                ARModel m = null;
+                ARProduct m = null;
                 if (DataUtility.TrackingMode == ARTrackingMode.Marker)
                 {
                     m = DataUtility.InitARObject(target, markerTransform);
@@ -240,7 +242,9 @@ namespace IMAV
                 else
                 {
                     _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                    TestCenter.Singleton.Log("ResourceManager floor Pos 1: " + trackPos+" ; "+trackRot);
                     m = DataUtility.InitARObject(target, markerlessTransform);
+                    TestCenter.Singleton.Log("ResourceManager Add object pos 0: " + target.transform.position+" ; "+target.transform.localPosition);
                 }
                 //SceneObject s = target.AddComponent<SceneObject>();
                 //s.Init(_id);
@@ -249,6 +253,7 @@ namespace IMAV
                     m.SKU = _id;
                     SetCurrentObject(m);
                 }
+                TestCenter.Singleton.Log("ResourceManager Add object pos 1: " + target.transform.position + " ; " + target.transform.localPosition);
             }
             catch (System.Exception ex)
             {
@@ -256,7 +261,17 @@ namespace IMAV
             }
         }
 
-		ARModel storeObj = null;
+        public void ChangeTestIndex()
+        {
+            Vector3 position;
+            Quaternion orientation;
+
+            _kudanTracker.ArbiTrackGetPose(out position, out orientation);
+            _kudanTracker.FloorPlaceGetPose(out position, out orientation);
+            TestCenter.Singleton.Log("tracking: " + _kudanTracker.ArbiTrackIsTracking()+" ; floor: "+position+" ; "+markerlessTransform.parent.localPosition);
+        }
+
+		ARProduct storeObj = null;
         int pauseIndex = 0;
         public void Pause()
         {
@@ -289,14 +304,17 @@ namespace IMAV
 
         public void StartPlaceObject()
         {
-            if (!_kudanTracker.ArbiTrackIsTracking())
-            {
-                Vector3 floorPosition;
-                Quaternion floorOrientation;
+            StartCoroutine(startArbiTracking());
+        }
 
-                _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
-                _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
-            }
+        IEnumerator startArbiTracking()
+        {
+            yield return new WaitForSeconds(0.2f);
+            Vector3 floorPosition;
+            Quaternion floorOrientation;
+            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
+            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
+            TestCenter.Singleton.Log("start place object: " + _kudanTracker.ArbiTrackIsTracking());
         }
 
         public void StopTracking()

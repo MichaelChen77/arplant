@@ -65,7 +65,13 @@ namespace Kudan.AR
 		/// </summary>
 		public override void StartTracking()
 		{
-			_kudanTracker.SetArbiTrackFloorHeight (_floorDepth);
+            Vector3 position;
+            Quaternion orientation;
+            _kudanTracker.FloorPlaceGetPose(out position, out orientation);
+            IMAV.TestCenter.Singleton.Log("Start tracking: "+position);
+            _kudanTracker.SetArbiTrackFloorHeight (_floorDepth);
+            _kudanTracker.FloorPlaceGetPose(out position, out orientation);
+            IMAV.TestCenter.Singleton.Log("Start tracking after : " + position);
 
 			base.StartTracking ();
 		}
@@ -75,10 +81,11 @@ namespace Kudan.AR
 		/// </summary>
         public override void StopTracking()
         {
+            IMAV.TestCenter.Singleton.Log("Markerless stop tracking0 " + _kudanTracker.ArbiTrackIsTracking());
             base.StopTracking();
             Trackable trackable = new Trackable();
             trackable.isDetected = false;
-
+            IMAV.TestCenter.Singleton.Log("Markerless stop tracking1 "+_kudanTracker.ArbiTrackIsTracking());
             _updateMarkerEvent.Invoke(trackable);
         }
 	}

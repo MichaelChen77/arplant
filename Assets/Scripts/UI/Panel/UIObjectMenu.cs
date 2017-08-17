@@ -18,7 +18,7 @@ namespace IMAV.UI
 
         bool menushowed = true;
 
-        ARModel currentObject;
+        ARProduct currentObject;
         ProductData product;
         int loadingProductCount = 0;
         RectTransform contentRect;
@@ -125,13 +125,13 @@ namespace IMAV.UI
 
         public void ResetObject()
         {
-            currentObject.Reset();
+            currentObject.ResetTransform();
         }
 
         public void DuplicateObject()
         {
             GameObject obj = Instantiate(currentObject.gameObject, currentObject.transform.parent);
-            ARModel m = obj.GetComponent<ARModel>();
+            ARProduct m = obj.GetComponent<ARProduct>();
             m.SKU = currentObject.SKU;
             obj.transform.position += new Vector3(0, 0, 10);
             ResourceManager.Singleton.SetAsARObject(obj);

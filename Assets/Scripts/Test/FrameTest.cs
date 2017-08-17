@@ -14,7 +14,7 @@ public class FrameTest : MonoBehaviour {
     //        frame.SetObject(null);
     //    else
 
-            frame.SetObject(target.GetComponent<ARModel>());
+            frame.SetObject(target.GetComponent<ARProduct>());
     }
 
 }
