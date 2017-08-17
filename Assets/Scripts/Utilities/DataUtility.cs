@@ -7,7 +7,7 @@ namespace IMAV
 {
     public class DataUtility
     {
-        public static ARModel CurrentObject = null;
+        public static ARProduct CurrentObject = null;
         public static DontDestroy dontdestroy = null;
         public static ARTrackingMode TrackingMode = ARTrackingMode.Markerless;
         public static bool WorkOnLocal = false;
@@ -257,7 +257,7 @@ namespace IMAV
             return str;
         }
 
-        public static ARModel InitARObject(GameObject obj, Transform parentTransform)
+        public static ARProduct InitARObject(GameObject obj, Transform parentTransform)
         {
             obj.transform.parent = parentTransform;
             obj.layer = 8;
@@ -275,7 +275,7 @@ namespace IMAV
             Quaternion quat = obj.transform.rotation;
             obj.transform.localRotation = quat;
             //TestCenter.Singleton.Log("# object " + obj.name + " rot: " + obj.transform.rotation + " ; " + obj.transform.localRotation + " ; " + obj.transform.localPosition+";" + LayerMask.LayerToName(obj.layer));
-            return obj.AddComponent<ARModel>();
+            return obj.AddComponent<ARProduct>();
         }
     }
 }

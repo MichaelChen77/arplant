@@ -6,7 +6,6 @@ namespace IMAV
 {
     public class ObjectTouchControl : MonoBehaviour
     {
-        //public KudanTracker _kudanTracker;	// The tracker to be referenced in the inspector. This is the Kudan Camera object.
 
         /// <summary>
         /// The rate at which the pinch control scales the object.
@@ -21,17 +20,17 @@ namespace IMAV
 		/// <summary>
 		/// The rate at which the swipe control rotates the object.
 		/// </summary>
-		public float rotSpeed = 15f;
+		public float rotSpeed = 1400f;
 
-		ARModel target;
+        public float scaleDiffThreshold = 130f;
+
+		ARProduct target;
 		bool startDrag = false;
-
-        //float heightPos;
 
         /// <summary>
         /// Start this instance.
         /// </summary>
-		public void Init(ARModel model)
+		public void Init(ARProduct model)
 		{
 			target = model;
 		}
@@ -55,8 +54,11 @@ namespace IMAV
         {
             if (fing1.phase == TouchPhase.Moved && fing2.phase == TouchPhase.Moved)
             {
-                float diffDelta = (fing1.deltaPosition - fing2.deltaPosition).magnitude;
-                if (diffDelta < 0.2f)
+                float diffDelta = (fing1.deltaPosition - fing2.deltaPosition).sqrMagnitude;
+                Debug.Log(fing1.deltaPosition + " ; " + fing2.deltaPosition + " ; diff: " + diffDelta+" ; "+fing1.position+" ; "+fing2.position);
+                Debug.DrawLine(fing1.position - fing1.deltaPosition, fing1.position, Color.yellow);
+                Debug.DrawLine(fing2.position - fing2.deltaPosition, fing2.position, Color.red);
+                if (diffDelta < scaleDiffThreshold)
                 {
                     TouchRotate(fing1);
                 }
@@ -64,36 +66,33 @@ namespace IMAV
                 {
                     float delta1 = fing1.deltaPosition.sqrMagnitude;
                     float delta2 = fing2.deltaPosition.sqrMagnitude;
-                    if (delta1 > 1f && delta2 > 1f)
-                    {   //If either finger has moved since the last frame
-                        //Get previous positions
-                        Vector2 fing1Prev = fing1.position - fing1.deltaPosition;
-                        Vector2 fing2Prev = fing2.position - fing2.deltaPosition;
+                    Vector2 fing1Prev = fing1.position - fing1.deltaPosition;
+                    Vector2 fing2Prev = fing2.position - fing2.deltaPosition;
 
-                        //Find vector magnitude between touches in each frame
-                        float prevTouchDeltaMag = (fing1Prev - fing2Prev).magnitude;
-                        float touchDeltaMag = (fing1.position - fing2.position).magnitude;
+                    //Find vector magnitude between touches in each frame
+                    float prevTouchDeltaMag = (fing1Prev - fing2Prev).magnitude;
+                    float touchDeltaMag = (fing1.position - fing2.position).magnitude;
 
-                        //Find difference in distances
-                        float deltaDistance = prevTouchDeltaMag - touchDeltaMag;
+                    //Find difference in distances
+                    float deltaDistance = prevTouchDeltaMag - touchDeltaMag;
 
-                        //Create appropriate vector
-                        float scaleChange = this.transform.localScale.x - this.transform.localScale.x * deltaDistance * zoomSpeed / 200;
+                    //Create appropriate vector
+                    float scaleChange = this.transform.localScale.x - this.transform.localScale.x * deltaDistance * zoomSpeed / 200;
 
-                        //To avoid the scale being negative
-                        if (scaleChange < 1)
-                        {
-                            scaleChange = 1;
-                        }
-                        this.transform.localScale = new Vector3(scaleChange, scaleChange, scaleChange);
+                    //To avoid the scale being negative
+                    if (scaleChange < 1)
+                    {
+                        scaleChange = 1;
                     }
+                    this.transform.localScale = new Vector3(scaleChange, scaleChange, scaleChange);
                 }
             }
         }
 
 		void TouchRotate(Touch fing)
 		{
-			float deltaRot = fing.deltaPosition.sqrMagnitude * rotSpeed * Mathf.Deg2Rad * Time.deltaTime;
+			float deltaRot = fing.deltaPosition.x * rotSpeed * Mathf.Deg2Rad * Time.deltaTime;
+            Debug.Log("deltaRot: " + deltaRot+" ; "+fing.deltaPosition+" ; "+fing.deltaPosition.sqrMagnitude);
 			transform.Rotate (0, 0, -deltaRot);
 		}
 
@@ -124,20 +123,21 @@ namespace IMAV
                 }
                 Vector3 rotation = orientation.eulerAngles;
 #endif
-                //float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime *10;
-                //float positionChangeZ = this.transform.position.z + deltMoveZ /10;
+                //float deltMoveZ = fingMove.y * moveSpeed * Time.deltaTime * 10;
+                //float positionChangeZ = this.transform.position.z + deltMoveZ / 10;
 
-                //Vector3 _pos = new Vector3 (fing.position.x, fing.position.y, positionChangeZ);
-                //Vector3 pos1 = Camera.main.ScreenToWorldPoint (_pos);
+                //Vector3 _pos = new Vector3(fing.position.x, fing.position.y, positionChangeZ);
+                //Vector3 pos1 = Camera.main.ScreenToWorldPoint(_pos);
                 //pos1.z = positionChangeZ;
+                //pos1.y = transform.position.y;
                 //transform.position = pos1;
 
                 //hPlane = new Plane(ResourceManager.Singleton.markerlessTransform.position.normalized, transform.position);
-                
+
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
                 RaycastHit hit;
                 float f = transform.localPosition.y;
-                if (Physics.Raycast(ray, out hit, float.MaxValue, 1<<11))
+                if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << 11))
                 {
                     if (hit.collider != null)
                     {

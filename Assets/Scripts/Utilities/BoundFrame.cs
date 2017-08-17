@@ -51,7 +51,7 @@ namespace IMAV.UI
             }
         }
 
-        public void SetObject(ARModel obj)
+        public void SetObject(ARProduct obj)
         {
             if (obj != null)
             {

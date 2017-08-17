@@ -9,7 +9,7 @@ namespace IMAV
 		Actived, Pause, None
 	}
 
-	public class ARModel : MonoBehaviour {
+	public class ARProduct : MonoBehaviour {
 		ObjectTouchControl touchCtrl;
         Vector3 originalSize;
         Quaternion originalRot;
@@ -23,13 +23,13 @@ namespace IMAV
 			get{ return selected; }
 			set { 
 				selected = value;
-				if (touchCtrl == null)
-					Init ();
-				if (selected == SelectState.Actived)
-					touchCtrl.enabled = true;
-				else if (selected == SelectState.None)
-					touchCtrl.enabled = false;
-			}
+                if (touchCtrl == null)
+                    Init();
+                if (selected == SelectState.Actived)
+                    touchCtrl.enabled = true;
+                else if (selected == SelectState.None)
+                    touchCtrl.enabled = false;
+            }
 		}
 
         protected string sku;
@@ -52,7 +52,6 @@ namespace IMAV
             {
                 touchCtrl = gameObject.AddComponent<ObjectTouchControl>();
                 touchCtrl.Init(this);
-                //CloseShadowCast();
             }
         }
 
@@ -80,7 +79,7 @@ namespace IMAV
             }
         }
 
-        public void Reset()
+        public void ResetTransform()
         {
             transform.localScale = originalSize;
             transform.localPosition = originalPos;
@@ -88,10 +87,9 @@ namespace IMAV
         }
 
         public void Delete()
-		{
-			Destroy (gameObject);
-		}
-
+        {
+            Destroy(gameObject);
+        }
 
         public void SetMaterial()
         {

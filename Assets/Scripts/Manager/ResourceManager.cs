@@ -15,7 +15,6 @@ namespace IMAV
     public class ResourceManager : MonoBehaviour {
         public BoundFrame frame;
         public UIARSceneController arui;
-        //public UIControl selectedFrame;
         public KudanTracker _kudanTracker;
         public TrackingMethodMarker _markerTracking;
         public TrackingMethodMarkerless _markerlessTracking;
@@ -36,8 +35,8 @@ namespace IMAV
             get { return trackRot; }
         }
 
-		ARModel currentObj;
-		public ARModel CurrentObject
+		ARProduct currentObj;
+		public ARProduct CurrentObject
         {
             get { return currentObj; }
         }
@@ -71,12 +70,12 @@ namespace IMAV
             else
             {
                 mSingleton = this;
+                Application.targetFrameRate = 45;
             }
         }
 
         void Start()
         {
-            Application.targetFrameRate = 45;
             SetTrackingMode(DataUtility.TrackingMode);
         }
 
@@ -173,7 +172,7 @@ namespace IMAV
             Application.Quit();
         }
 
-        public void SetCurrentObject(ARModel obj, SelectState st = SelectState.Actived)
+        public void SetCurrentObject(ARProduct obj, SelectState st = SelectState.Actived)
         {
             if (currentObj != null)
             {
@@ -211,7 +210,7 @@ namespace IMAV
         {
             obj.transform.parent = markerlessTransform;
             objlist.Add(obj);
-            ARModel m = obj.GetComponent<ARModel>();
+            ARProduct m = obj.GetComponent<ARProduct>();
             SetCurrentObject(m);
         }
 
@@ -232,7 +231,7 @@ namespace IMAV
             {
                 GameObject target = Instantiate(model);
                 objlist.Add(target);
-                ARModel m = null;
+                ARProduct m = null;
                 if (DataUtility.TrackingMode == ARTrackingMode.Marker)
                 {
                     m = DataUtility.InitARObject(target, markerTransform);
@@ -256,7 +255,7 @@ namespace IMAV
             }
         }
 
-		ARModel storeObj = null;
+		ARProduct storeObj = null;
         int pauseIndex = 0;
         public void Pause()
         {
