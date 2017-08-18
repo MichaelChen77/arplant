@@ -32,24 +32,10 @@ namespace IMAV.UI
         private Vector3 boundExtents;
         private Quaternion quat;
         private float originalSize;
+        private float originlocalY;
         GameObject target;
         private Renderer[] renderers;
 
-        public void CloseShadowCast()
-        {
-            MeshRenderer[] renders = GetComponentsInChildren<MeshRenderer>();
-            if (renders != null)
-            {
-                foreach (MeshRenderer mr in renders)
-                {
-                    if (mr.name != "Plane")
-                    {
-                        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                        mr.receiveShadows = false;
-                    }
-                }
-            }
-        }
 
         public void SetObject(ARProduct obj)
         {
@@ -62,7 +48,8 @@ namespace IMAV.UI
                 transform.rotation = target.transform.rotation;
                 renderers = obj.GetComponentsInChildren<Renderer>();
                 bool flag = calculateBounds(target);
-                obj.InitTransform(-backBottom.localPosition.z -9);
+                originlocalY = obj.transform.localPosition.y;
+                obj.InitTransform(originlocalY -backBottom.localPosition.z + 1);
                 refresh();
             }
             else
@@ -188,7 +175,7 @@ namespace IMAV.UI
                 //bottomPlane.localPosition = bottomPlane.localPosition * rate;
 
                 scalelines();
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, -backBottom.localPosition.z -9, target.transform.localPosition.z);
+                target.transform.localPosition = new Vector3(target.transform.localPosition.x, originlocalY - backBottom.localPosition.z + 1, target.transform.localPosition.z);
             }
         }
 

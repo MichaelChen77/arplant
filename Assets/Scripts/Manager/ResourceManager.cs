@@ -30,6 +30,12 @@ namespace IMAV
             get { return trackPos; }
         }
 
+        Vector3 originFloorPos;
+        public Vector3 OriginFloorPos
+        {
+            get { return originFloorPos; }
+        }
+
         public Quaternion TrackRotation
         {
             get { return trackRot; }
@@ -242,9 +248,8 @@ namespace IMAV
                 else
                 {
                     _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                    TestCenter.Singleton.Log("ResourceManager floor Pos 1: " + trackPos+" ; "+trackRot);
+                    trackPos = trackPos - originFloorPos;
                     m = DataUtility.InitARObject(target, markerlessTransform);
-                    TestCenter.Singleton.Log("ResourceManager Add object pos 0: " + target.transform.position+" ; "+target.transform.localPosition);
                 }
                 //SceneObject s = target.AddComponent<SceneObject>();
                 //s.Init(_id);
@@ -310,11 +315,14 @@ namespace IMAV
         IEnumerator startArbiTracking()
         {
             yield return new WaitForSeconds(0.2f);
-            Vector3 floorPosition;
             Quaternion floorOrientation;
-            _kudanTracker.FloorPlaceGetPose(out floorPosition, out floorOrientation);
-            _kudanTracker.ArbiTrackStart(floorPosition, floorOrientation);
-            TestCenter.Singleton.Log("start place object: " + _kudanTracker.ArbiTrackIsTracking());
+            _kudanTracker.FloorPlaceGetPose(out originFloorPos, out floorOrientation);
+            _kudanTracker.ArbiTrackStart(originFloorPos, floorOrientation);
+        }
+
+        public void GetFloorPos()
+        {
+            _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
         }
 
         public void StopTracking()

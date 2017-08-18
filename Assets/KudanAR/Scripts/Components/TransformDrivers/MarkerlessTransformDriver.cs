@@ -54,13 +54,31 @@ namespace Kudan.AR
         /// <param name="trackable">Trackable.</param>
         public void OnTrackingUpdate(Trackable trackable)
         {
-            this.transform.localPosition = trackable.position;
-            this.transform.localRotation = trackable.orientation;
 
+            filterUpdate(trackable);
             if (IMAV.DataUtility.TrackingMode == ARTrackingMode.Placement)
                 gameObject.SetActive(true);
             else
                 this.gameObject.SetActive(trackable.isDetected);
+        }
+
+        Vector3 frameDiff;
+        float angleDiff;
+        float distanceDiff;
+
+        string str;
+        public string DiffString
+        {
+            get { str = frameDiff + " ; " + distanceDiff + " ; " + angleDiff; return str; }
+        }
+        void filterUpdate(Trackable trackable)
+        {
+            frameDiff = transform.localPosition - trackable.position;
+            distanceDiff = Vector3.Distance(transform.localPosition, trackable.position);
+            angleDiff = Quaternion.Angle(transform.localRotation, trackable.orientation);
+
+            this.transform.localPosition = trackable.position;
+            this.transform.localRotation = trackable.orientation;
         }
 	}
 };

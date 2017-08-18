@@ -15,7 +15,7 @@ namespace IMAV
         /// <summary>
         /// The rate at which the swipe control moves the object.
         /// </summary>
-        public float moveSpeed = 12f;
+        public float moveSpeed = 1f;
 
 		/// <summary>
 		/// The rate at which the swipe control rotates the object.
@@ -26,6 +26,7 @@ namespace IMAV
 
 		ARProduct target;
 		bool startDrag = false;
+        Plane groundPlane;
 
         /// <summary>
         /// Start this instance.
@@ -33,6 +34,8 @@ namespace IMAV
 		public void Init(ARProduct model)
 		{
 			target = model;
+            //ResourceManager.Singleton.GetFloorPos();
+            groundPlane = new Plane(Vector3.up, transform.position);
 		}
 
         /// <summary>
@@ -55,9 +58,6 @@ namespace IMAV
             if (fing1.phase == TouchPhase.Moved && fing2.phase == TouchPhase.Moved)
             {
                 float diffDelta = (fing1.deltaPosition - fing2.deltaPosition).sqrMagnitude;
-                Debug.Log(fing1.deltaPosition + " ; " + fing2.deltaPosition + " ; diff: " + diffDelta+" ; "+fing1.position+" ; "+fing2.position);
-                Debug.DrawLine(fing1.position - fing1.deltaPosition, fing1.position, Color.yellow);
-                Debug.DrawLine(fing2.position - fing2.deltaPosition, fing2.position, Color.red);
                 if (diffDelta < scaleDiffThreshold)
                 {
                     TouchRotate(fing1);
@@ -92,7 +92,6 @@ namespace IMAV
 		void TouchRotate(Touch fing)
 		{
 			float deltaRot = fing.deltaPosition.x * rotSpeed * Mathf.Deg2Rad * Time.deltaTime;
-            Debug.Log("deltaRot: " + deltaRot+" ; "+fing.deltaPosition+" ; "+fing.deltaPosition.sqrMagnitude);
 			transform.Rotate (0, 0, -deltaRot);
 		}
 
@@ -129,23 +128,29 @@ namespace IMAV
                 //Vector3 _pos = new Vector3(fing.position.x, fing.position.y, positionChangeZ);
                 //Vector3 pos1 = Camera.main.ScreenToWorldPoint(_pos);
                 //pos1.z = positionChangeZ;
-                //pos1.y = transform.position.y;
+                ////pos1.y = transform.position.y;
                 //transform.position = pos1;
 
-                //hPlane = new Plane(ResourceManager.Singleton.markerlessTransform.position.normalized, transform.position);
-                Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
-                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(fing.position);
+                float rayDistance;
                 float f = transform.localPosition.y;
-                if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << 11))
+                if (groundPlane.Raycast(ray, out rayDistance))
                 {
-                    if (hit.collider != null)
-                    {
-                        transform.position = hit.point;
-                        transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
-                    }
-                    //transform.position = ray.GetPoint(rayDistance);
-                    //ResourceManager.Singleton.DebugString("Plane: " + hPlane.normal + " ; " + transform.position + " ; ");
+                    transform.position = ray.GetPoint(rayDistance);
+                    transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
                 }
+
+                //Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
+                //RaycastHit hit;
+                //float f = transform.localPosition.y;
+                //if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << 11))
+                //{
+                //    if (hit.collider != null)
+                //    {
+                //        transform.position = hit.point;
+                //        transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
+                //    }
+                //}
             }
         }
     }
