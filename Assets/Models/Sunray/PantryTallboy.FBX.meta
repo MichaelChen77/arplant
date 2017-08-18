@@ -3,7 +3,7 @@ guid: 2b0aa0b805c442142bd8ada099238d0c
 timeCreated: 1494320089
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Extrusion [14360]'
     100002: ' Extrusion [17660]'
@@ -46,6 +46,7 @@ ModelImporter:
     2300014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
     2300016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
     2300018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    2300020: //RootNode
     3300000: ' Extrusion [14360]'
     3300002: ' Extrusion [17660]'
     3300004: ' Extrusion [31264]'
@@ -59,6 +60,7 @@ ModelImporter:
     3300014: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [30738]
     3300016: Microwave_-_simple_classic_13230 46.5-W x 28-H x 34-D Aluminum [31245]
     3300018: Ovehead cabinetry (Single Casement Module) Left Handed [9466]
+    3300020: //RootNode
     4300000: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer Module)2014
       [7592]
     4300002: ' Extrusion [7806]'
@@ -72,6 +74,7 @@ ModelImporter:
       [33309]
     4300018: Face_based_Electrical_Outlet_Single Face_based_Electrical_Outlet_Single
       [33624]
+    4300020: Lower Cabinetry (2 Drawer Module)2014 Lower Cabinetry (2 Drawer
   materials:
     importMaterials: 1
     materialName: 0
@@ -94,20 +97,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -117,7 +124,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

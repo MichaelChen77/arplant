@@ -3,7 +3,7 @@ guid: 3fc502f9f634d3e4eb7c12545b6966d6
 timeCreated: 1494320104
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Extrusion [1246058]'
     100002: ' Extrusion [1246073]'
@@ -37,6 +37,7 @@ ModelImporter:
     2300014: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [1246661]
     2300016: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
       [1246414]
+    2300018: //RootNode
     3300000: ' Extrusion [1246058]'
     3300002: ' Extrusion [1246073]'
     3300004: ' Extrusion [1246080]'
@@ -47,6 +48,7 @@ ModelImporter:
     3300014: CSW_Sunray_Cabinet_Door_Dbl_Bot-Finger_Groove Door_Dbl [1246661]
     3300016: CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove CSW_Sunray_Cabinet_Door_Dbl_Top-Finger_Groove
       [1246414]
+    3300018: //RootNode
     4300000: ' Extrusion [1246058]'
     4300002: ' Extrusion [1246073]'
     4300004: ' Extrusion [1246080]'
@@ -79,20 +81,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -102,7 +108,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

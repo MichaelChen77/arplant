@@ -3,7 +3,7 @@ guid: d126381a819b9ed40a3495fded097614
 timeCreated: 1494320106
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: CSW-Sunray_NCTR-05-between countertop CSW-Sunray_NCTR-05-between countertop
       [7541443]
@@ -55,6 +55,7 @@ ModelImporter:
       [7487833]
     2300018: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [7487859]
+    2300020: //RootNode
     3300000: CSW-Sunray_NCTR-05-between countertop CSW-Sunray_NCTR-05-between countertop
       [7541443]
     3300002: CSW-Sunray_NCTR-05-lower countertop CSW-Sunray_NCTR-05-lower countertop
@@ -71,6 +72,7 @@ ModelImporter:
       [7487833]
     3300018: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [7487859]
+    3300020: //RootNode
     4300000: CSW-Sunray_NCTR-05-between countertop CSW-Sunray_NCTR-05-between countertop
       [7541443]
     4300002: CSW-Sunray_NCTR-05-lower countertop CSW-Sunray_NCTR-05-lower countertop
@@ -87,6 +89,7 @@ ModelImporter:
       [7487833]
     4300018: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [7487859]
+    4300020: CSW-Sunray_NCTR-05-lower countertop CSW-Sunray_NCTR-05-lower co
   materials:
     importMaterials: 1
     materialName: 0
@@ -109,20 +112,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -132,7 +139,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

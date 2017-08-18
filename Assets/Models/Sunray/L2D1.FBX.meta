@@ -3,7 +3,7 @@ guid: 76cd76057a83cad439748504cacc63c7
 timeCreated: 1494320104
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Extrusion [7673607]'
     100002: ' Extrusion [7673629]'
@@ -37,6 +37,7 @@ ModelImporter:
     2300014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
     2300016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
     2300018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    2300020: //RootNode
     3300000: ' Extrusion [7673607]'
     3300002: ' Extrusion [7673629]'
     3300004: ' Extrusion [7673686]'
@@ -47,6 +48,7 @@ ModelImporter:
     3300014: Casework-Sunray_Cabinet_Carcass_U-shape-bottom Cabinet_Carcass [7673564]
     3300016: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673952]
     3300018: CSW_Sunray_Cabinet_Door_Sgl_Side-Finger_Groove Swing_Panel [7673956]
+    3300020: //RootNode
     4300000: ' Extrusion [7673607]'
     4300002: ' Extrusion [7673629]'
     4300004: ' Extrusion [7673686]'
@@ -79,20 +81,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -102,7 +108,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

@@ -3,7 +3,7 @@ guid: 2e779658832d5bc4c8615f66dfd84e7c
 timeCreated: 1494320096
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Extrusion [13829]'
     100002: ' Extrusion [14138]'
@@ -100,6 +100,7 @@ ModelImporter:
     2300056: ' Sweep [56382]'
     2300058: Wardrobe Door Wardrobe Door [75090]
     2300060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    2300062: //RootNode
     3300000: ' Extrusion [13829]'
     3300002: ' Extrusion [14138]'
     3300004: ' Extrusion [17191]'
@@ -131,6 +132,7 @@ ModelImporter:
     3300056: ' Sweep [56382]'
     3300058: Wardrobe Door Wardrobe Door [75090]
     3300060: Wardrobe Drawer Unit Wardrobe Drawer Unit [28713]
+    3300062: //RootNode
     4300000: ' Extrusion [91194]'
     4300002: ' Extrusion [90143]'
     4300004: ' Joined Solid Geometry [89453]'
@@ -184,20 +186,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -207,7 +213,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

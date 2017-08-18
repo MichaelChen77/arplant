@@ -3,7 +3,7 @@ guid: e6d227cc333bebc4fa7b12270e7b90b2
 timeCreated: 1494320976
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 21
   fileIDToRecycleName:
     100000: ' Joined Solid Geometry [4136062]'
     100002: ' Joined Solid Geometry [4136134]'
@@ -61,6 +61,7 @@ ModelImporter:
       [4136449]
     2300022: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [4136450]
+    2300024: //RootNode
     3300000: ' Joined Solid Geometry [4136062]'
     3300002: ' Joined Solid Geometry [4136134]'
     3300004: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [4136396]
@@ -79,6 +80,7 @@ ModelImporter:
       [4136449]
     3300022: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [4136450]
+    3300024: //RootNode
     4300000: ' Joined Solid Geometry [4136062]'
     4300002: ' Joined Solid Geometry [4136134]'
     4300004: Casework-Sunray_Keyboard Casework-Sunray_Keyboard [4136396]
@@ -97,6 +99,7 @@ ModelImporter:
       [4136449]
     4300022: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet void_Countertop
       [4136450]
+    4300024: Generic-Sunray_Grommet void_Countertop Generic-Sunray_Grommet v
   materials:
     importMaterials: 1
     materialName: 0
@@ -119,20 +122,24 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
-    weldVertices: 1
+    weldVertices: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -142,7 +149,8 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+    normalCalculationMode: 0
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
