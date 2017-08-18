@@ -61,20 +61,10 @@ namespace IMAV
             DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
             DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
             DataUtility.SetDirectory(DataUtility.GetScreenVideoPath());
-            StartCoroutine(loadFiles());
-            //Everyplay.ThumbnailTextureReady += OnThumbnailReady;
-            //Everyplay.WasClosed += EveryPlayClosed;
+
+            //---Stripped down version---0818
+            //StartCoroutine(loadFiles());
         }
-
-        //void OnDestroy()
-        //{
-        //    Everyplay.ThumbnailTextureReady -= OnThumbnailReady;
-        //}
-
-        //void EveryPlayClosed()
-        //{
-        //    ResourceManager.Singleton.DebugString("close everyplay");
-        //}
 
         IEnumerator loadFiles()
         {
@@ -108,22 +98,6 @@ namespace IMAV
             string filename = "WhizHome_" + dt.ToString("yyMMdd_HHmmss") + ".png";
             StartCoroutine(Screenshot(date + "/" + filename, run));
         }
-
-        //void ScreenshotDuringRecord(int width, int height, string filename)
-        //{
-        //    Texture2D screen = new Texture2D(width, height, TextureFormat.RGB24, false);
-        //    screen.name = filename;
-        //    screen.wrapMode = TextureWrapMode.Clamp;
-        //    Everyplay.SetThumbnailTargetTexture(screen);
-        //    Everyplay.TakeThumbnail();
-        //}
-
-        //private void OnThumbnailReady(Texture2D tex, bool portrait)
-        //{
-        //    byte[] thumbbytes = tex.EncodeToPNG();
-        //    File.WriteAllBytes(DataUtility.GetScreenShotPath() + tex.name, thumbbytes);
-        //    SaveThumbnail(tex, tex.name);
-        //}
 
         IEnumerator Screenshot(string filepath, Action<string> run)
         {
@@ -253,6 +227,11 @@ namespace IMAV
         {
             string str = GetPath(index);
             SaveVideo(str);
+        }
+
+        public void ScreenShotAndSave()
+        {
+            CaptureScreen(false, SaveScreenShot);
         }
 
         public void SaveVideo(string str)

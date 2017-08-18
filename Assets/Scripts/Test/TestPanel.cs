@@ -34,7 +34,6 @@ public class TestPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        kudanText.text = markerless.DiffString;
         driverText.text = driver.localPosition + " ; " + driver.localRotation;
         markerlessText.text = markerless.transform.localPosition + " ; " + markerless.transform.localRotation;
         fullposText.text = driver.position + " ; " + markerless.transform.position;

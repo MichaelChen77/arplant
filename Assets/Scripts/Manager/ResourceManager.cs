@@ -12,7 +12,8 @@ public enum ARTrackingMode
 
 namespace IMAV
 {
-    public class ResourceManager : MonoBehaviour {
+    public class ResourceManager : MonoBehaviour
+    {
         public BoundFrame frame;
         public UIARSceneController arui;
         public KudanTracker _kudanTracker;
@@ -26,7 +27,8 @@ namespace IMAV
 
         Vector3 trackPos;
         Quaternion trackRot;
-        public Vector3 TrackPos {
+        public Vector3 TrackPos
+        {
             get { return trackPos; }
         }
 
@@ -36,8 +38,8 @@ namespace IMAV
             get { return trackRot; }
         }
 
-		ARProduct currentObj;
-		public ARProduct CurrentObject
+        ARProduct currentObj;
+        public ARProduct CurrentObject
         {
             get { return currentObj; }
         }
@@ -77,8 +79,7 @@ namespace IMAV
 
         void Start()
         {
-            TestCenter.Singleton.Log("ResourceManager Start");
-            SetTrackingMode(DataUtility.TrackingMode);
+            //SetTrackingMode(DataUtility.TrackingMode);
         }
 
         public void SetTrackingMode(ARTrackingMode flag)
@@ -103,12 +104,11 @@ namespace IMAV
                 else
                 {
                     StopTracking();
-                    TestCenter.Singleton.Log("SetTrackingMode: stop tracking");
                 }
             }
             else if (flag == ARTrackingMode.Marker)
             {
-                if(DataUtility.TrackingMode != ARTrackingMode.Marker)
+                if (DataUtility.TrackingMode != ARTrackingMode.Marker)
                 {
                     MoveChildrenTo(markerlessTransform, markerTransform);
                 }
@@ -129,7 +129,7 @@ namespace IMAV
 
         void MoveChildrenTo(Transform from, Transform target)
         {
-            int _count = from.childCount-1;
+            int _count = from.childCount - 1;
             for (int i = _count; i > -1; i--)
             {
                 Transform tran = from.GetChild(i);
@@ -139,28 +139,24 @@ namespace IMAV
                 tran.localPosition = pos;
                 tran.localRotation = rot;
             }
-            
+
         }
 
         public void SetDefaultSize(GameObject obj)
         {
             BoxCollider box = obj.GetComponent<BoxCollider>();
             float _f = box.bounds.size.magnitude;
-            if (box != null) {
-                if (box.bounds.size.x > defaultMaxSize) {
+            if (box != null)
+            {
+                if (box.bounds.size.x > defaultMaxSize)
+                {
                     float rate = defaultMaxSize / _f;
                     obj.transform.localScale = obj.transform.localScale * rate;
                 }
-                //			else if (box.bounds.size.x > defaultMinSize) {
-                //				float rate = defaultMinSize / _f;
-                //				obj.transform.localScale = obj.transform.localScale * rate;
-                //			}
             }
-            //		if (currentObj != null) {
-            //			obj.transform.position = new Vector3 (currentObj.transform.position.x + 80, currentObj.transform.position.y, obj.transform.position.z);
-            //		}
             objlist = objlist.OrderBy(element => element.transform.position.x).ToList();
-            foreach (GameObject item in objlist) {
+            foreach (GameObject item in objlist)
+            {
                 if (item.GetComponent<BoxCollider>().bounds.Contains(obj.transform.position))
                 {
                     Bounds bound = obj.GetComponent<BoxCollider>().bounds;
@@ -190,26 +186,30 @@ namespace IMAV
                     currentObj.Selected = SelectState.None;
             }
             currentObj = obj;
+
+
             if (currentObj != null)
             {
                 currentObj.Selected = st;
-                frame.SetObject(currentObj);
-                arui.OpenProductMenu();
             }
-            else
-            {
-                frame.SetObject(null);
-                arui.CloseProductMenu();
-            }
+            //---Stripped down version---0818
+            //    frame.SetObject(currentObj);
+            //    arui.OpenProductMenu();
+            //}
+            //else
+            //{
+            //    frame.SetObject(null);
+            //    arui.CloseProductMenu();
+            //}
         }
 
-		public void SetCurrentObjectState(SelectState st)
-		{
+        public void SetCurrentObjectState(SelectState st)
+        {
             if (st == SelectState.None)
                 SetCurrentObject(null);
             else if (currentObj != null)
                 currentObj.Selected = st;
-		}
+        }
 
         public void SetAsARObject(GameObject obj)
         {
@@ -236,23 +236,22 @@ namespace IMAV
             {
                 ARProduct m = null;
                 GameObject target = null;
-                if (DataUtility.TrackingMode == ARTrackingMode.Marker)
-                {
-                    target = Instantiate(model, markerTransform);
-                    m = DataUtility.InitARObject(target, Vector3.zero);
-                }
-                else
-                {
-                    target = Instantiate(model, markerlessTransform);
-                    //_kudanTracker.ArbiTrackGetPose(out trackPos, out trackRot);
-                    //trackPos = trackPos - originTrackPos;
-                    //_kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                    //trackPos = trackPos - originTrackPos;
-                    m = DataUtility.InitARObject(target, new Vector3(3*index, 0, 0));
-                    index++;
-                }
-                //SceneObject s = target.AddComponent<SceneObject>();
-                //s.Init(_id);
+                target = Instantiate(model, markerlessTransform);
+                m = DataUtility.InitARObject(target);
+
+                //---Stripped down version---0818
+                //GameObject target = Instantiate(model);
+                //objlist.Add(target);
+                //ARProduct m = null;
+                //if (DataUtility.TrackingMode == ARTrackingMode.Marker)
+                //{
+                //    m = DataUtility.InitARObject(target, markerTransform);
+                //}
+                //else
+                //{
+                //    _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                //    m = DataUtility.InitARObject(target, markerlessTransform);
+                //}
                 if (m != null)
                 {
                     objlist.Add(target);
@@ -267,17 +266,7 @@ namespace IMAV
             }
         }
 
-        public void ChangeTestIndex()
-        {
-            Vector3 position;
-            Quaternion orientation;
-
-            _kudanTracker.ArbiTrackGetPose(out position, out orientation);
-            _kudanTracker.FloorPlaceGetPose(out position, out orientation);
-            TestCenter.Singleton.Log("tracking: " + _kudanTracker.ArbiTrackIsTracking()+" ; floor: "+position+" ; "+markerlessTransform.parent.localPosition);
-        }
-
-		ARProduct storeObj = null;
+        ARProduct storeObj = null;
         int pauseIndex = 0;
         public void Pause()
         {
@@ -316,12 +305,9 @@ namespace IMAV
         IEnumerator startArbiTracking()
         {
             yield return new WaitForSeconds(0.2f);
-            //Vector3 floorPos;
             Quaternion floorOrientation;
             _kudanTracker.FloorPlaceGetPose(out originTrackPos, out floorOrientation);
             _kudanTracker.ArbiTrackStart(originTrackPos, floorOrientation);
-            _kudanTracker.ArbiTrackGetPose(out originTrackPos, out trackRot);
-            TestCenter.Singleton.Log("start arbi: " + originTrackPos);
         }
 
         public void GetFloorPos()
@@ -345,7 +331,7 @@ namespace IMAV
                 }
                 objlist.Clear();
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 TestCenter.Singleton.Log("Clear error: " + ex.Message);
             }
@@ -357,33 +343,12 @@ namespace IMAV
             StopTracking();
         }
 
-        public void Quit()
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
-                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
-                {
-                    jo.Call("quitActivity", "unityquit");
-                }
-            }    
-        }
-
-        public void Browse()
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
-                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
-                {
-                    jo.Call("browse");
-                }
-            }
-        }
-
         public void DeleteCurrentObject()
         {
-            if (currentObj != null) {
-                currentObj.Delete ();
-				objlist.Remove(currentObj.gameObject);
+            if (currentObj != null)
+            {
+                currentObj.Delete();
+                objlist.Remove(currentObj.gameObject);
                 currentObj = null;
                 SetCurrentObject(null);
             }
@@ -403,5 +368,45 @@ namespace IMAV
             return str;
         }
         #endregion
+
+        public void ResetObject()
+        {
+            if (_kudanTracker.ArbiTrackIsTracking())
+                currentObj.ResetTransform();
+            else
+                StartPlaceObject();
+        }
+
+        #region External call
+        public void ShowProduct(string sku)
+        {
+            DataCenter.Singleton.LoadModelData(sku);
+            StartPlaceObject();
+        }
+
+        public void Quit()
+        {
+            Clear();
+            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    jo.Call("quitActivity", "unityquit");
+                }
+            }
+        }
+
+        public void Browse()
+        {
+            using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    jo.Call("browse");
+                }
+            }
+        }
+        #endregion
+
     }
 }

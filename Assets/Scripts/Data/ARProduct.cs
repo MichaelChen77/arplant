@@ -45,6 +45,9 @@ namespace IMAV
         void Start()
         {
             Init();
+
+            //---Stripped down version required---0818
+            InitTransform();
         }
 
         void Init () {
@@ -72,6 +75,17 @@ namespace IMAV
             if (!init)
             {
                 transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
+                originalSize = transform.localScale;
+                originalRot = transform.localRotation;
+                originalPos = transform.localPosition;
+                init = true;
+            }
+        }
+
+        public void InitTransform()
+        {
+            if (!init)
+            {
                 originalSize = transform.localScale;
                 originalRot = transform.localRotation;
                 originalPos = transform.localPosition;

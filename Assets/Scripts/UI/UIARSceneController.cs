@@ -80,9 +80,11 @@ namespace IMAV.UI
         }
         #endregion
 
+        
         void Update()
         {
-            clearBtn.changeTrigger(ResourceManager.Singleton.ExistObject);
+            //---Stripped down version---0818
+            //clearBtn.changeTrigger(ResourceManager.Singleton.ExistObject);
             CheckTouch();
         }
 

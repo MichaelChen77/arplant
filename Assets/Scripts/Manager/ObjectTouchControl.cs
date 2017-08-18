@@ -26,7 +26,6 @@ namespace IMAV
 
 		ARProduct target;
 		bool startDrag = false;
-        Plane groundPlane;
 
         /// <summary>
         /// Start this instance.
@@ -34,8 +33,6 @@ namespace IMAV
 		public void Init(ARProduct model)
 		{
 			target = model;
-            ResourceManager.Singleton.GetFloorPos();
-            groundPlane = new Plane(ResourceManager.Singleton.TrackRotation * Vector3.up, transform.position);
         }
 
         /// <summary>

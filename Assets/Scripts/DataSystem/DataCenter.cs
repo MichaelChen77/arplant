@@ -174,7 +174,6 @@ namespace IMAV
 
         public void LoadModelData(string sku)
         {
-            TestCenter.Singleton.Log("Load Model Data");
             GetProduct(sku, GetProductModel);
         }
 

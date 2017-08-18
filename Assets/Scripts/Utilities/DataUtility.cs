@@ -257,24 +257,29 @@ namespace IMAV
             return str;
         }
 
-        public static ARProduct InitARObject(GameObject obj, Vector3 pos)
+        public static ARProduct InitARObject(GameObject obj, Transform parentTransform)
         {
-            obj.transform.parent = ResourceManager.Singleton.markerlessTransform;
+            obj.transform.parent = parentTransform;
             obj.layer = 8;
-            obj.transform.localScale = obj.transform.localScale * 100;
+            obj.transform.localScale = obj.transform.localScale * 164;
             if (TrackingMode != ARTrackingMode.Marker)
             {
-                obj.transform.localPosition = pos;
-                //obj.transform.localPosition = pos;
-                //Quaternion quat = obj.transform.rotation;
-                //obj.transform.localRotation = quat;
+                obj.transform.position = ResourceManager.Singleton.TrackPos;
             }
             else
             {
-                obj.transform.localPosition = pos;
-                Quaternion quat = obj.transform.rotation;
-                obj.transform.localRotation = quat;
+                obj.transform.localPosition = Vector3.zero;
             }
+            Quaternion quat = obj.transform.rotation;
+            obj.transform.localRotation = quat;
+            return obj.AddComponent<ARProduct>();
+        }
+
+        public static ARProduct InitARObject(GameObject obj)
+        {
+            obj.layer = 8;
+            obj.transform.localScale = obj.transform.localScale * 160;
+            obj.transform.localPosition = Vector3.zero;
             return obj.AddComponent<ARProduct>();
         }
     }
