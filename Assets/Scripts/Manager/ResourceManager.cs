@@ -30,12 +30,7 @@ namespace IMAV
             get { return trackPos; }
         }
 
-        Vector3 originFloorPos;
-        public Vector3 OriginFloorPos
-        {
-            get { return originFloorPos; }
-        }
-
+        Vector3 originTrackPos;
         public Quaternion TrackRotation
         {
             get { return trackRot; }
@@ -229,6 +224,7 @@ namespace IMAV
             StartCoroutine(AddARObject(obj, id));
         }
 
+        int index = 0;
         IEnumerator AddARObject(GameObject model, string _id)
         {
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
@@ -238,23 +234,28 @@ namespace IMAV
             }
             try
             {
-                GameObject target = Instantiate(model);
-                objlist.Add(target);
                 ARProduct m = null;
+                GameObject target = null;
                 if (DataUtility.TrackingMode == ARTrackingMode.Marker)
                 {
-                    m = DataUtility.InitARObject(target, markerTransform);
+                    target = Instantiate(model, markerTransform);
+                    m = DataUtility.InitARObject(target, Vector3.zero);
                 }
                 else
                 {
-                    _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                    trackPos = trackPos - originFloorPos;
-                    m = DataUtility.InitARObject(target, markerlessTransform);
+                    target = Instantiate(model, markerlessTransform);
+                    //_kudanTracker.ArbiTrackGetPose(out trackPos, out trackRot);
+                    //trackPos = trackPos - originTrackPos;
+                    //_kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                    //trackPos = trackPos - originTrackPos;
+                    m = DataUtility.InitARObject(target, new Vector3(3*index, 0, 0));
+                    index++;
                 }
                 //SceneObject s = target.AddComponent<SceneObject>();
                 //s.Init(_id);
                 if (m != null)
                 {
+                    objlist.Add(target);
                     m.SKU = _id;
                     SetCurrentObject(m);
                 }
@@ -315,9 +316,12 @@ namespace IMAV
         IEnumerator startArbiTracking()
         {
             yield return new WaitForSeconds(0.2f);
+            //Vector3 floorPos;
             Quaternion floorOrientation;
-            _kudanTracker.FloorPlaceGetPose(out originFloorPos, out floorOrientation);
-            _kudanTracker.ArbiTrackStart(originFloorPos, floorOrientation);
+            _kudanTracker.FloorPlaceGetPose(out originTrackPos, out floorOrientation);
+            _kudanTracker.ArbiTrackStart(originTrackPos, floorOrientation);
+            _kudanTracker.ArbiTrackGetPose(out originTrackPos, out trackRot);
+            TestCenter.Singleton.Log("start arbi: " + originTrackPos);
         }
 
         public void GetFloorPos()

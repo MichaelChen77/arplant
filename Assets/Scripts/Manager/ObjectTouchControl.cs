@@ -34,9 +34,9 @@ namespace IMAV
 		public void Init(ARProduct model)
 		{
 			target = model;
-            //ResourceManager.Singleton.GetFloorPos();
-            groundPlane = new Plane(Vector3.up, transform.position);
-		}
+            ResourceManager.Singleton.GetFloorPos();
+            groundPlane = new Plane(ResourceManager.Singleton.TrackRotation * Vector3.up, transform.position);
+        }
 
         /// <summary>
         /// Update this instance.
@@ -51,6 +51,7 @@ namespace IMAV
 					processZoomAndRotate (Input.GetTouch (0), Input.GetTouch (1));
 				}
             }
+            //Debug.DrawLine(transform.position, transform.position + transform.parent.rotation * Vector3.up * 10);
         }
 
         void processZoomAndRotate(Touch fing1, Touch fing2)
@@ -131,26 +132,27 @@ namespace IMAV
                 ////pos1.y = transform.position.y;
                 //transform.position = pos1;
 
-                Ray ray = Camera.main.ScreenPointToRay(fing.position);
-                float rayDistance;
-                float f = transform.localPosition.y;
-                if (groundPlane.Raycast(ray, out rayDistance))
-                {
-                    transform.position = ray.GetPoint(rayDistance);
-                    transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
-                }
-
                 //Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
-                //RaycastHit hit;
+                //float rayDistance;
                 //float f = transform.localPosition.y;
-                //if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << 11))
+                //if (groundPlane.Raycast(ray, out rayDistance))
                 //{
-                //    if (hit.collider != null)
-                //    {
-                //        transform.position = hit.point;
-                //        transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
-                //    }
+                //    transform.position = ray.GetPoint(rayDistance);
+                //    TestCenter.Singleton.Log("trans: " + transform.position + " ; ");
+                //    transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
                 //}
+
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(fing.position.x, fing.position.y, 0));
+                RaycastHit hit;
+                float f = transform.localPosition.y;
+                if (Physics.Raycast(ray, out hit, float.MaxValue, 1 << 11))
+                {
+                    if (hit.collider != null)
+                    {
+                        transform.position = hit.point;
+                        transform.localPosition = new Vector3(transform.localPosition.x, f, transform.localPosition.z);
+                    }
+                }
             }
         }
     }
