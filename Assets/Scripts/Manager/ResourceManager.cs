@@ -21,9 +21,11 @@ namespace IMAV
         public TrackingMethodMarkerless _markerlessTracking;
         public Transform markerTransform;
         public Transform markerlessTransform;
+        public SpinUI loadingUI;
         public float defaultMinSize;
         public float defaultMaxSize;
         public float markerSize;
+        public GameObject mainMenu;
 
         Vector3 trackPos;
         Quaternion trackRot;
@@ -31,8 +33,6 @@ namespace IMAV
         {
             get { return trackPos; }
         }
-
-        Vector3 originTrackPos;
         public Quaternion TrackRotation
         {
             get { return trackRot; }
@@ -73,7 +73,7 @@ namespace IMAV
             else
             {
                 mSingleton = this;
-                Application.targetFrameRate = 45;
+                Application.targetFrameRate = 30;
             }
         }
 
@@ -100,7 +100,7 @@ namespace IMAV
                 }
                 _kudanTracker.ChangeTrackingMethod(_markerlessTracking);
                 if (DataUtility.TrackingMode == ARTrackingMode.Placement)
-                    StartPlaceObject();
+                    DelayPlaceObject();
                 else
                 {
                     StopTracking();
@@ -221,7 +221,9 @@ namespace IMAV
 
         public void AddARObject(string id, GameObject obj)
         {
-            StartCoroutine(AddARObject(obj, id));
+            //---Stripped down version---0818
+            //StartCoroutine(AddARObject(obj, id));
+            StartCoroutine(StripdownAddARObject(obj, id));
         }
 
         int index = 0;
@@ -229,40 +231,51 @@ namespace IMAV
         {
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
             {
-                StartPlaceObject();
+                DelayPlaceObject();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
             }
             try
             {
+                GameObject target = Instantiate(model);
+                objlist.Add(target);
                 ARProduct m = null;
-                GameObject target = null;
-                target = Instantiate(model, markerlessTransform);
-                m = DataUtility.InitARObject(target);
-
-                //---Stripped down version---0818
-                //GameObject target = Instantiate(model);
-                //objlist.Add(target);
-                //ARProduct m = null;
-                //if (DataUtility.TrackingMode == ARTrackingMode.Marker)
-                //{
-                //    m = DataUtility.InitARObject(target, markerTransform);
-                //}
-                //else
-                //{
-                //    _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
-                //    m = DataUtility.InitARObject(target, markerlessTransform);
-                //}
+                if (DataUtility.TrackingMode == ARTrackingMode.Marker)
+                {
+                    m = DataUtility.InitARObject(target, markerTransform);
+                }
+                else
+                {
+                    _kudanTracker.FloorPlaceGetPose(out trackPos, out trackRot);
+                    m = DataUtility.InitARObject(target, markerlessTransform);
+                }
                 if (m != null)
                 {
-                    objlist.Add(target);
                     m.SKU = _id;
                     SetCurrentObject(m);
                 }
-                TestCenter.Singleton.Log("ResourceManager Add object pos 1: " + target.transform.position + " ; " + target.transform.localPosition);
             }
             catch (System.Exception ex)
             {
                 TestCenter.Singleton.Log("error: " + ex.Message);
+            }
+        }
+
+        IEnumerator StripdownAddARObject(GameObject model, string _id)
+        {
+            yield return new WaitForSeconds(1f);
+            if(!_kudanTracker.ArbiTrackIsTracking())
+            {
+                startArbiTracking();
+                yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+            }
+            loadingUI.Hide();
+            GameObject target = Instantiate(model, markerlessTransform);
+            ARProduct m = DataUtility.InitARObject(target);
+            if (m != null)
+            {
+                objlist.Add(target);
+                m.SKU = _id;
+                SetCurrentObject(m);
             }
         }
 
@@ -297,17 +310,20 @@ namespace IMAV
             }
         }
 
-        public void StartPlaceObject()
+        public void DelayPlaceObject(float t = 0.2f)
         {
-            StartCoroutine(startArbiTracking());
+            Invoke("startArbiTracking", t);
         }
 
-        IEnumerator startArbiTracking()
+        void startArbiTracking()
         {
-            yield return new WaitForSeconds(0.2f);
-            Quaternion floorOrientation;
-            _kudanTracker.FloorPlaceGetPose(out originTrackPos, out floorOrientation);
-            _kudanTracker.ArbiTrackStart(originTrackPos, floorOrientation);
+            if (!_kudanTracker.ArbiTrackIsTracking())
+            {
+                Vector3 floorPos;
+                Quaternion floorOrientation;
+                _kudanTracker.FloorPlaceGetPose(out floorPos, out floorOrientation);
+                _kudanTracker.ArbiTrackStart(floorPos, floorOrientation);
+            }
         }
 
         public void GetFloorPos()
@@ -374,14 +390,38 @@ namespace IMAV
             if (_kudanTracker.ArbiTrackIsTracking())
                 currentObj.ResetTransform();
             else
-                StartPlaceObject();
+            {
+                currentObj.ResetPosition();
+                DelayPlaceObject();
+            }
         }
 
         #region External call
+
+        public void OnApplicationPause(bool pause)
+        {
+            if(pause)
+            {
+                StopTracking();
+                _kudanTracker.enabled = false;
+            }
+            else
+            {
+                _kudanTracker.enabled = true;
+                DelayPlaceObject(0.9f);
+            }
+        }
+
         public void ShowProduct(string sku)
         {
+            mainMenu.SetActive(true);
+            loadingUI.Show();
             DataCenter.Singleton.LoadModelData(sku);
-            StartPlaceObject();
+        }
+
+        public void QuitUnity(string str)
+        {
+            Quit();
         }
 
         public void Quit()

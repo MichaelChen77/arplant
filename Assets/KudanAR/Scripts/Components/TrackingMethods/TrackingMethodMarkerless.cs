@@ -66,7 +66,6 @@ namespace Kudan.AR
 		public override void StartTracking()
 		{
             _kudanTracker.SetArbiTrackFloorHeight (_floorDepth);
-
 			base.StartTracking ();
 		}
 			

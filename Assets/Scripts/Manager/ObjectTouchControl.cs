@@ -20,7 +20,7 @@ namespace IMAV
 		/// <summary>
 		/// The rate at which the swipe control rotates the object.
 		/// </summary>
-		public float rotSpeed = 1400f;
+		public float rotSpeed = 1300f;
 
         public float scaleDiffThreshold = 130f;
 

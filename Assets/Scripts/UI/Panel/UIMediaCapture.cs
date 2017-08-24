@@ -85,7 +85,7 @@ namespace IMAV.UI
         public void CaptureImage()
         {
             thumbnailImage.transform.localScale = Vector3.zero;
-            MediaCenter.Singleton.CaptureScreen(isRecording, OnPostScreenCaptured);
+            MediaCenter.Singleton.CaptureScreen(isRecording, true, OnPostScreenCaptured);
         }
 
         void OnPostScreenCaptured(string path)

@@ -100,6 +100,11 @@ namespace IMAV
             transform.localRotation = originalRot;
         }
 
+        public void ResetPosition()
+        {
+            transform.localPosition = originalPos;
+        }
+
         public void Delete()
         {
             Destroy(gameObject);

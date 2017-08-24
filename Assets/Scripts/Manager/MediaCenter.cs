@@ -86,7 +86,7 @@ namespace IMAV
         /// <summary>
         /// Takes a screenshot of the camera feed and any projected objects, without any UI.
         /// </summary>
-        public void CaptureScreen(bool duringRecord, Action<string> run)
+        public void CaptureScreen(bool duringRecord, bool createThumbnail, Action<string> run)
         {
             System.DateTime dt = System.DateTime.Now.ToLocalTime();
             string date = dt.ToString("yyyyMMdd");
@@ -96,10 +96,10 @@ namespace IMAV
             DataUtility.SetDirectory(thumbPath);
 
             string filename = "WhizHome_" + dt.ToString("yyMMdd_HHmmss") + ".png";
-            StartCoroutine(Screenshot(date + "/" + filename, run));
+            StartCoroutine(Screenshot(date + "/" + filename, createThumbnail, run));
         }
 
-        IEnumerator Screenshot(string filepath, Action<string> run)
+        IEnumerator Screenshot(string filepath, bool createThumbnail, Action<string> run)
         {
             List<GameObject> uiObjects = FindGameObjectsInUILayer();
 
@@ -118,7 +118,8 @@ namespace IMAV
             byte[] bytes = screen.EncodeToPNG();
             System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath() + filepath, bytes);
 
-            SaveThumbnail(screen, filepath);
+            if (createThumbnail)
+                SaveThumbnail(screen, filepath);
 
             for (int i = 0; i < uiObjects.Count; i++)
             {
@@ -189,7 +190,7 @@ namespace IMAV
             string fileName = "WhizHome_" + dt.ToString("yyMMdd_HHmmss");
             curRecordName = date + "/" + fileName;
 
-            StartCoroutine(Screenshot(curRecordName + "_v$d.png", null));
+            StartCoroutine(Screenshot(curRecordName + "_v$d.png", true, null));
             //ScreenshotDuringRecord(Screen.width, Screen.height, curRecordName + ".png");
         }
 
@@ -231,7 +232,7 @@ namespace IMAV
 
         public void ScreenShotAndSave()
         {
-            CaptureScreen(false, SaveScreenShot);
+            CaptureScreen(false, false, SaveScreenShot);
         }
 
         public void SaveVideo(string str)

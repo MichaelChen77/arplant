@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3132391650
+CRC: 1480838872
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8fbea4bd2932133fe06a6561bb96c402
+    Hash: 3ae4fb84ea5ea12955771a29dcb37881
   TypeTreeHash:
     serializedVersion: 2
     Hash: f451c2fa900e9178a57db1d033fd31a7
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/AngelStatue.prefab
+- Assets/Prefab/WaitForAO/angelStatue.prefab
 Dependencies: []

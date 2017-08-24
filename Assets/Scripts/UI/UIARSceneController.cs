@@ -159,7 +159,7 @@ namespace IMAV.UI
             {
                 if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking())
                 {
-                    ResourceManager.Singleton.StartPlaceObject();
+                    ResourceManager.Singleton.DelayPlaceObject();
                     yield return new WaitUntil(ResourceManager.Singleton._kudanTracker.ArbiTrackIsTracking);
                 }
                 yield return new WaitForSeconds(0.2f);

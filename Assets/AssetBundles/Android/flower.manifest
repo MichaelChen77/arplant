@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 3816692653
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b20b916774fa1f4df33b596271fad95a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 449e08c10a826526ae94ed33df92823c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefab/WaitForAO/Flower.prefab
+Dependencies: []

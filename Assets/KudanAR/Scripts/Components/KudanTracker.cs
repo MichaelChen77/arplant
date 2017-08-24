@@ -382,9 +382,13 @@ namespace Kudan.AR
 		{
 			if (_trackerPlugin != null)
 			{
-				_trackerPlugin.OnApplicationPause(pauseStatus);
+                _trackerPlugin.OnApplicationPause(pauseStatus);
 			}
-		}
+            if (pauseStatus)
+                Application.targetFrameRate = 1;
+            else
+                Application.targetFrameRate = 30;
+        }
 
 		/// <summary>
 		/// Adds a single trackable to the tracker from image data, names it with the given string, and applies any settings. This method uses the default values for whether this trackable should use extended tracking or auto-cropping.
@@ -785,7 +789,7 @@ namespace Kudan.AR
 					// Texture image and resolution
 					if (_currentTrackingMethod != null)
 					{
-						GUILayout.Label("Method: " + _currentTrackingMethod.Name);
+						GUILayout.Label("Method: " + ArbiTrackIsTracking());
 						_currentTrackingMethod.DebugGUI(_debugGUIScale);
 					}
 				}

@@ -278,7 +278,7 @@ namespace IMAV
         public static ARProduct InitARObject(GameObject obj)
         {
             obj.layer = 8;
-            obj.transform.localScale = obj.transform.localScale * 160;
+            obj.transform.localScale = obj.transform.localScale * 200;
             obj.transform.localPosition = Vector3.zero;
             return obj.AddComponent<ARProduct>();
         }

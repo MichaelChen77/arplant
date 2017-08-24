@@ -10,9 +10,14 @@ namespace IMAV
         public KudanTracker _kudan;
         public GameObject triggerImage;
 
-        void Update()
+        void LateUpdate()
         {
             triggerImage.SetActive(!_kudan.ArbiTrackIsTracking());
+        }
+
+        public void OnApplicationPause(bool pause)
+        {
+            triggerImage.SetActive(false);
         }
     }
 }

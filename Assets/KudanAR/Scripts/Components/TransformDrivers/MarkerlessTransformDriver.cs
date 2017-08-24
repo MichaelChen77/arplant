@@ -72,9 +72,9 @@ namespace Kudan.AR
             distanceDiff = Vector3.Distance(transform.localPosition, trackable.position);
             angleDiff = Quaternion.Angle(transform.localRotation, trackable.orientation);
 
-            if (distanceDiff > 0.15f)
+            if (distanceDiff > 0.2f)
                 this.transform.localPosition = trackable.position;
-            if (angleDiff > 0.15f)
+            if (angleDiff > 0.2f)
                 this.transform.localRotation = trackable.orientation;
         }
 	}
