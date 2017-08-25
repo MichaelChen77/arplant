@@ -15,6 +15,9 @@ namespace IMAV
         public UIVideoPlayer videoPlayer;
         public UIDialog msgDialog;
         public TextDisableSelf saveFileHint;
+        public GameObject savaImageHint;
+
+        AudioSource screenshotAudio;
 
         private static MediaCenter mSingleton;
         public static MediaCenter Singleton
@@ -58,6 +61,7 @@ namespace IMAV
 
         void Start()
         {
+            screenshotAudio = GetComponent<AudioSource>();
             DataUtility.SetDirectory(DataUtility.GetScreenShotPath());
             DataUtility.SetDirectory(DataUtility.GetScreenThumbnailPath());
             DataUtility.SetDirectory(DataUtility.GetScreenVideoPath());
@@ -116,8 +120,11 @@ namespace IMAV
             Texture2D screen = new Texture2D(RT.width, RT.height, TextureFormat.RGB24, false);
             screen.ReadPixels(new Rect(0, 0, RT.width, RT.height), 0, 0);
             byte[] bytes = screen.EncodeToPNG();
-            System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath() + filepath, bytes);
 
+            System.IO.File.WriteAllBytes(DataUtility.GetScreenShotPath() + filepath, bytes);
+            savaImageHint.SetActive(true);
+            if (screenshotAudio != null)
+                screenshotAudio.Play();
             if (createThumbnail)
                 SaveThumbnail(screen, filepath);
 
@@ -212,16 +219,25 @@ namespace IMAV
 
         public void SaveScreenShot(string str)
         {
-            int id = str.IndexOf('/');
-            if(id != -1)
+            try
             {
-                string source = DataUtility.GetScreenShotPath() + str;
-                string file = str.Substring(id + 1);
-                GallerySaver.CopyToGallery(source, file);
-                saveFileHint.Open("Image Saved");
+                int id = str.IndexOf('/');
+                if (id != -1)
+                {
+                    string source = DataUtility.GetScreenShotPath() + str;
+                    string file = str.Substring(id + 1);
+                    GallerySaver.CopyToGallery(source, file);
+                    //saveFileHint.Open("Image Saved");
+                }
+                else
+                {
+                    //saveFileHint.Open("Image donot Exist");
+                }
             }
-            else
-                saveFileHint.Open("Image donot Exist");
+            catch(System.Exception ex)
+            {
+                TestCenter.Singleton.Log("error: " + ex.Message);
+            }
         }
 
         public void SaveVideo(int index)
