@@ -9,7 +9,7 @@ public class CameraFlash : MonoBehaviour {
 
     private void OnEnable()
     {
-        LeanTween.alpha(imgFlash.rectTransform, 1f, 0.2f).setFrom(0f).setLoopPingPong(1).setOnComplete(Hide) ;
+        LeanTween.alpha(imgFlash.rectTransform, 0.8f, 0.2f).setFrom(0f).setLoopPingPong(1).setOnComplete(Hide);
     }
 
     private void Hide()

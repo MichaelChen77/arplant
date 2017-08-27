@@ -23,6 +23,8 @@ namespace IMAV
             get { return products; }
         }
 
+        Stack<string> productkeys = new Stack<string>();
+
         private static DataCenter mSingleton;
         public static DataCenter Singleton
         {
@@ -147,6 +149,13 @@ namespace IMAV
                 {
                     ProductData pd = new ProductData(p);
                     products[pd.ProductInfo.sku] = pd;
+                    productkeys.Push(pd.ProductInfo.sku);
+                    if(products.Count > 30)
+                    {
+                        string str = productkeys.Pop();
+                        products[str].Delete();
+                        products.Remove(str);
+                    }
                     GetProductImage(pd, callback);
                 }));
             }
@@ -184,7 +193,6 @@ namespace IMAV
                 StartCoroutine(MagentoService.Instance.DownloadAssetBundle(p.ProductInfo.sku, (psku, objs) =>
                 {
                     p.model = (GameObject)objs[0];
-                    TestCenter.Singleton.Log("Load Model To Scene");
                     LoadModelToScene(p);
                 }));
             }
@@ -192,6 +200,7 @@ namespace IMAV
                 LoadModelToScene(p);
         }
 
+        GameObject preobj;
         void LoadModelToScene(ProductData p)
         {
             ResourceManager.Singleton.AddARObject(p.ProductInfo.sku, p.model);

@@ -73,7 +73,6 @@ namespace IMAV
             else
             {
                 mSingleton = this;
-                Application.targetFrameRate = 30;
             }
         }
 
@@ -262,11 +261,12 @@ namespace IMAV
 
         IEnumerator StripdownAddARObject(GameObject model, string _id)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.7f);
             if(!_kudanTracker.ArbiTrackIsTracking())
             {
                 startArbiTracking();
                 yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
+                yield return new WaitForSeconds(0.2f);
             }
             loadingUI.Hide();
             GameObject target = Instantiate(model, markerlessTransform);
@@ -317,13 +317,13 @@ namespace IMAV
 
         void startArbiTracking()
         {
-            if (!_kudanTracker.ArbiTrackIsTracking())
-            {
+            //if (!_kudanTracker.ArbiTrackIsTracking())
+            //{
                 Vector3 floorPos;
                 Quaternion floorOrientation;
                 _kudanTracker.FloorPlaceGetPose(out floorPos, out floorOrientation);
                 _kudanTracker.ArbiTrackStart(floorPos, floorOrientation);
-            }
+            //}
         }
 
         public void GetFloorPos()
@@ -387,13 +387,8 @@ namespace IMAV
 
         public void ResetObject()
         {
-            if (_kudanTracker.ArbiTrackIsTracking())
-                currentObj.ResetTransform();
-            else
-            {
-                currentObj.ResetPosition();
-                DelayPlaceObject();
-            }
+            currentObj.ResetPosition();
+            DelayPlaceObject();
         }
 
         #region External call
@@ -403,17 +398,18 @@ namespace IMAV
             if(pause)
             {
                 StopTracking();
-                _kudanTracker.enabled = false;
             }
             else
             {
-                _kudanTracker.enabled = true;
-                DelayPlaceObject(0.9f);
+                DelayPlaceObject(0.6f);
             }
         }
 
         public void ShowProduct(string sku)
         {
+            Clear();
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
             mainMenu.SetActive(true);
             loadingUI.Show();
             DataCenter.Singleton.LoadModelData(sku);

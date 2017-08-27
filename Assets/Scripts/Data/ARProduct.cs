@@ -105,6 +105,17 @@ namespace IMAV
             transform.localPosition = originalPos;
         }
 
+        public void ResetTransformWhenSamePos()
+        {
+            if(transform.localPosition == originalPos)
+            {
+                transform.localScale = originalSize;
+                transform.localRotation = originalRot;
+            }
+            else
+                transform.localPosition = originalPos;
+        }
+
         public void Delete()
         {
             Destroy(gameObject);

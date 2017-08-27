@@ -124,19 +124,26 @@ public class MagentoService : MonoBehaviour {
         WWW www = new WWW(url);
         yield return www;
 
-        if (www.assetBundle != null)
+        try
         {
-            System.Object[] objs = www.assetBundle.LoadAllAssets();
-            if (!existed)
+            if (www.assetBundle != null)
             {
-                File.WriteAllBytes(path, www.bytes);
+                System.Object[] objs = www.assetBundle.LoadAllAssets();
+                if (!existed)
+                {
+                    File.WriteAllBytes(path, www.bytes);
+                }
+                callback(sku, objs);
             }
-            callback(sku, objs);
+            else
+            {
+                System.Object[] objs = new System.Object[] { DataCenter.Singleton.defaultModel };
+                callback(sku, objs);
+            }
         }
-        else
+        catch(Exception ex)
         {
-            System.Object[] objs = new System.Object[] { DataCenter.Singleton.defaultModel };
-            callback(sku, objs);
+            Debug.Log("load asset error: " + ex.Message);
         }
     }
 
