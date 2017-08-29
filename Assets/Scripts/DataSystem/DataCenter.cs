@@ -200,7 +200,6 @@ namespace IMAV
                 LoadModelToScene(p);
         }
 
-        GameObject preobj;
         void LoadModelToScene(ProductData p)
         {
             ResourceManager.Singleton.AddARObject(p.ProductInfo.sku, p.model);

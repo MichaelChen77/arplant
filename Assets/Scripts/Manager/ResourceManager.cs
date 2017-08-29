@@ -225,7 +225,6 @@ namespace IMAV
             StartCoroutine(StripdownAddARObject(obj, id));
         }
 
-        int index = 0;
         IEnumerator AddARObject(GameObject model, string _id)
         {
             if (DataUtility.TrackingMode == ARTrackingMode.Markerless && !_kudanTracker.ArbiTrackIsTracking())
@@ -259,14 +258,18 @@ namespace IMAV
             }
         }
 
+        float waitTime = 0f;
         IEnumerator StripdownAddARObject(GameObject model, string _id)
         {
-            yield return new WaitForSeconds(0.7f);
-            if(!_kudanTracker.ArbiTrackIsTracking())
+            while(!_kudanTracker.ArbiTrackIsTracking())
             {
-                startArbiTracking();
-                yield return new WaitUntil(_kudanTracker.ArbiTrackIsTracking);
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForEndOfFrame();
+                waitTime += Time.deltaTime;
+                if(waitTime > 0.8f)
+                {
+                    DelayPlaceObject(0);
+                    waitTime = 0;
+                }
             }
             loadingUI.Hide();
             GameObject target = Instantiate(model, markerlessTransform);
@@ -312,18 +315,19 @@ namespace IMAV
 
         public void DelayPlaceObject(float t = 0.2f)
         {
-            Invoke("startArbiTracking", t);
+            StartCoroutine(startArbiTracking(t, false));
         }
 
-        void startArbiTracking()
+        IEnumerator startArbiTracking(float waitTime, bool forced)
         {
-            //if (!_kudanTracker.ArbiTrackIsTracking())
-            //{
+            yield return new WaitForSeconds(waitTime);
+            if (forced || !_kudanTracker.ArbiTrackIsTracking())
+            {
                 Vector3 floorPos;
                 Quaternion floorOrientation;
                 _kudanTracker.FloorPlaceGetPose(out floorPos, out floorOrientation);
                 _kudanTracker.ArbiTrackStart(floorPos, floorOrientation);
-            //}
+            }
         }
 
         public void GetFloorPos()
@@ -340,6 +344,7 @@ namespace IMAV
         {
             try
             {
+                currentSKU = "";
                 SetCurrentObject(null);
                 foreach (GameObject obj in objlist)
                 {
@@ -388,10 +393,28 @@ namespace IMAV
         public void ResetObject()
         {
             currentObj.ResetPosition();
-            DelayPlaceObject();
+            StartCoroutine(startArbiTracking(0.2f, true));
         }
 
         #region External call
+
+        public void DeleteSelectedObject(int index, System.Object refer)
+        {
+            if (index == 0)
+            {
+                ARProduct ap = refer as ARProduct;
+                if (ap != null)
+                {
+                    if (ap == currentObj)
+                        DeleteCurrentObject();
+                    else
+                    {
+                        ap.Delete();
+                        objlist.Remove(ap.gameObject);
+                    }
+                }
+            }
+        }
 
         public void OnApplicationPause(bool pause)
         {
@@ -401,18 +424,22 @@ namespace IMAV
             }
             else
             {
-                DelayPlaceObject(0.6f);
+                DelayPlaceObject(0.7f);
             }
         }
 
+        string currentSKU = "";
         public void ShowProduct(string sku)
         {
-            Clear();
-            Resources.UnloadUnusedAssets();
-            System.GC.Collect();
             mainMenu.SetActive(true);
             loadingUI.Show();
+            currentSKU = sku;
             DataCenter.Singleton.LoadModelData(sku);
+        }
+
+        public void ShowProduct()
+        {
+            ShowProduct(currentSKU);
         }
 
         public void QuitUnity(string str)
@@ -423,6 +450,8 @@ namespace IMAV
         public void Quit()
         {
             Clear();
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
             using (AndroidJavaClass cls = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 using (AndroidJavaObject jo = cls.GetStatic<AndroidJavaObject>("currentActivity"))

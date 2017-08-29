@@ -43,6 +43,7 @@ namespace IMAV
             if (target.Selected == SelectState.Actived)
             {
                 if (Input.touchCount == 1) {
+                    //TouchToDelete(Input.GetTouch(0));
 					Drag (Input.GetTouch (0));
 				} else if (Input.touchCount == 2) {
 					processZoomAndRotate (Input.GetTouch (0), Input.GetTouch (1));
@@ -92,6 +93,22 @@ namespace IMAV
 			float deltaRot = fing.deltaPosition.x * rotSpeed * Mathf.Deg2Rad * Time.deltaTime;
 			transform.Rotate (0, 0, -deltaRot);
 		}
+
+        float touchTime = 0f;
+        void TouchToDelete(Touch fing)
+        {
+            if (fing.phase == TouchPhase.Stationary)
+            {
+                touchTime += fing.deltaTime;
+                if (touchTime > 0.6f)
+                {
+                    touchTime = 0;
+                    MediaCenter.Singleton.msgDialog.Show("Delete Selected Item?", this.target, ResourceManager.Singleton.DeleteSelectedObject);
+                }
+            }
+            else
+                touchTime = 0f;
+        }
 
         void Drag(Touch fing)
         {

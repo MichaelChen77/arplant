@@ -15,9 +15,9 @@ namespace IMAV
         Quaternion originalRot;
         Vector3 originalPos;
 
-        Vector3 floorPos;
-        Quaternion floorRot;
-        Vector3 tempPos;
+        //Vector3 floorPos;
+        //Quaternion floorRot;
+        //Vector3 tempPos;
 
         /// <summary>
         /// Whether the object is selected
@@ -120,22 +120,22 @@ namespace IMAV
                 transform.localPosition = originalPos;
         }
 
-        public void SaveFloorTransform(Vector3 pos, Quaternion rot)
-        {
-            floorPos = pos;
-            floorRot = rot;
-        }
+        //public void SaveFloorTransform(Vector3 pos, Quaternion rot)
+        //{
+        //    floorPos = pos;
+        //    floorRot = rot;
+        //}
 
-        public void SavePos()
-        {
-            tempPos = transform.localPosition;
-        }
+        //public void SavePos()
+        //{
+        //    tempPos = transform.localPosition;
+        //}
 
-        public void loadPos(Vector3 pos, Quaternion rot)
-        {
-            Vector3 diff = floorPos - pos;
-            transform.localPosition = tempPos + diff;
-        }
+        //public void loadPos(Vector3 pos, Quaternion rot)
+        //{
+        //    Vector3 diff = floorPos - pos;
+        //    transform.localPosition = tempPos + diff;
+        //}
 
         public void Delete()
         {

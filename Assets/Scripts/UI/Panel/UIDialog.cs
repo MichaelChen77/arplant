@@ -54,7 +54,6 @@ namespace IMAV.UI
         {
             yield return new WaitForEndOfFrame();
             float h = contentText.preferredHeight + externHeight;
-            Debug.Log("height: " + contentText.preferredHeight);
             dlgRect.sizeDelta = new Vector2(dlgRect.sizeDelta.x, h);
         }
 
