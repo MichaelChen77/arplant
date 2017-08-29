@@ -9,20 +9,24 @@ namespace IMAV
 		Actived, Pause, None
 	}
 
-	public class ARProduct : MonoBehaviour {
-		ObjectTouchControl touchCtrl;
+    public class ARProduct : MonoBehaviour {
+        ObjectTouchControl touchCtrl;
         Vector3 originalSize;
         Quaternion originalRot;
         Vector3 originalPos;
+
+        Vector3 floorPos;
+        Quaternion floorRot;
+        Vector3 tempPos;
 
         /// <summary>
         /// Whether the object is selected
         /// </summary>
         SelectState selected = SelectState.Actived;
-		public SelectState Selected {
-			get{ return selected; }
-			set { 
-				selected = value;
+        public SelectState Selected {
+            get { return selected; }
+            set {
+                selected = value;
                 if (touchCtrl == null)
                     Init();
                 if (selected == SelectState.Actived)
@@ -30,7 +34,7 @@ namespace IMAV
                 else if (selected == SelectState.None)
                     touchCtrl.enabled = false;
             }
-		}
+        }
 
         protected string sku;
         public string SKU
@@ -50,7 +54,7 @@ namespace IMAV
             InitTransform();
         }
 
-        void Init () {
+        void Init() {
             if (touchCtrl == null)
             {
                 touchCtrl = gameObject.AddComponent<ObjectTouchControl>();
@@ -107,13 +111,30 @@ namespace IMAV
 
         public void ResetTransformWhenSamePos()
         {
-            if(transform.localPosition == originalPos)
+            if (transform.localPosition == originalPos)
             {
                 transform.localScale = originalSize;
                 transform.localRotation = originalRot;
             }
             else
                 transform.localPosition = originalPos;
+        }
+
+        public void SaveFloorTransform(Vector3 pos, Quaternion rot)
+        {
+            floorPos = pos;
+            floorRot = rot;
+        }
+
+        public void SavePos()
+        {
+            tempPos = transform.localPosition;
+        }
+
+        public void loadPos(Vector3 pos, Quaternion rot)
+        {
+            Vector3 diff = floorPos - pos;
+            transform.localPosition = tempPos + diff;
         }
 
         public void Delete()
