@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using IMAV.Model;
+using IMAV.Controller;
 
 namespace IMAV.UI
 {
@@ -11,11 +13,12 @@ namespace IMAV.UI
         public float moveTime = 0.3f;
         public GameObject furPrefab;
         public Text titleText;
-        public Button backButton;
+        public GToggleButton backButton;
         public RectTransform contentRect;
         public HorizontalLayoutGroup catGroup;
         public HorizontalLayoutGroup furGroup;
         public SpinUI loadingUI;
+        bool replaced = false;
         RectTransform catRect;
         RectTransform furRect;
         float originPos;
@@ -30,15 +33,22 @@ namespace IMAV.UI
         public override void Open()
         {
             gameObject.SetActive(true);
+            backButton.setTriggerWithoutAnimation(true);
             LoadObjects();
+        }
+
+        public void Open(bool isSwitch)
+        {
+            replaced = isSwitch;
+            Open();
         }
 
         void LoadObjects()
         {
-            if (catRect.childCount != DataCenter.Singleton.Categories.Count)
+            if (catRect.childCount != DataController.Singleton.Categories.Count)
             {
                 Clear(catRect);
-                foreach (CategoryData cat in DataCenter.Singleton.Categories)
+                foreach (Category cat in DataController.Singleton.Categories)
                 {
                     AddCategoryItem(cat);
                 }
@@ -47,12 +57,12 @@ namespace IMAV.UI
             catRect.anchoredPosition = new Vector2(0, catRect.anchoredPosition.y);
         }
 
-        void AddCategoryItem(CategoryData cat)
+        void AddCategoryItem(Category cat)
         {
             GameObject obj = Instantiate(furPrefab, catGroup.transform);
             obj.transform.localScale = Vector3.one;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(cat.Cat.name, cat.Cat.id, cat.icon, ShowCategory);
+            item.Init(cat.name, cat.id, cat.icon, ShowCategory);
         }
 
         IEnumerator DelayRefresh()
@@ -70,17 +80,20 @@ namespace IMAV.UI
 
         void AddResObj(CategoryProduct res)
         {
-            DataCenter.Singleton.GetProduct(res.sku, AddProductItem);
+            DataController.Singleton.GetProduct(res.sku, AddProductItem);
         }
 
-        void AddProductItem(ProductData p)
+        void AddProductItem(Product p)
         {
             GameObject obj = Instantiate(furPrefab, furGroup.transform);
             obj.transform.localScale = Vector3.one;
-            obj.name = p.ProductInfo.sku;
+            obj.name = p.sku;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(p.ProductInfo.name, p.ProductInfo.sku, p.icon, LoadObject);
+            item.Init(p.name, p.sku, p.icon, LoadObject);
             loadingProductCount--;
+            loadedProductCount++;
+            if (loadedProductCount > 8)
+                loadingUI.Hide();
             if (loadingProductCount == 0)
             {
                 loadingUI.Hide();
@@ -88,11 +101,12 @@ namespace IMAV.UI
             }
         }
 
-        void ShowCategory(string name, System.Object cat)
+        void ShowCategory(string _name, System.Object cat)
         {
             LeanTween.moveY(contentRect, furRectPos, moveTime);
-            backButton.interactable = true;
-            CategoryData fcat = DataCenter.Singleton.GetCategory((long)cat);
+
+            backButton.setTrigger(false);
+            Category fcat = DataController.Singleton.GetCategory((long)cat);
             if (fcat != null)
             {
                 Clear(furRect);
@@ -103,24 +117,33 @@ namespace IMAV.UI
         }
 
         int loadingProductCount = 0;
-        IEnumerator LoadCategory(CategoryData c)
+        int loadedProductCount = 0;
+        IEnumerator LoadCategory(Category c)
         {
             loadingUI.Show();
-            if (!c.IsLoaded())
+            if (!c.IsLoaded)
                 c.LoadProducts();
-            yield return new WaitUntil(c.IsLoaded);
+            yield return new WaitUntil(()=>c.IsLoaded);
             loadingProductCount = c.Products.Count;
+            loadedProductCount = 0;
             foreach (CategoryProduct obj in c.Products)
             {
                 AddResObj(obj);
             }
-            titleText.text = c.Cat.name;
+            titleText.text = c.name;
         }
 
-        public void GotoCatalogue()
+        public void GotoCatalogue(SceneUIController ctl)
         {
-            backButton.interactable = false;
-            LeanTween.moveY(contentRect, originPos, moveTime);
+            if (backButton.TriggerFlag)
+            {
+                ctl.CloseUI(false);
+            }
+            else
+            {
+                backButton.setTrigger(true);
+                LeanTween.moveY(contentRect, originPos, moveTime);
+            }
         }
 
         public void Search(string str)
@@ -130,7 +153,9 @@ namespace IMAV.UI
 
         void LoadObject(string cat, System.Object sku)
         {
-            DataCenter.Singleton.LoadModelData((string)sku);
+            if (replaced)
+                SceneController.Singleton.DeleteCurrentProduct();
+            DataController.Singleton.LoadModelData((string)sku);
             Close();
         }
 

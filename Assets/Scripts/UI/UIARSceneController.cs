@@ -133,7 +133,7 @@ namespace IMAV.UI
 
         public void GotoVRRoom()
         {
-            MediaCenter.Singleton.msgDialog.Show("The VR function is temporary removed in this build!");
+            Controller.MediaController.Singleton.msgDialog.Show("The VR function is temporary removed in this build!");
             //DataUtility.CurrentObject = ResourceManager.Singleton.CurrentObject;
             //if (DataUtility.CurrentObject != null)
             //{

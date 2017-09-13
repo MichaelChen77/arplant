@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using IMAV.Controller;
 
 namespace IMAV
 {
@@ -103,7 +102,7 @@ namespace IMAV
                 if (touchTime > 0.6f)
                 {
                     touchTime = 0;
-                    MediaCenter.Singleton.msgDialog.Show("Delete Selected Item?", this.target, ResourceManager.Singleton.DeleteSelectedObject);
+                    MediaController.Singleton.msgDialog.Show("Delete Selected Item?", this.target, ResourceManager.Singleton.DeleteSelectedObject);
                 }
             }
             else

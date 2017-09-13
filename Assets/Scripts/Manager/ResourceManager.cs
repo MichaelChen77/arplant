@@ -4,6 +4,7 @@ using System.Collections;
 using Kudan.AR;
 using System.Linq;
 using IMAV.UI;
+using IMAV.Controller;
 
 public enum ARTrackingMode
 {
@@ -434,7 +435,7 @@ namespace IMAV
             mainMenu.SetActive(true);
             loadingUI.Show();
             currentSKU = sku;
-            DataCenter.Singleton.LoadModelData(sku);
+            DataController.Singleton.LoadModelData(sku);
         }
 
         public void ShowProduct()

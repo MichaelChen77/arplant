@@ -19,9 +19,9 @@ namespace IMAV
         //Quaternion floorRot;
         //Vector3 tempPos;
 
-        /// <summary>
-        /// Whether the object is selected
-        /// </summary>
+        // <summary>
+        // Whether the object is selected
+        // </summary>
         SelectState selected = SelectState.Actived;
         public SelectState Selected {
             get { return selected; }

@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using IMAV.UI;
+using IMAV.Controller;
 
 namespace IMAV
 {
     public class ImageManagerTest : MonoBehaviour {
         public void DeleteFolderTest()
         {
-            MediaCenter.Singleton.DeleteImageFolder("20170726");
+            MediaController.Singleton.DeleteImageFolder("20170726");
         }
 
         public void GetVideoFileName()
         {
-            string str1 = MediaCenter.Singleton.GetVideoFileName("20170726/WhizHome 20170726_203921_video.png");
-            string str2 = MediaCenter.Singleton.GetVideoFileName("20170726/WhizHome 20170726_203921.png");
-            string str3 = MediaCenter.Singleton.GetVideoFileName("20170726/WhizHome 20170.png");
+            string str1 = MediaController.Singleton.GetVideoFileName("20170726/WhizHome 20170726_203921_video.png");
+            string str2 = MediaController.Singleton.GetVideoFileName("20170726/WhizHome 20170726_203921.png");
+            string str3 = MediaController.Singleton.GetVideoFileName("20170726/WhizHome 20170.png");
             if (str1 == string.Empty)
                 str1 = "empty";
             if (str2 == string.Empty)
@@ -24,9 +25,9 @@ namespace IMAV
                 str3 = "empty";
             Debug.Log("str1: " + str1 + " ; str2: " + str2 + " ; str3: " + str3);
 
-            MediaCenter.Singleton.SaveVideo("20170726/WhizHome 20170726_203921_video.png");
-            MediaCenter.Singleton.SaveVideo("20170726/WhizHome 20170726_203921.png");
-            MediaCenter.Singleton.SaveVideo("20170726/WhizHome 20170.png");
+            MediaController.Singleton.SaveVideo("20170726/WhizHome 20170726_203921_video.png");
+            MediaController.Singleton.SaveVideo("20170726/WhizHome 20170726_203921.png");
+            MediaController.Singleton.SaveVideo("20170726/WhizHome 20170.png");
         }
 
         public void FileIndexTest()
@@ -44,7 +45,7 @@ namespace IMAV
 
         public void GetImageTest()
         {
-            UIImage im = MediaCenter.Singleton.imageGallery.GetImage("20170727/WhizHome 20170727_114540.png");
+            UIImage im = MediaController.Singleton.imageGallery.GetImage("20170727/WhizHome 20170727_114540.png");
             if (im == null)
                 Debug.Log("empty image");
             else
@@ -53,7 +54,7 @@ namespace IMAV
 
         public void RenameImageTest()
         {
-            MediaCenter.Singleton.RenameFile("20170727/WhizHome 20170727_175334.png", "HelloWorld3");
+            MediaController.Singleton.RenameFile("20170727/WhizHome 20170727_175334.png", "HelloWorld3");
         }
 
         public void ChangeTest()

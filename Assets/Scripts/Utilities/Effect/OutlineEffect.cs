@@ -1,5 +1,5 @@
 /*
-//  Copyright (c) 2015 JosÃ© Guerreiro. All rights reserved.
+//  Copyright (c) 2015 José Guerreiro. All rights reserved.
 //
 //  MIT license, see http://www.opensource.org/licenses/mit-license.php
 //  
@@ -23,22 +23,36 @@
 */
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.Rendering;
+using UnityEngine.VR;
 
 namespace IMAV.Effect
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Camera))]
+    [ExecuteInEditMode]
     public class OutlineEffect : MonoBehaviour
     {
-        List<Outline> outlines = new List<Outline>();
+        private static OutlineEffect m_instance;
+        public static OutlineEffect Instance
+        {
+            get
+            {
+                if(Equals(m_instance, null))
+                {
+                    return m_instance = FindObjectOfType(typeof(OutlineEffect)) as OutlineEffect;
+                }
 
-        public Camera sourceCamera;
-        public Camera outlineCamera;
+                return m_instance;
+            }
+        }
+        private OutlineEffect() { }
 
-        [Range(0, 4)]
-        public float lineThickness = 4f;
+        private readonly LinkedSet<Outline> outlines = new LinkedSet<Outline>();
+
+        [Range(1.0f, 6.0f)]
+        public float lineThickness = 1.25f;
         [Range(0, 10)]
         public float lineIntensity = .5f;
         [Range(0, 1)]
@@ -48,34 +62,48 @@ namespace IMAV.Effect
         public Color lineColor1 = Color.green;
         public Color lineColor2 = Color.blue;
 
-        [Range(0, 1)]
-        public float alphaCutoff = .5f;
-        public bool additiveRendering = true;
-        public bool flipY = false;
+        public bool additiveRendering = false;
+
+        public bool backfaceCulling = true;
+
         [Header("These settings can affect performance!")]
         public bool cornerOutlines = false;
         public bool addLinesBetweenColors = false;
 
+        [Header("Advanced settings")]
+        public bool scaleWithScreenSize = true;
+        [Range(0.1f, .9f)]
+        public float alphaCutoff = .5f;
+        public bool flipY = false;
+        public Camera sourceCamera;
+
+        [HideInInspector]
+        public Camera outlineCamera;
         Material outline1Material;
         Material outline2Material;
         Material outline3Material;
         Material outlineEraseMaterial;
         Shader outlineShader;
         Shader outlineBufferShader;
-        Material outlineShaderMaterial;
-        RenderTexture renderTexture;
-        RenderTexture extraRenderTexture;
+        [HideInInspector]
+        public Material outlineShaderMaterial;
+        [HideInInspector]
+        public RenderTexture renderTexture;
+        [HideInInspector]
+        public RenderTexture extraRenderTexture;
+
+        CommandBuffer commandBuffer;
 
         Material GetMaterialFromID(int ID)
         {
-            if (ID == 0)
+            if(ID == 0)
                 return outline1Material;
-            else if (ID == 1)
+            else if(ID == 1)
                 return outline2Material;
             else
                 return outline3Material;
         }
-
+        List<Material> materialBuffer = new List<Material>();
         Material CreateMaterial(Color emissionColor)
         {
             Material m = new Material(outlineBufferShader);
@@ -90,41 +118,48 @@ namespace IMAV.Effect
             return m;
         }
 
+        private void Awake()
+        {
+            m_instance = this;
+        }
+
         void Start()
         {
             CreateMaterialsIfNeeded();
             UpdateMaterialsPublicProperties();
 
-            if (sourceCamera == null)
+            if(sourceCamera == null)
             {
                 sourceCamera = GetComponent<Camera>();
 
-                if (sourceCamera == null)
+                if(sourceCamera == null)
                     sourceCamera = Camera.main;
             }
 
-            if (outlineCamera == null)
+            if(outlineCamera == null)
             {
                 GameObject cameraGameObject = new GameObject("Outline Camera");
                 cameraGameObject.transform.parent = sourceCamera.transform;
                 outlineCamera = cameraGameObject.AddComponent<Camera>();
+                outlineCamera.enabled = false;
             }
 
             renderTexture = new RenderTexture(sourceCamera.pixelWidth, sourceCamera.pixelHeight, 16, RenderTextureFormat.Default);
             extraRenderTexture = new RenderTexture(sourceCamera.pixelWidth, sourceCamera.pixelHeight, 16, RenderTextureFormat.Default);
             UpdateOutlineCameraFromSource();
+
+            commandBuffer = new CommandBuffer();
+            outlineCamera.AddCommandBuffer(CameraEvent.BeforeImageEffects, commandBuffer);
         }
 
-        void OnDestroy()
+        public void OnPreRender()
         {
-            renderTexture.Release();
-            extraRenderTexture.Release();
-            DestroyMaterials();
-        }
+            if(commandBuffer == null)
+                return;
 
-        void OnPreCull()
-        {
-            if (renderTexture.width != sourceCamera.pixelWidth || renderTexture.height != sourceCamera.pixelHeight)
+            CreateMaterialsIfNeeded();
+
+            if(renderTexture == null || renderTexture.width != sourceCamera.pixelWidth || renderTexture.height != sourceCamera.pixelHeight)
             {
                 renderTexture = new RenderTexture(sourceCamera.pixelWidth, sourceCamera.pixelHeight, 16, RenderTextureFormat.Default);
                 extraRenderTexture = new RenderTexture(sourceCamera.pixelWidth, sourceCamera.pixelHeight, 16, RenderTextureFormat.Default);
@@ -132,53 +167,104 @@ namespace IMAV.Effect
             }
             UpdateMaterialsPublicProperties();
             UpdateOutlineCameraFromSource();
+            outlineCamera.targetTexture = renderTexture;
+            commandBuffer.SetRenderTarget(renderTexture);
 
-            if (outlines != null)
+            commandBuffer.Clear();
+            if(outlines != null)
             {
-                for (int i = 0; i < outlines.Count; i++)
+                foreach(Outline outline in outlines)
                 {
-                    if (outlines[i] != null)
+                    LayerMask l = sourceCamera.cullingMask;
+
+                    if(outline != null && l == (l | (1 << outline.originalLayer)))
                     {
-                        outlines[i].originalMaterial = outlines[i].GetComponent<Renderer>().sharedMaterial;
-                        outlines[i].originalLayer = outlines[i].gameObject.layer;
-
-                        if (outlines[i].eraseRenderer)
-                            outlines[i].GetComponent<Renderer>().sharedMaterial = outlineEraseMaterial;
-                        else
-                            outlines[i].GetComponent<Renderer>().sharedMaterial = GetMaterialFromID(outlines[i].color);
-
-                        if (outlines[i].GetComponent<Renderer>() is MeshRenderer)
+                        for(int v = 0; v < outline.Renderer.sharedMaterials.Length; v++)
                         {
-                            outlines[i].GetComponent<Renderer>().sharedMaterial.mainTexture = outlines[i].originalMaterial.mainTexture;
-                        }
+                            Material m = null;
 
-                        outlines[i].gameObject.layer = LayerMask.NameToLayer("Outline");
+                            if(outline.Renderer.sharedMaterials[v].mainTexture != null && outline.Renderer.sharedMaterials[v])
+                            {
+                                foreach(Material g in materialBuffer)
+                                {
+                                    if(g.mainTexture == outline.Renderer.sharedMaterials[v].mainTexture)
+                                    {
+                                        if(outline.eraseRenderer && g.color == outlineEraseMaterial.color)
+                                            m = g;
+                                        else if(g.color == GetMaterialFromID(outline.color).color)
+                                            m = g;
+                                    }
+                                }
+
+                                if(m == null)
+                                {
+                                    if(outline.eraseRenderer)
+                                        m = new Material(outlineEraseMaterial);
+                                    else
+                                        m = new Material(GetMaterialFromID(outline.color));
+                                    m.mainTexture = outline.Renderer.sharedMaterials[v].mainTexture;
+                                    materialBuffer.Add(m);
+                                }
+                            }
+                            else
+                            {
+                                if(outline.eraseRenderer)
+                                    m = outlineEraseMaterial;
+                                else
+                                    m = GetMaterialFromID(outline.color);
+                            }
+
+                            if(backfaceCulling)
+                                m.SetInt("_Culling", (int)UnityEngine.Rendering.CullMode.Back);
+                            else
+                                m.SetInt("_Culling", (int)UnityEngine.Rendering.CullMode.Off);
+
+                            commandBuffer.DrawRenderer(outline.GetComponent<Renderer>(), m, 0, 0);
+                            MeshFilter mL = outline.GetComponent<MeshFilter>();
+                            if(mL)
+                            {
+                                for(int i = 1; i < mL.sharedMesh.subMeshCount; i++)
+                                    commandBuffer.DrawRenderer(outline.GetComponent<Renderer>(), m, i, 0);
+                            }
+                            SkinnedMeshRenderer sMR = outline.GetComponent<SkinnedMeshRenderer>();
+                            if(sMR)
+                            {
+                                for(int i = 1; i < sMR.sharedMesh.subMeshCount; i++)
+                                    commandBuffer.DrawRenderer(outline.GetComponent<Renderer>(), m, i, 0);
+                            }
+                        }
                     }
                 }
             }
 
             outlineCamera.Render();
+        }
 
-            if (outlines != null)
+        private void OnEnable()
+        {
+            Outline[] o = FindObjectsOfType<Outline>();
+
+            foreach(Outline oL in o)
             {
-                for (int i = 0; i < outlines.Count; i++)
-                {
-                    if (outlines[i] != null)
-                    {
-                        if (outlines[i].GetComponent<Renderer>() is MeshRenderer)
-                            outlines[i].GetComponent<Renderer>().sharedMaterial.mainTexture = null;
-
-                        outlines[i].GetComponent<Renderer>().sharedMaterial = outlines[i].originalMaterial;
-                        outlines[i].gameObject.layer = outlines[i].originalLayer;
-                    }
-                }
+                oL.enabled = false;
+                oL.enabled = true;
             }
+        }
+
+        void OnDestroy()
+        {
+            if(renderTexture != null)
+                renderTexture.Release();
+            if(extraRenderTexture != null)
+                extraRenderTexture.Release();
+            DestroyMaterials();
         }
 
         void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
             outlineShaderMaterial.SetTexture("_OutlineSource", renderTexture);
-            if (addLinesBetweenColors)
+
+            if(addLinesBetweenColors)
             {
                 Graphics.Blit(source, extraRenderTexture, outlineShaderMaterial, 0);
                 outlineShaderMaterial.SetTexture("_OutlineSource", extraRenderTexture);
@@ -188,28 +274,33 @@ namespace IMAV.Effect
 
         private void CreateMaterialsIfNeeded()
         {
-            if (outlineShader == null)
+            if(outlineShader == null)
                 outlineShader = Resources.Load<Shader>("OutlineShader");
-            if (outlineBufferShader == null)
+            if(outlineBufferShader == null)
+            {
                 outlineBufferShader = Resources.Load<Shader>("OutlineBufferShader");
-            if (outlineShaderMaterial == null)
+            }
+            if(outlineShaderMaterial == null)
             {
                 outlineShaderMaterial = new Material(outlineShader);
                 outlineShaderMaterial.hideFlags = HideFlags.HideAndDontSave;
                 UpdateMaterialsPublicProperties();
             }
-            if (outlineEraseMaterial == null)
+            if(outlineEraseMaterial == null)
                 outlineEraseMaterial = CreateMaterial(new Color(0, 0, 0, 0));
-            if (outline1Material == null)
+            if(outline1Material == null)
                 outline1Material = CreateMaterial(new Color(1, 0, 0, 0));
-            if (outline2Material == null)
+            if(outline2Material == null)
                 outline2Material = CreateMaterial(new Color(0, 1, 0, 0));
-            if (outline3Material == null)
+            if(outline3Material == null)
                 outline3Material = CreateMaterial(new Color(0, 0, 1, 0));
         }
 
         private void DestroyMaterials()
         {
+            foreach(Material m in materialBuffer)
+                DestroyImmediate(m);
+            materialBuffer.Clear();
             DestroyImmediate(outlineShaderMaterial);
             DestroyImmediate(outlineEraseMaterial);
             DestroyImmediate(outline1Material);
@@ -224,26 +315,58 @@ namespace IMAV.Effect
             outline3Material = null;
         }
 
-        private void UpdateMaterialsPublicProperties()
+        public void UpdateMaterialsPublicProperties()
         {
-            if (outlineShaderMaterial)
+            if(outlineShaderMaterial)
             {
-                outlineShaderMaterial.SetFloat("_LineThicknessX", lineThickness / 1000);
-                outlineShaderMaterial.SetFloat("_LineThicknessY", lineThickness / 1000);
+                float scalingFactor = 1;
+                if(scaleWithScreenSize)
+                {
+                    // If Screen.height gets bigger, outlines gets thicker
+                    scalingFactor = Screen.height / 360.0f;
+                }
+
+                // If scaling is too small (height less than 360 pixels), make sure you still render the outlines, but render them with 1 thickness
+                if(scaleWithScreenSize && scalingFactor < 1)
+                {
+                    if(VRSettings.isDeviceActive && sourceCamera.stereoTargetEye != StereoTargetEyeMask.None)
+                    {
+                        outlineShaderMaterial.SetFloat("_LineThicknessX", (1 / 1000.0f) * (1.0f / VRSettings.eyeTextureWidth) * 1000.0f);
+                        outlineShaderMaterial.SetFloat("_LineThicknessY", (1 / 1000.0f) * (1.0f / VRSettings.eyeTextureHeight) * 1000.0f);
+                    }
+                    else
+                    {
+                        outlineShaderMaterial.SetFloat("_LineThicknessX", (1 / 1000.0f) * (1.0f / Screen.width) * 1000.0f);
+                        outlineShaderMaterial.SetFloat("_LineThicknessY", (1 / 1000.0f) * (1.0f / Screen.height) * 1000.0f);
+                    }
+                }
+                else
+                {
+                    if(VRSettings.isDeviceActive && sourceCamera.stereoTargetEye != StereoTargetEyeMask.None)
+                    {
+                        outlineShaderMaterial.SetFloat("_LineThicknessX", scalingFactor * (lineThickness / 1000.0f) * (1.0f / VRSettings.eyeTextureWidth) * 1000.0f);
+                        outlineShaderMaterial.SetFloat("_LineThicknessY", scalingFactor * (lineThickness / 1000.0f) * (1.0f / VRSettings.eyeTextureHeight) * 1000.0f);
+                    }
+                    else
+                    {
+                        outlineShaderMaterial.SetFloat("_LineThicknessX", scalingFactor * (lineThickness / 1000.0f) * (1.0f / Screen.width) * 1000.0f);
+                        outlineShaderMaterial.SetFloat("_LineThicknessY", scalingFactor * (lineThickness / 1000.0f) * (1.0f / Screen.height) * 1000.0f);
+                    }
+                }
                 outlineShaderMaterial.SetFloat("_LineIntensity", lineIntensity);
                 outlineShaderMaterial.SetFloat("_FillAmount", fillAmount);
-                outlineShaderMaterial.SetColor("_LineColor1", lineColor0);
-                outlineShaderMaterial.SetColor("_LineColor2", lineColor1);
-                outlineShaderMaterial.SetColor("_LineColor3", lineColor2);
-                if (flipY)
+                outlineShaderMaterial.SetColor("_LineColor1", lineColor0 * lineColor0);
+                outlineShaderMaterial.SetColor("_LineColor2", lineColor1 * lineColor1);
+                outlineShaderMaterial.SetColor("_LineColor3", lineColor2 * lineColor2);
+                if(flipY)
                     outlineShaderMaterial.SetInt("_FlipY", 1);
                 else
                     outlineShaderMaterial.SetInt("_FlipY", 0);
-                if (!additiveRendering)
+                if(!additiveRendering)
                     outlineShaderMaterial.SetInt("_Dark", 1);
                 else
                     outlineShaderMaterial.SetInt("_Dark", 0);
-                if (cornerOutlines)
+                if(cornerOutlines)
                     outlineShaderMaterial.SetInt("_CornerOutlines", 1);
                 else
                     outlineShaderMaterial.SetInt("_CornerOutlines", 0);
@@ -258,23 +381,27 @@ namespace IMAV.Effect
             outlineCamera.renderingPath = RenderingPath.Forward;
             outlineCamera.backgroundColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
             outlineCamera.clearFlags = CameraClearFlags.SolidColor;
-            outlineCamera.cullingMask = LayerMask.GetMask("Outline");
             outlineCamera.rect = new Rect(0, 0, 1, 1);
-            outlineCamera.enabled = true;
+            outlineCamera.cullingMask = 0;
             outlineCamera.targetTexture = renderTexture;
+            outlineCamera.enabled = false;
+#if UNITY_5_6_OR_NEWER
+            outlineCamera.allowHDR = false;
+#else
+            outlineCamera.hdr = false;
+#endif
         }
 
         public void AddOutline(Outline outline)
         {
-            if (!outlines.Contains(outline))
-            {
+            if(!outlines.Contains(outline))
                 outlines.Add(outline);
-            }
-        }
-        public void RemoveOutline(Outline outline)
-        {
-            outlines.Remove(outline);
         }
 
+        public void RemoveOutline(Outline outline)
+        {
+            if(outlines.Contains(outline))
+                outlines.Remove(outline);
+        }
     }
 }

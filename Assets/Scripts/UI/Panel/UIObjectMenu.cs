@@ -1,7 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using IMAV.Model;
+using IMAV.Controller;
 
 namespace IMAV.UI
 {
@@ -19,7 +20,7 @@ namespace IMAV.UI
         bool menushowed = true;
 
         ARProduct currentObject;
-        ProductData product;
+        Product product;
         int loadingProductCount = 0;
         RectTransform contentRect;
 
@@ -33,7 +34,7 @@ namespace IMAV.UI
             currentObject = ResourceManager.Singleton.CurrentObject;
             if (currentObject != null)
             {
-                DataCenter.Singleton.GetProduct(currentObject.SKU, InitProduct);
+                DataController.Singleton.GetProduct(currentObject.SKU, InitProduct);
                 base.Open();
             }
         }
@@ -53,10 +54,10 @@ namespace IMAV.UI
             }
         }
 
-        void InitProduct(ProductData data)
+        void InitProduct(Product data)
         {
             product = data;
-            if (product.ProductInfo.product_links == null || product.ProductInfo.product_links.Count == 0)
+            if (product.product_links == null || product.product_links.Count == 0)
                 relativeButton.SetActive(false);
             else
                 relativeButton.SetActive(true);
@@ -90,20 +91,20 @@ namespace IMAV.UI
             Clear();
             ShowMenu(false);
             loadingUI.Show();
-            loadingProductCount = product.ProductInfo.product_links.Count;
-            for (int i = 0; i < product.ProductInfo.product_links.Count; i++)
+            loadingProductCount = product.product_links.Count;
+            for (int i = 0; i < product.product_links.Count; i++)
             {
-                DataCenter.Singleton.GetProduct(product.ProductInfo.product_links[i], AddProductItem);
+                DataController.Singleton.GetProduct(product.product_links[i], AddProductItem);
             }
         }
 
-        void AddProductItem(ProductData data)
+        void AddProductItem(Product data)
         {
             GameObject obj = Instantiate(productPrefab, contentGroup.transform);
             obj.transform.localScale = Vector3.one;
-            obj.name = data.ProductInfo.sku;
+            obj.name = data.sku;
             ResObjectItem item = obj.GetComponent<ResObjectItem>();
-            item.Init(data.ProductInfo.name, data.ProductInfo.sku, data.icon, LoadObject);
+            item.Init(data.name, data.sku, data.icon, LoadObject);
             loadingProductCount--;
             if (loadingProductCount == 0)
             {
@@ -114,7 +115,7 @@ namespace IMAV.UI
 
         void LoadObject(string cat, System.Object sku)
         {
-            DataCenter.Singleton.LoadModelData((string)sku);
+            DataController.Singleton.LoadModelData((string)sku);
             BacktoMenu();
         }
 
@@ -178,7 +179,7 @@ namespace IMAV.UI
 
         public void Share()
         {
-            MediaCenter.Singleton.ShareString(MagentoService.webPageUrl + product.ProductInfo.name + ".html");
+            MediaController.Singleton.ShareString(MagentoService.webPageUrl + product.name + ".html");
         }
     }
 }

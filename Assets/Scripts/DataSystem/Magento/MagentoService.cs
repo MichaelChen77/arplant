@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using IMAV;
+using IMAV.Model;
+using IMAV.Controller;
 
 public delegate void CategoryDownloadCallback(List<Category> categories);
 public delegate void CategoryProductDownloadCallback(long categoryId, List<CategoryProduct> cpList);
@@ -118,9 +120,10 @@ public class MagentoService : MonoBehaviour {
 #if UNITY_ANDROID
             url = Tags.AndroidEcModelUrl + sku;
 #elif UNITY_IOS
-            url = Tags.IOSEcModelUrl + sku;
+            url = Tags.AndroidEcModelUrl + sku;
 #endif
         }
+        Debug.Log("url: "+url);
         WWW www = new WWW(url);
         yield return www;
 
@@ -137,7 +140,7 @@ public class MagentoService : MonoBehaviour {
             }
             else
             {
-                System.Object[] objs = new System.Object[] { DataCenter.Singleton.defaultModel };
+                System.Object[] objs = new System.Object[] { DataController.Singleton.defaultModel };
                 callback(sku, objs);
             }
         }

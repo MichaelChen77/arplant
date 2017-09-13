@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.IO;
 using System.Collections;
 using System.Linq;
@@ -31,7 +30,7 @@ namespace IMAV.UI
 
         public override void Open()
         {
-            ResourceManager.Singleton.Pause();
+            //ResourceManager.Singleton.Pause();
             base.Open();
             topPos = -spaceY;
             DirectoryInfo dir = new DirectoryInfo(DataUtility.GetScreenThumbnailPath());
@@ -41,7 +40,7 @@ namespace IMAV.UI
         public override void Close()
         {
             base.Close();
-            ResourceManager.Singleton.Resume();
+            //ResourceManager.Singleton.Resume();
         }
 
         IEnumerator LoadDirectory(DirectoryInfo dir)
@@ -203,7 +202,7 @@ namespace IMAV.UI
             else
             {
                 string path = DataUtility.GetScreenShotPath() + im.ImageTag;
-                MediaCenter.Singleton.ShowScreenShot(im.ImageTag);
+                Controller.MediaController.Singleton.ShowScreenShot(im.ImageTag);
             }
         }
 

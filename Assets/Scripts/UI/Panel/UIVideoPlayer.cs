@@ -79,7 +79,6 @@ namespace IMAV.UI
 
         public void Open(string str)
         {
-            ResourceManager.Singleton.Pause();
             Open();
             image.rectTransform.sizeDelta = playerRect.rect.size;
             Load(str);
@@ -227,14 +226,13 @@ namespace IMAV.UI
 
         public void ShareVideo()
         {
-            MediaCenter.Singleton.ShareMedia(true, videoPath);
+            Controller.MediaController.Singleton.ShareMedia(true, videoPath);
         }
 
         public override void Close()
         {
             player.Stop();
             ShowMenu(false);
-            ResourceManager.Singleton.Resume();
             base.Close();
         }
     }

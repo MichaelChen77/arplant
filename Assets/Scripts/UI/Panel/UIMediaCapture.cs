@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.IO;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using IMAV.Controller;
 
 namespace IMAV.UI
 {
@@ -10,7 +8,7 @@ namespace IMAV.UI
     {
         public GameObject thumbnailImage;
         public GameObject imageCaptureButton;
-        public GToggleButton videoRecordButton;
+        public Button videoRecordButton;
         public GameObject closeButton;
         public GameObject pauseButton;
         public GameObject stopButton;
@@ -30,12 +28,12 @@ namespace IMAV.UI
         {
             if (Everyplay.IsSupported() && Everyplay.IsRecordingSupported())
             {
-                videoRecordButton.setTrigger(true);
+                videoRecordButton.gameObject.SetActive(true);
                 InitEvents();
             }
             else
             {
-                videoRecordButton.setTrigger(false);
+                videoRecordButton.gameObject.SetActive(false);
                 DestroyEvents();
             }
         }
@@ -65,7 +63,7 @@ namespace IMAV.UI
             isPaused = false;
             recordTime = 0;
             lastRecordSec = 0;
-            MediaCenter.Singleton.StartRecordVideo();
+            MediaController.Singleton.StartRecordVideo();
         }
 
         private void RecordingStopped()
@@ -73,46 +71,39 @@ namespace IMAV.UI
             SetIsRecording(false);
             recordTime = 0;
             SetRecordTimeText();
-            MediaCenter.Singleton.StopRecordVideo(OnPostScreenCaptured);
+            MediaController.Singleton.StopRecordVideo(OnPostScreenCaptured);
         }
 
         public override void Open()
         {
             base.Open();
-            previewImage.sprite = MediaCenter.Singleton.GetLatestThumbnail();
+            previewImage.sprite = MediaController.Singleton.GetLatestThumbnail();
         }
 
         public void CaptureImage()
         {
             thumbnailImage.transform.localScale = Vector3.zero;
-            MediaCenter.Singleton.CaptureScreen(isRecording, true, OnPostScreenCaptured);
+            MediaController.Singleton.CaptureScreen(isRecording, true, OnPostScreenCaptured);
         }
 
         void OnPostScreenCaptured(string path)
         {
-            Sprite sp = MediaCenter.Singleton.GetImage(path, true);
+            Sprite sp = MediaController.Singleton.GetImage(path, true);
             previewImage.sprite = sp;
             LeanTween.scale(thumbnailImage, Vector3.one, 0.4f);
         }
 
         public void StartVideoRecord()
         {
-            if (Everyplay.IsSupported() && Everyplay.IsRecordingSupported())
-            {
-                if (Everyplay.IsReadyForRecording())
-                    Everyplay.StartRecording();
-                else
-                    MediaCenter.Singleton.msgDialog.Show("Video recording is not ready yet, please try again later");
-            }
+            if (Everyplay.IsReadyForRecording())
+                Everyplay.StartRecording();
             else
-            {
-                MediaCenter.Singleton.msgDialog.Show("Video recording is not supported in this device");
-            }
+                MediaController.Singleton.msgDialog.Show("Video recording is not ready yet, please try again later");
         }
 
-        private void Everyplay_ReadyForRecording(bool enabled)
+        void Everyplay_ReadyForRecording(bool isEnabled)
         {
-            videoRecordButton.setTrigger(enabled);
+            videoRecordButton.interactable = isEnabled;
         }
 
         void SetIsRecording(bool flag)
@@ -147,14 +138,14 @@ namespace IMAV.UI
 
         public void ShowImage()
         {
-            if (MediaCenter.Singleton.ExistFile)
+            if (MediaController.Singleton.ExistFile)
             {
-                MediaCenter.Singleton.ShowLatestImage();
+                MediaController.Singleton.ShowLatestImage();
                 Close();
             }
             else
             {
-                MediaCenter.Singleton.msgDialog.Show("Not any image\video exist in the gallery!");
+                MediaController.Singleton.msgDialog.Show("Not any image or video exist in the gallery!");
             }
         }
 
@@ -165,8 +156,6 @@ namespace IMAV.UI
                 recordTime += Time.deltaTime;
                 SetRecordTimeText();
             }
-            if (Everyplay.IsReadyForRecording())
-                videoRecordButton.gameObject.SetActive(true);
         }
 
         void SetRecordTimeText()

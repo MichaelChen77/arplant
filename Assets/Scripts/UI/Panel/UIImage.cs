@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using IMAV.Controller;
 
 namespace IMAV.UI
 {
@@ -56,7 +57,7 @@ namespace IMAV.UI
         {
             Clear();
             imageTag = dir + "/" + f.Name;
-            if(MediaCenter.Singleton.IsVideoImage(imageTag))
+            if(MediaController.Singleton.IsVideoImage(imageTag))
                 Instantiate(videoCover, transform);
             name = f.Name;
             if (animated > 0)
@@ -84,13 +85,13 @@ namespace IMAV.UI
         IEnumerator Load(string str)
         {
             yield return null;
-            image.sprite = MediaCenter.Singleton.GetImage(str, true);
+            image.sprite = MediaController.Singleton.GetImage(str, true);
         }
 
         public void Delete(bool removeFile)
         {
             if (removeFile)
-                MediaCenter.Singleton.DeleteFile(imageTag);
+                MediaController.Singleton.DeleteFile(imageTag);
             Clear();
             Delete();
         }

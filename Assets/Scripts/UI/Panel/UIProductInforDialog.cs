@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
+using IMAV.Model;
 
 namespace IMAV.UI
 {
@@ -15,16 +13,16 @@ namespace IMAV.UI
         public Text timeText;
         public Text priceText;
 
-        public void Open(ProductData data)
+        public void Open(Product data)
         {
             base.Open();
             productImage.sprite = data.icon;
-            nameText.text = data.ProductInfo.name;
-            catText.text = data.ProductInfo.type_id;
-            skuText.text = data.ProductInfo.sku;
-            weightText.text = data.ProductInfo.weight.ToString();
-            timeText.text = data.ProductInfo.updated_at;
-            priceText.text = data.ProductInfo.price.ToString();
+            nameText.text = data.name;
+            catText.text = data.type_id;
+            skuText.text = data.sku;
+            weightText.text = data.weight.ToString();
+            timeText.text = data.updated_at;
+            priceText.text = data.price.ToString();
         }
     }
 }

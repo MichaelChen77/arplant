@@ -7,10 +7,13 @@ namespace IMAV
 {
     public class DataUtility
     {
+        public const float ProductRotateSpeed = 1000f;
+
         public static ARProduct CurrentObject = null;
         public static DontDestroy dontdestroy = null;
         public static ARTrackingMode TrackingMode = ARTrackingMode.Markerless;
         public static bool WorkOnLocal = false;
+        public static string ProjectPath = Application.dataPath.Substring(0, Application.dataPath.Length - 7);
 
         public static Sprite CreateSprite(byte[] bytes)
         {
@@ -94,30 +97,10 @@ namespace IMAV
             }
         }
 
-        //public static string GetModelPath(FurnitureData _data)
-        //{
-        //    return _data.category_name + "/" + _data.id + "/OBJ/";
-        //}
-
-        //public static string GetLocalModelPath(FurnitureData _data)
-        //{
-        //    return Application.persistentDataPath + "/Data/" + _data.category_name + "/" + _data.id + "/OBJ/";
-        //}
-
-        //public static string GetLocalModelFile(FurnitureData _data)
-        //{
-        //    return GetLocalModelPath(_data) + _data.name + ".obj";
-        //}
-
-        //public static string GetImagePath(FurnitureData _data)
-        //{
-        //    return _data.category_name + "/" + _data.id + "/" + _data.name;
-        //}
-
         public static string GetScreenShotPath()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            return @"C:\WorkSpace\AR\TestImages\ScreenShots\";
+            return ProjectPath +"/TestSample/ScreenShots/";
 #else
             return Application.persistentDataPath + "/ScreenShots/";
 #endif
@@ -126,7 +109,7 @@ namespace IMAV
         public static string GetScreenThumbnailPath()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            return @"C:\WorkSpace\AR\TestImages\ScreenThumbnails\";
+            return ProjectPath + "/TestSample/ScreenThumbnails/";
 #else
             return Application.persistentDataPath + "/ScreenThumbnails/";
 #endif
@@ -136,7 +119,7 @@ namespace IMAV
         public static string GetScreenVideoPath()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            return @"C:\WorkSpace\AR\TestImages\Videos\";
+            return ProjectPath + "/TestSample/Videos/";
 #else
             return Application.persistentDataPath + "/Videos/";
 #endif
@@ -158,7 +141,7 @@ namespace IMAV
         public static string GetCategoryPath()
         {
 #if UNITY_EDITOR
-            return @"C:\WorkSpace\AR\TestImages\Cats\";
+            return ProjectPath + "/TestSample/Cats/";
 #else
             return Application.persistentDataPath + "/Cats/";
 #endif
@@ -167,7 +150,7 @@ namespace IMAV
         public static string GetProductPath()
         {
 #if UNITY_EDITOR
-            return @"C:\WorkSpace\AR\TestImages\Products\";
+            return ProjectPath + "/TestSample/Products/";
 #else
             return Application.persistentDataPath + "/Products/";
 #endif
@@ -176,7 +159,7 @@ namespace IMAV
         public static string GetProductIconPath()
         {
 #if UNITY_EDITOR
-            return @"C:\WorkSpace\AR\TestImages\Products\Icons\";
+            return ProjectPath + "/TestSample/Products/Icons/";
 #else
             return Application.persistentDataPath + "/Products/Icons/";
 #endif
@@ -185,7 +168,7 @@ namespace IMAV
         public static string GetProductModelPath()
         {
 #if UNITY_EDITOR
-            return @"C:\WorkSpace\AR\TestImages\Products\Models\";
+            return ProjectPath + "/TestSample/Products/Models/";
 #else
             return Application.persistentDataPath + "/Products/Models/";
 #endif
@@ -194,10 +177,32 @@ namespace IMAV
         public static string GetCategoryFile()
         {
 #if UNITY_EDITOR
-            return @"C:\WorkSpace\AR\TestImages\Cats\cats.json";
+            return ProjectPath + "/TestSample/Cats/cats.json";
 #else
             return Application.persistentDataPath + "/Cats/cats.json";
 #endif
+        }
+
+        public static void SetObjectColliderLayer(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+			Collider[] cols = obj.GetComponentsInChildren<Collider>();
+			for (int i = 0; i < cols.Length; i++)
+			{
+                cols[i].gameObject.layer = layer;
+			}
+        }
+
+        public static void SetObjectLayer(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+            if(obj.transform.childCount > 0)
+            {
+                foreach(Transform child in obj.transform)
+                {
+                    SetObjectLayer(child.gameObject, layer);
+                }
+            }
         }
 
         public static int GetRelatedHeight(int w)
@@ -216,7 +221,9 @@ namespace IMAV
         public static void SetDirectory(string str)
         {
             if (!Directory.Exists(str))
+            {
                 Directory.CreateDirectory(str);
+            }
         }
 
         public static void Swap<T>(List<T> list, int indexA, int indexB)

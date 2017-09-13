@@ -4,7 +4,7 @@ namespace IMAV.UI
 {
     public class UIMenuPanel : UIControl
     {
-        public GameObject controlButton;
+        public GToggleButton controlButton;
         public RectTransform productRect;
         RectTransform panelRect;
         public RectTransform PanelRect
@@ -12,7 +12,7 @@ namespace IMAV.UI
             get { return panelRect; }
         }
 
-        bool isOpened = false;
+        public bool isOpened = false;
         public bool IsOpened
         {
             get { return isOpened; }
@@ -26,19 +26,30 @@ namespace IMAV.UI
         public override void Open()
         {
             isOpened = true;
+			if (controlButton != null)
+                controlButton.setTrigger(false);
             LeanTween.moveX(panelRect, -panelRect.rect.width, 0.25f).setEaseOutQuad();
-            if (productRect.gameObject.activeSelf)
+            if (productRect != null && productRect.gameObject.activeSelf)
                 productRect.offsetMax = new Vector2(-panelRect.rect.width, productRect.offsetMax.y);
-            controlButton.SetActive(false);
+        }
+
+        public void OpenTrigger()
+        {
+            if (isOpened)
+                Close();
+            else
+                Open();
         }
 
         public override void Close()
         {
             isOpened = false;
+			if (controlButton != null)
+				controlButton.setTrigger(true);
             LeanTween.moveX(panelRect, 0, 0.25f).setEaseInQuad();
-            if (productRect.gameObject.activeSelf)
+            if (productRect != null && productRect.gameObject.activeSelf)
                 productRect.offsetMax = new Vector2(0, productRect.offsetMax.y);
-            controlButton.SetActive(true);
+            
         }
     }
 }
