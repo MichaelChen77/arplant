@@ -1,0 +1,70 @@
+ManifestFileVersion: 0
+CRC: 614602554
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: l1d1
+      Dependencies: {}
+    Info_1:
+      Name: nctr-08a-a
+      Dependencies: {}
+    Info_2:
+      Name: jk01a
+      Dependencies: {}
+    Info_3:
+      Name: anctr-05
+      Dependencies: {}
+    Info_4:
+      Name: pantrytallboy
+      Dependencies: {}
+    Info_5:
+      Name: l2d1
+      Dependencies: {}
+    Info_6:
+      Name: nctr-08a-b
+      Dependencies: {}
+    Info_7:
+      Name: nctr-08a-c
+      Dependencies: {}
+    Info_8:
+      Name: chair
+      Dependencies: {}
+    Info_9:
+      Name: duval
+      Dependencies: {}
+    Info_10:
+      Name: snctr-09a
+      Dependencies: {}
+    Info_11:
+      Name: dualtable
+      Dependencies: {}
+    Info_12:
+      Name: bed
+      Dependencies: {}
+    Info_13:
+      Name: snctr-09b
+      Dependencies: {}
+    Info_14:
+      Name: sh4
+      Dependencies: {}
+    Info_15:
+      Name: angelstatue
+      Dependencies: {}
+    Info_16:
+      Name: crt-01
+      Dependencies: {}
+    Info_17:
+      Name: wardrobe
+      Dependencies: {}
+    Info_18:
+      Name: w2d1-rfa
+      Dependencies: {}
+    Info_19:
+      Name: sh2d2
+      Dependencies: {}
+    Info_20:
+      Name: jd-02
+      Dependencies: {}
+    Info_21:
+      Name: table_wood
+      Dependencies: {}
