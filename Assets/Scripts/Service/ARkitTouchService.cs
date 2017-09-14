@@ -9,6 +9,7 @@ namespace IMAV.Service
     public class ARkitTouchService : ITouchService
     {
         ProductController controller;
+        Vector2 offset;
 
         public ARkitTouchService(ProductController ctrl)
         {
@@ -57,16 +58,18 @@ namespace IMAV.Service
                 {
                     beginTouch = true;
                     touchTime = 0;
+                    Vector3 pos = Camera.main.WorldToScreenPoint(controller.transform.position);
+                    offset = new Vector2(pos.x - touch.position.x, pos.y - touch.position.y);
                 }
                 if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
                 {
-                    var screenPosition = Camera.main.ScreenToViewportPoint(touch.position);
+                    var screenPosition = Camera.main.ScreenToViewportPoint(touch.position + offset);
                     PlaceOnPlane(screenPosition);
                 }
                 else if (beginTouch && touch.phase == TouchPhase.Stationary)
                 {
                     touchTime += touch.deltaTime;
-                    if (touchTime > 0.8f)
+                    if (touchTime > 1f)
                     {
                         SceneController.Singleton.ChooseProduct(!controller.Choosed);
                         beginTouch = false;

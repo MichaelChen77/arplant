@@ -12,7 +12,7 @@ namespace IMAV.UI
             get { return panelRect; }
         }
 
-        public bool isOpened = false;
+        bool isOpened = false;
         public bool IsOpened
         {
             get { return isOpened; }
@@ -25,12 +25,15 @@ namespace IMAV.UI
 
         public override void Open()
         {
-            isOpened = true;
-			if (controlButton != null)
-                controlButton.setTrigger(false);
-            LeanTween.moveX(panelRect, -panelRect.rect.width, 0.25f).setEaseOutQuad();
-            if (productRect != null && productRect.gameObject.activeSelf)
-                productRect.offsetMax = new Vector2(-panelRect.rect.width, productRect.offsetMax.y);
+            if (!isOpened)
+            {
+                isOpened = true;
+                if (controlButton != null)
+                    controlButton.setTrigger(false);
+                LeanTween.moveX(panelRect, -panelRect.rect.width, 0.25f).setEaseOutQuad();
+                if (productRect != null && productRect.gameObject.activeSelf)
+                    productRect.offsetMax = new Vector2(-panelRect.rect.width, productRect.offsetMax.y);
+            }
         }
 
         public void OpenTrigger()
@@ -43,12 +46,15 @@ namespace IMAV.UI
 
         public override void Close()
         {
-            isOpened = false;
-			if (controlButton != null)
-				controlButton.setTrigger(true);
-            LeanTween.moveX(panelRect, 0, 0.25f).setEaseInQuad();
-            if (productRect != null && productRect.gameObject.activeSelf)
-                productRect.offsetMax = new Vector2(0, productRect.offsetMax.y);
+            if (isOpened)
+            {
+                isOpened = false;
+                if (controlButton != null)
+                    controlButton.setTrigger(true);
+                LeanTween.moveX(panelRect, 0, 0.25f).setEaseInQuad();
+                if (productRect != null && productRect.gameObject.activeSelf)
+                    productRect.offsetMax = new Vector2(0, productRect.offsetMax.y);
+            }
             
         }
     }

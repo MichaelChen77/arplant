@@ -52,7 +52,8 @@ namespace IMAV.UI
 
         public void ShowInfo()
         {
-            productDlg.Open(currentObject.ProductModel);
+            //productDlg.Open(currentObject.ProductModel);
+            productDlg.Open();
             LeanTween.moveY(infoRect, infoRect.sizeDelta.y, 0.3f);
         }
 

@@ -123,7 +123,6 @@ public class MagentoService : MonoBehaviour {
             url = Tags.AndroidEcModelUrl + sku;
 #endif
         }
-        Debug.Log("url: "+url);
         WWW www = new WWW(url);
         yield return www;
 

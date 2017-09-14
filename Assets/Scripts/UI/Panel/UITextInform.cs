@@ -16,6 +16,11 @@ namespace IMAV.UI
         bool mAutoHide = false;
         float mShowTime = 0f;
 
+        void Awake()
+        {
+            informRect = GetComponent<RectTransform>();
+        }
+
         public void ShowInform(string str, bool autoHide, float showTime)
         {
             gameObject.SetActive(true);  

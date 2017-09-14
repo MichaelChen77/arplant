@@ -20,7 +20,7 @@ namespace UnityEngine.XR.iOS
 			// ARKit ambient intensity ranges 0-2000
 			// Unity ambient intensity ranges 0-8 (for over-bright lights)
 			float newai = camera.ambientIntensity;
-			l.intensity = newai / 1000.0f;
+			l.intensity = newai*2 / 1000.0f;
 		}
     }
 }

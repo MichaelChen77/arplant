@@ -102,17 +102,19 @@ namespace IMAV.Controller
 					if (Physics.Raycast(ray, out hit))
 					{
 						GameObject touchedObject = hit.transform.gameObject;
-                        if (touchedObject == null || touchedObject.layer != SceneController.ProductLayer)
+                        if (touchedObject != null || touchedObject.layer == SceneController.ProductLayer)
                         {
-                            SceneController.Singleton.SetCurrentProduct(null);
-                            Debug.Log("Unity: touch on null");
+							SceneController.Singleton.SetCurrentObject(touchedObject);
+							Debug.Log("Unity: touch on object : " + touchedObject);
 						}
                         else
                         {
-                            SceneController.Singleton.SetCurrentObject(touchedObject);
-                            Debug.Log("Unity: touch on object : "+touchedObject);
+							SceneController.Singleton.SetCurrentProduct(null);
+							Debug.Log("Unity: touch on null");
                         }
 					}
+                    else
+                        SceneController.Singleton.SetCurrentProduct(null);
 					HideUI();
 				}
 

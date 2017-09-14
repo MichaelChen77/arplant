@@ -63,9 +63,14 @@ namespace IMAV.Controller
         public void SetCurrentProduct(ProductController obj)
         {
             if (currentObject != null)
+            {
                 currentObject.Selected = SelectState.None;
+                if (currentObject != obj && currentObject.Choosed)
+                    ChooseProduct(false);
+            }
             currentObject = obj;
-            currentObject.Selected = SelectState.Actived;
+            if (currentObject != null)
+                currentObject.Selected = SelectState.Actived;
         }
 
         public virtual void SetCurrentObject(GameObject obj)
@@ -89,15 +94,15 @@ namespace IMAV.Controller
 			try
 			{
                 SetCurrentProduct(null);
-                foreach (ProductController obj in objlist)
-				{
-                    obj.Delete();
-				}
+                for (int i = objlist.Count - 1; i > -1; i--)
+                {
+                    objlist[i].Delete();
+                }
 				objlist.Clear();
 			}
 			catch (System.Exception ex)
 			{
-				TestCenter.Singleton.Log("Clear error: " + ex.Message);
+                Debug.Log("Unity: Clear error: " + ex.Message);
 			}
 		}
 
@@ -112,6 +117,14 @@ namespace IMAV.Controller
         public abstract void Pause();
 
         public abstract void Resume();
+
+        public void OnApplicationPause(bool pause)
+        {
+            if (pause)
+                Pause();
+            else
+                Resume();
+        }
 
         public void ChooseProduct(bool choose)
         {

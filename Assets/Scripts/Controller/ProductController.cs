@@ -55,6 +55,8 @@ namespace IMAV.Controller
 
 		public void Delete()
 		{
+            if (Choosed)
+                SceneController.Singleton.ChooseProduct(false);
 			Destroy(gameObject);
 		}
 

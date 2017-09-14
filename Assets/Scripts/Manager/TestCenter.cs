@@ -7,6 +7,7 @@ namespace IMAV
     public class TestCenter : MonoBehaviour
     {
         public DebugView debugview;
+        public bool showOnPanel = true;
 
         private static TestCenter mSingleton;
         public static TestCenter Singleton
@@ -31,8 +32,18 @@ namespace IMAV
 
         public void Log(string str)
         {
-            if (debugview != null)
+            if (showOnPanel && debugview != null)
                 debugview.Log(str);
+            else
+                Debug.Log(str);
+        }
+
+        public void Log(string str, bool panelShow)
+        {
+            if (panelShow && debugview != null)
+                debugview.Log(str);
+            else
+                Debug.Log(str);
         }
 
         public void ShowLog()
