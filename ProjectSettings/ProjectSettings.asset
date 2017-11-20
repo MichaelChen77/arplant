@@ -229,7 +229,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/WorkSpace/AR/cschen.keystore
+  AndroidKeystoreName: D:/WorkSpace/AR/cschen.keystore
   AndroidKeyaliasName: cschen
   AndroidTVCompatibility: 1
   AndroidIsGame: 1

@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 using IMAV.Model;
+using IMAV.Service;
 
 namespace IMAV.Controller
 {
@@ -38,7 +38,7 @@ namespace IMAV.Controller
         {
             if (mSingleton != null)
             {
-                Destroy(gameObject);
+                Destroy(this);
             }
             else
             {
@@ -57,11 +57,11 @@ namespace IMAV.Controller
 
         public void CheckForUpdates()
         {
-            StartCoroutine(MagentoService.Instance.TopCategories(json =>
+            DataCollector.Singleton.TopCategories(json =>
             {
                 File.WriteAllText(DataUtility.GetCategoryFile(), json);
                 loadInitData(json);
-            }));
+            });
         }
 
         void loadInitData()
@@ -101,11 +101,11 @@ namespace IMAV.Controller
             }
             else
             {
-                StartCoroutine(MagentoService.Instance.GetCategoryImage(cat.id, (bytes) =>
+                DataCollector.Singleton.GetCategoryImage(cat.id, (bytes) =>
                 {
                     File.WriteAllBytes(path, bytes);
                     cat.icon = DataUtility.CreateSprite(bytes);
-                }));
+                });
             }
         }
 
@@ -130,12 +130,12 @@ namespace IMAV.Controller
             }
             else
             {
-                StartCoroutine(MagentoService.Instance.GetProductsInCategory(cat.id, (json) =>
+                DataCollector.Singleton.GetProductsInCategory(cat.id, (json) =>
                 {
                     File.WriteAllText(path, json);
                     cat.Products = JsonConvert.DeserializeObject<List<CategoryProduct>>(json);
                     cat.IsLoaded = true;
-                }));
+                });
             }
         }
 
@@ -145,7 +145,7 @@ namespace IMAV.Controller
                 callback(products[sku]);
             else
             {
-                StartCoroutine(MagentoService.Instance.GetProductDetail(sku, (p) =>
+                DataCollector.Singleton.GetProductDetail(sku, (p) =>
                 {
                     products[p.sku] = p;
                     productkeys.Push(p.sku);
@@ -156,7 +156,7 @@ namespace IMAV.Controller
                         products.Remove(str);
                     }
                     GetProductImage(p, callback);
-                }));
+                });
             }
         }
 
@@ -171,12 +171,12 @@ namespace IMAV.Controller
             }
             else
             {
-                StartCoroutine(MagentoService.Instance.GetProductImage(p.sku, (bytes) =>
+                DataCollector.Singleton.GetProductImage(p.sku, (bytes) =>
                 {
                     File.WriteAllBytes(path, bytes);
                     p.icon = DataUtility.CreateSprite(bytes);
                     callback(p);
-                }));
+                });
             }
         }
 
@@ -189,11 +189,11 @@ namespace IMAV.Controller
         {
             if (p.model == null)
             {
-                StartCoroutine(MagentoService.Instance.DownloadAssetBundle(p.sku, (psku, objs) =>
+                DataCollector.Singleton.DownloadAssetBundle(p.sku, (psku, objs) =>
                 {
                     p.model = (GameObject)objs[0];
                     LoadModelToScene(p);
-                }));
+                });
             }
             else
                 LoadModelToScene(p);

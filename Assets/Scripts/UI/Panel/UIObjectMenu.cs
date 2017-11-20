@@ -179,7 +179,7 @@ namespace IMAV.UI
 
         public void Share()
         {
-            MediaController.Singleton.ShareString(MagentoService.webPageUrl + product.name + ".html");
+            MediaController.Singleton.ShareString(Service.MagentoService.webPageUrl + product.name + ".html");
         }
     }
 }
