@@ -9,8 +9,8 @@ namespace IMAV.Controller
 {
     public class ProductController : MonoBehaviour
     {
-        ITouchService touchService;
-        public ITouchService TouchService
+        TouchService touchService;
+        public TouchService TouchService
         {
             get { return touchService; }
         }
@@ -60,7 +60,7 @@ namespace IMAV.Controller
 			Destroy(gameObject);
 		}
 
-        public void SetTouchService(ITouchService service)
+        public void SetTouchService(TouchService service)
         {
             touchService = service;
             touchService.Start();

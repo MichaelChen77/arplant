@@ -137,5 +137,10 @@ namespace IMAV.Controller
         {
             MediaController.Singleton.textInform.ShowInform(str, autoHide, 0.5f);
         }
+
+        protected virtual void hideInform()
+        {
+            MediaController.Singleton.textInform.Hide();
+        }
     }
 }

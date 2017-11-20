@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2035869965
+CRC: 4080326595
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5911c06aa45ed9751248614a85a8acf9
+    Hash: 1aa26290a906a87219d5b74fbab393b6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f451c2fa900e9178a57db1d033fd31a7
+    Hash: 528c589e1e3c5e5fa1d248f0259ce117
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/BakedAOSamples_Marcus/DuvalTable_mod.prefab
+- Assets/Prefab/BakedAOSamples_Marcus/DuvalTable.prefab
 Dependencies: []

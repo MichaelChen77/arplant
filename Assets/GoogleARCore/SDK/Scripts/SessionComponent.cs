@@ -124,15 +124,15 @@ namespace GoogleARCore
             }
         }
 
-        public void OnApplicationPause(bool isPaused)
-        {
-            if (SessionManager.ConnectionState != SessionConnectionState.Connected)
-            {
-                return;
-            }
+        //public void OnApplicationPause(bool isPaused)
+        //{
+        //    if (SessionManager.ConnectionState != SessionConnectionState.Connected)
+        //    {
+        //        return;
+        //    }
 
-            SessionManager.Instance.OnApplicationPause(isPaused);
-        }
+        //    SessionManager.Instance.OnApplicationPause(isPaused);
+        //}
 
         /// <summary>
         /// Connects an ARSession using <c>m_arSessionConfig</c> configuration. Note that if user permissions are needed

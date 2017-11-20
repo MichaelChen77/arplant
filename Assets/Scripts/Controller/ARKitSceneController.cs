@@ -10,7 +10,7 @@ namespace IMAV.Controller
     public class ARKitSceneController : SceneController
     {
         UnityARSessionNativeInterface m_session;
-        ARKitWorldTackingSessionConfiguration m_arconfig;
+        ARKitWorldTrackingSessionConfiguration m_arconfig;
 
         protected override void Awake()
         {
@@ -41,7 +41,7 @@ namespace IMAV.Controller
 
         void InitARConfig()
         {
-            m_arconfig = new ARKitWorldTackingSessionConfiguration();
+            m_arconfig = new ARKitWorldTrackingSessionConfiguration();
             m_arconfig.planeDetection = UnityARPlaneDetection.Horizontal;
             m_arconfig.alignment = UnityARAlignment.UnityARAlignmentGravity;
             m_arconfig.getPointCloudData = true;

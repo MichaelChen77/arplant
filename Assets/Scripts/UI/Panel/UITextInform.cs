@@ -15,6 +15,7 @@ namespace IMAV.UI
 
         bool mAutoHide = false;
         float mShowTime = 0f;
+        bool showed = false;
 
         void Awake()
         {
@@ -23,13 +24,17 @@ namespace IMAV.UI
 
         public void ShowInform(string str, bool autoHide, float showTime)
         {
-            gameObject.SetActive(true);  
-			informText.text = str;
-			mAutoHide = autoHide;
-			mShowTime = showTime;
+            gameObject.SetActive(true);
+            informText.text = str;
+            mAutoHide = autoHide;
+            mShowTime = showTime;
             if (informRect == null)
                 informRect = GetComponent<RectTransform>();
-            LeanTween.moveY(informRect, targetHeight, moveTime).setOnComplete(HideInform);
+            if (!showed)
+            {
+                LeanTween.moveY(informRect, targetHeight, moveTime).setOnComplete(HideInform);
+                showed = true;
+            }
         }
 
         public void ShowInform(string str, float delay)
@@ -68,10 +73,14 @@ namespace IMAV.UI
 
         public void Hide(float t)
         {
-            LeanTween.moveY(informRect, informRect.sizeDelta.y + 5, t).setOnComplete(() =>
+            if (gameObject.activeSelf)
             {
-                gameObject.SetActive(false);
-            });
+                LeanTween.moveY(informRect, informRect.sizeDelta.y + 5, t).setOnComplete(() =>
+                {
+                    showed = false;
+                    gameObject.SetActive(false);
+                });
+            }
         }
     }
 }

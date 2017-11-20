@@ -1,70 +1,82 @@
 ManifestFileVersion: 0
-CRC: 999634300
+CRC: 1343185502
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: anctr-05
+      Name: pantrytallboy
       Dependencies: {}
     Info_1:
-      Name: nctr-08a-c
+      Name: anctr-05
       Dependencies: {}
     Info_2:
-      Name: snctr-09b
+      Name: nctr-08a-c
       Dependencies: {}
     Info_3:
-      Name: w2d1-rfa
+      Name: sh2d2
       Dependencies: {}
     Info_4:
-      Name: wardrobe
+      Name: sh4
       Dependencies: {}
     Info_5:
-      Name: duval
+      Name: snctr-09a
       Dependencies: {}
     Info_6:
-      Name: dualtable
+      Name: snctr-09b
       Dependencies: {}
     Info_7:
-      Name: chair
+      Name: w2d1-rfa
       Dependencies: {}
     Info_8:
-      Name: angelstatue
+      Name: wardrobe
       Dependencies: {}
     Info_9:
-      Name: table_wood
+      Name: chair
       Dependencies: {}
     Info_10:
-      Name: bed
+      Name: dualtable
       Dependencies: {}
     Info_11:
-      Name: crt-01
+      Name: duval
       Dependencies: {}
     Info_12:
-      Name: jd-02
+      Name: angelstatue
       Dependencies: {}
     Info_13:
-      Name: jk01a
+      Name: table_wood
       Dependencies: {}
     Info_14:
       Name: l1d1
       Dependencies: {}
     Info_15:
-      Name: l2d1
-      Dependencies: {}
-    Info_16:
       Name: nctr-08a-a
       Dependencies: {}
+    Info_16:
+      Name: jk01a
+      Dependencies: {}
     Info_17:
-      Name: nctr-08a-b
+      Name: l2d1
       Dependencies: {}
     Info_18:
-      Name: pantrytallboy
+      Name: nctr-08a-b
       Dependencies: {}
     Info_19:
-      Name: sh2d2
+      Name: crt-01
       Dependencies: {}
     Info_20:
-      Name: sh4
+      Name: jd-02
       Dependencies: {}
     Info_21:
-      Name: snctr-09a
+      Name: bed
+      Dependencies: {}
+    Info_22:
+      Name: mirror
+      Dependencies: {}
+    Info_23:
+      Name: mrchair
+      Dependencies: {}
+    Info_24:
+      Name: robot
+      Dependencies: {}
+    Info_25:
+      Name: tablelamp
       Dependencies: {}

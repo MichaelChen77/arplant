@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 1934128577
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 478015b3bc8cb780e11605c510a2f714
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 976dacd2fb07ca7d633b476411ea17df
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefab/Furnitures/AR/TableLamp.prefab
+Dependencies: []

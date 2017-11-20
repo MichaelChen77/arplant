@@ -8,6 +8,7 @@ namespace IMAV
     public class DataUtility
     {
         public const float ProductRotateSpeed = 1000f;
+        public const float ProductStationaryTouchTimeThreshold = 1f;
 
         public static ARProduct CurrentObject = null;
         public static DontDestroy dontdestroy = null;

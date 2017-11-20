@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3018735557
+CRC: 1604743706
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bdc90bdeaa7f1e254519df121e8c55e9
+    Hash: 03d47441d181253ce30f6d581bf125cf
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f451c2fa900e9178a57db1d033fd31a7
+    Hash: 976dacd2fb07ca7d633b476411ea17df
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -26,6 +26,8 @@ ClassTypes:
 - Class: 48
   Script: {instanceID: 0}
 - Class: 65
+  Script: {instanceID: 0}
+- Class: 108
   Script: {instanceID: 0}
 Assets:
 - Assets/Prefab/WaitForAO/Bed.prefab
