@@ -33,6 +33,8 @@ namespace IMAV.Service
         public override void Start()
         {
             PlaceOnPlane(new Vector2(0.5f, 0.5f));
+            controller.transform.LookAt(Camera.main.transform);
+            controller.transform.rotation = Quaternion.Euler(0.0f, controller.transform.rotation.eulerAngles.y, controller.transform.rotation.z);
         }
 
         protected override void MoveTouch(Vector3 pos)

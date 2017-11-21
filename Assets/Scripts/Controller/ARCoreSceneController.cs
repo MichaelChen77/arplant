@@ -4,12 +4,15 @@ using GoogleARCore;
 using GoogleARCoreInternal;
 using UnityEngine;
 using IMAV.Service;
+using IMAV.Util;
 
 namespace IMAV.Controller
 {
     public class ARCoreSceneController : SceneController
     {
+        public GameObject m_trackedPlanePrefab;
         private List<TrackedPlane> m_allPlanes = new List<TrackedPlane>();
+        private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
         const int LOST_TRACKING_SLEEP_TIMEOUT = 15;
         bool tracking = false;
 
@@ -37,6 +40,16 @@ namespace IMAV.Controller
             }
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Frame.GetNewPlanes(ref m_newPlanes);
+
+            // Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
+            for (int i = 0; i < m_newPlanes.Count; i++)
+            {
+                GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity,
+                    transform);
+                planeObject.GetComponent<ARCoreTrackedPlane>().SetTrackedPlane(m_newPlanes[i]);
+            }
+
             Frame.GetAllPlanes(ref m_allPlanes);
             for (int i = 0; i < m_allPlanes.Count; i++)
             {

@@ -19,6 +19,8 @@ namespace IMAV.Service
         public override void Start()
         {
             MoveTouch(new Vector3(Screen.width*0.5f, Screen.height*0.5f, 0));
+            controller.transform.LookAt(Camera.main.transform);
+            controller.transform.rotation = Quaternion.Euler(0.0f, controller.transform.rotation.eulerAngles.y, controller.transform.rotation.z);
         }
 
         protected override void MoveTouch(Vector3 pos)
@@ -41,6 +43,10 @@ namespace IMAV.Service
 
         public override void Update()
         {
+            while (m_AttachedPlane.SubsumedBy != null)
+            {
+                m_AttachedPlane = m_AttachedPlane.SubsumedBy;
+            }
             base.Update();
             controller.transform.position = new Vector3(controller.transform.position.x, m_AttachedPlane.Position.y + m_planeYOffset, controller.transform.position.z);
         }
