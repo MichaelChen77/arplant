@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AR/ARCore.unity
     guid: 309981cf96e60da48a721ff58a5d15c8
+  - enabled: 1
+    path: Assets/Scenes/AR/ARCore Pokemon.unity
+    guid: 57b75899879a05b48b4718b923a0e9e5

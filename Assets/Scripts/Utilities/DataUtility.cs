@@ -30,7 +30,10 @@ namespace IMAV
         public static Sprite CreateSprite(Texture2D tex)
         {
             if (tex == null)
+            {
+                Debug.Log("text null");
                 return null;
+            }
             Rect _rect = new Rect(0, 0, tex.width, tex.height);
             Sprite newSprite = Sprite.Create(tex, _rect, new Vector2(0.5f, 0.5f));
             return newSprite;

@@ -100,7 +100,7 @@ namespace IMAV.Service
                 {
                     if (cp.sku == sku)
                     {
-                        Texture2D ta = Resources.Load("Products/" + cat.name + "/Icons/" + cp.sku) as Texture2D;
+                        Texture2D ta = Resources.Load("ProductIcons/" + cat.name + "/" + cp.sku, typeof(Texture2D)) as Texture2D;
                         callback(ta);
                         toEnd = true;
                         break;
@@ -135,7 +135,7 @@ namespace IMAV.Service
             {
                 if (cat.id == categoryId)
                 {
-                    Texture2D ta = Resources.Load("Products/" + cat.name + "/" + cat.name) as Texture2D;
+                    Texture2D ta = Resources.Load("ProductIcons/" + cat.name, typeof(Texture2D)) as Texture2D;
                     callback(ta);
                     break;
                 }

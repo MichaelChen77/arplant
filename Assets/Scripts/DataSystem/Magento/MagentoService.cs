@@ -12,21 +12,54 @@ namespace IMAV.Service
     {
         public const string baseUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com:9000";
         public const string webPageUrl = "http://j-clef-web-01.japaneast.cloudapp.azure.com/index.php/";
+        bool useCache;
+
+        public MagentoService(bool caching)
+        {
+            useCache = caching;
+        }
 
         public IEnumerator TopCategories(Action<string> callback)
         {
             WWW cases = new WWW(baseUrl + "/magento/categories");
             yield return cases;
+            string json = cases.text;
+            if (useCache)
+            {
+                if (!string.IsNullOrEmpty(cases.error))
+                {
+                    if (File.Exists(DataUtility.GetCategoryFile()))
+                    {
+                        json = File.ReadAllText(DataUtility.GetCategoryFile());
+                    }
+                }
+                else
+                {
+                    File.WriteAllText(DataUtility.GetCategoryFile(), json);
+                }
+            }
 
-            callback(cases.text);
+            callback(json);
         }
 
         public IEnumerator GetProductsInCategory(long categoryId, Action<string> callback)
         {
-            WWW cases = new WWW(baseUrl + "//magento/categories/" + categoryId + "/products");
-            yield return cases;
+            string json = "";
+            string path = DataUtility.GetCategoryPath() + categoryId + ".json";
+            if (useCache && File.Exists(path))
+            {
+                json = File.ReadAllText(path);
+            }
+            else
+            {
+                WWW cases = new WWW(baseUrl + "//magento/categories/" + categoryId + "/products");
+                yield return cases;
+                json = cases.text;
+                if (useCache)
+                    File.WriteAllText(path, json);
+            }
 
-            callback(cases.text);
+            callback(json);
         }
 
         public IEnumerator GetProductDetail(string sku, ProductDownloadCallback callback)
@@ -42,11 +75,20 @@ namespace IMAV.Service
 
         public IEnumerator GetProductImage(string sku, ImageDownloadCallback callback)
         {
-            WWW cases = new WWW(baseUrl + "/product-img/" + EncodeUriComponent(sku));
-            yield return cases;
-
-            byte[] bytes = cases.bytes;
-
+            byte[] bytes;
+            string path = DataUtility.GetProductIconPath() + sku;
+            if (useCache && File.Exists(path))
+            {
+                bytes = File.ReadAllBytes(path);
+            }
+            else
+            {
+                WWW cases = new WWW(baseUrl + "/product-img/" + EncodeUriComponent(sku));
+                yield return cases;
+                bytes = cases.bytes;
+                File.WriteAllBytes(path, bytes);
+            }
+            
             callback(bytes);
         }
 
@@ -60,11 +102,19 @@ namespace IMAV.Service
 
         public IEnumerator GetCategoryImage(long categoryId, ImageDownloadCallback callback)
         {
-            WWW cases = new WWW(baseUrl + "/magento/categories/" + categoryId + "/icon");
-            yield return cases;
-
-            byte[] bytes = cases.bytes;
-
+            byte[] bytes;
+            string path = DataUtility.GetCategoryPath() + categoryId;
+            if (useCache && File.Exists(path))
+            {
+                bytes = File.ReadAllBytes(path);
+            }
+            else
+            {
+                WWW cases = new WWW(baseUrl + "/magento/categories/" + categoryId + "/icon");
+                yield return cases;
+                bytes = cases.bytes;
+                File.WriteAllBytes(path, bytes);
+            }
             callback(bytes);
         }
 
@@ -81,7 +131,7 @@ namespace IMAV.Service
             string path = DataUtility.GetProductModelPath() + sku;
             string url = "";
             bool existed = File.Exists(path);
-            if (existed)
+            if (useCache && existed)
                 url = "file://" + path;
             else
             {
@@ -99,7 +149,7 @@ namespace IMAV.Service
                 if (www.assetBundle != null)
                 {
                     System.Object[] objs = www.assetBundle.LoadAllAssets();
-                    if (!existed)
+                    if (useCache)
                     {
                         File.WriteAllBytes(path, www.bytes);
                     }

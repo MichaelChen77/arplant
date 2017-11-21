@@ -48,10 +48,6 @@ namespace IMAV.Controller
 
         void Start()
         {
-            DataUtility.SetDirectory(DataUtility.GetCategoryPath());
-            DataUtility.SetDirectory(DataUtility.GetProductPath());
-            DataUtility.SetDirectory(DataUtility.GetProductIconPath());
-            DataUtility.SetDirectory(DataUtility.GetProductModelPath());
             CheckForUpdates();
         }
 
@@ -59,22 +55,8 @@ namespace IMAV.Controller
         {
             DataCollector.Singleton.TopCategories(json =>
             {
-                File.WriteAllText(DataUtility.GetCategoryFile(), json);
                 loadInitData(json);
             });
-        }
-
-        void loadInitData()
-        {
-            if (File.Exists(DataUtility.GetCategoryFile()))
-            {
-                string json = File.ReadAllText(DataUtility.GetCategoryFile());
-                loadInitData(json);
-            }
-            else
-            {
-                CheckForUpdates();
-            }
         }
 
         void loadInitData(string json)
@@ -93,20 +75,10 @@ namespace IMAV.Controller
 
         public void GetCatImage(Category cat)
         {
-            string path = DataUtility.GetCategoryPath() + cat.id;
-            if (File.Exists(path))
+            DataCollector.Singleton.GetCategoryImage(cat.id, (sp)=>
             {
-                byte[] bytes = File.ReadAllBytes(path);
-                cat.icon = DataUtility.CreateSprite(bytes);
-            }
-            else
-            {
-                DataCollector.Singleton.GetCategoryImage(cat.id, (bytes) =>
-                {
-                    File.WriteAllBytes(path, bytes);
-                    cat.icon = DataUtility.CreateSprite(bytes);
-                });
-            }
+                cat.icon = sp;
+            });
         }
 
         public Category GetCategory(long id)
@@ -121,22 +93,11 @@ namespace IMAV.Controller
 
         public void GetCatProduct(Category cat)
         {
-            string path = DataUtility.GetCategoryPath() + cat.id + ".json";
-            if (File.Exists(path))
+            DataCollector.Singleton.GetProductsInCategory(cat.id, (json) =>
             {
-                string json = File.ReadAllText(path);
                 cat.Products = JsonConvert.DeserializeObject<List<CategoryProduct>>(json);
                 cat.IsLoaded = true;
-            }
-            else
-            {
-                DataCollector.Singleton.GetProductsInCategory(cat.id, (json) =>
-                {
-                    File.WriteAllText(path, json);
-                    cat.Products = JsonConvert.DeserializeObject<List<CategoryProduct>>(json);
-                    cat.IsLoaded = true;
-                });
-            }
+            });
         }
 
         public void GetProduct(string sku, Action<Product> callback)
@@ -162,22 +123,11 @@ namespace IMAV.Controller
 
         public void GetProductImage(Product p, Action<Product> callback)
         {
-            string path = DataUtility.GetProductIconPath() + p.sku;
-            if (File.Exists(path))
+            DataCollector.Singleton.GetProductImage(p.sku, (sp)=>
             {
-                byte[] bytes = File.ReadAllBytes(path);
-                p.icon = DataUtility.CreateSprite(bytes);
+                p.icon = sp;
                 callback(p);
-            }
-            else
-            {
-                DataCollector.Singleton.GetProductImage(p.sku, (bytes) =>
-                {
-                    File.WriteAllBytes(path, bytes);
-                    p.icon = DataUtility.CreateSprite(bytes);
-                    callback(p);
-                });
-            }
+            });
         }
 
         public void LoadModelData(string sku)

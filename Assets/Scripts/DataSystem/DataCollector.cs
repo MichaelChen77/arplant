@@ -22,6 +22,7 @@ namespace IMAV.Service
     {
         ICollectorService collector;
         public CollectorServiceType collectorType;
+        public bool useCache = true;
 
         private static DataCollector mSingleton;
         public static DataCollector Singleton
@@ -47,10 +48,17 @@ namespace IMAV.Service
 
         public void SetCollectorService()
         {
+            if(useCache)
+            {
+                DataUtility.SetDirectory(DataUtility.GetCategoryPath());
+                DataUtility.SetDirectory(DataUtility.GetProductPath());
+                DataUtility.SetDirectory(DataUtility.GetProductIconPath());
+                DataUtility.SetDirectory(DataUtility.GetProductModelPath());
+            }
             switch(collectorType)
             {
                 case CollectorServiceType.Local: collector = new LocalDataService(); break;
-                case CollectorServiceType.Magento: collector = new MagentoService(); break;
+                case CollectorServiceType.Magento: collector = new MagentoService(useCache); break;
             }
         }
 
@@ -69,9 +77,25 @@ namespace IMAV.Service
             StartCoroutine(collector.GetProductDetail(sku, callback));
         }
 
-        public void GetProductImage(string sku, ImageDownloadCallback callback)
+        public void GetProductImage(string sku, Action<Sprite> callback)
         {
-            StartCoroutine(collector.GetProductImage(sku, callback));
+            if (collectorType == CollectorServiceType.Local)
+            {
+                StartCoroutine(collector.GetProductTexture(sku, (tex) =>
+                {
+                    Sprite sp = DataUtility.CreateSprite(tex);
+                    callback(sp);
+                }));
+            }
+            else
+            {
+                StartCoroutine(collector.GetProductImage(sku, (bytes) =>
+                {
+                    Sprite sp = DataUtility.CreateSprite(bytes);
+                    callback(sp);
+                }));
+            }
+            
         }
 
         public void GetProductTexture(string sku, TextureDownloadCallback callback)
@@ -79,9 +103,24 @@ namespace IMAV.Service
             StartCoroutine(collector.GetProductTexture(sku, callback));
         }
 
-        public void GetCategoryImage(long categoryId, ImageDownloadCallback callback)
+        public void GetCategoryImage(long categoryId, Action<Sprite> callback)
         {
-            StartCoroutine(collector.GetCategoryImage(categoryId, callback));
+            if (collectorType == CollectorServiceType.Local)
+            {
+                StartCoroutine(collector.GetCategoryTexture(categoryId, (tex) =>
+                {
+                    Sprite sp = DataUtility.CreateSprite(tex);
+                    callback(sp);
+                }));
+            }
+            else
+            {
+                StartCoroutine(collector.GetCategoryImage(categoryId, (bytes) =>
+                {
+                    Sprite sp= DataUtility.CreateSprite(bytes);
+                    callback(sp);
+                }));
+            }
         }
 
         public void GetCategoryTexture(long categoryId, TextureDownloadCallback callback)
