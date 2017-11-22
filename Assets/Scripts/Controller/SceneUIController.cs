@@ -17,7 +17,7 @@ namespace IMAV.Controller
             set { currentPanel = value; }
         }
 
-        private void Start()
+        void Start()
         {
             SceneController.Singleton.ProductChoosedEvent += OpenProductMenu;
         }

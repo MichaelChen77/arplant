@@ -22,5 +22,6 @@ namespace IMAV.Service
         IEnumerator GetCategoryTexture(long categoryId, TextureDownloadCallback callback);
 
         IEnumerator DownloadAssetBundle(string sku, AssetBundleDownloadCallback callback);
+
     }
 }

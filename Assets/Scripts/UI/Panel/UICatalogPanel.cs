@@ -168,6 +168,11 @@ namespace IMAV.UI
             content.DetachChildren();
         }
 
+        public void RefreshCacheData()
+        {
+            //DataController.Singleton.GetCategory();
+        }
+
         public override void Close()
         {
             contentRect.anchoredPosition = new Vector2(contentRect.anchoredPosition.x, originPos);

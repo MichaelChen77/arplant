@@ -62,6 +62,20 @@ namespace IMAV.Service
             }
         }
 
+        public void ClearData()
+        {
+			//System.IO.DirectoryInfo di = new DirectoryInfo("YourPath");
+
+			//foreach (FileInfo file in di.GetFiles())
+			//{
+			//	file.Delete();
+			//}
+			//foreach (DirectoryInfo dir in di.GetDirectories())
+			//{
+			//	dir.Delete(true);
+			//}
+        }
+
         public void TopCategories(Action<string> callback)
         {
             StartCoroutine(collector.TopCategories(callback));

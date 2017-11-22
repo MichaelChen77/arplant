@@ -153,5 +153,10 @@ namespace IMAV.Controller
         {
             SceneController.Singleton.AddProductToScene(p);
         }
+
+        public void RefreshData()
+        {
+            
+        }
     }
 }
