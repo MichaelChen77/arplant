@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4448804198356962}
   - component: {fileID: 33974787087539762}
   - component: {fileID: 23006021855623426}
-  - component: {fileID: 65974010985564058}
   m_Layer: 0
   m_Name: washbasin
   m_TagString: Untagged
@@ -37,6 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4909268531474424}
+  - component: {fileID: 65082294923979546}
   m_Layer: 0
   m_Name: washbasin
   m_TagString: Untagged
@@ -95,7 +95,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1406860379663674}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -103,7 +103,7 @@ Transform:
   - {fileID: 4448804198356962}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!23 &23006021855623426
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -186,15 +186,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1068110303507838}
   m_Mesh: {fileID: 4300000, guid: 3626a93cf041fa34f9ce3abda0f81527, type: 3}
---- !u!65 &65974010985564058
+--- !u!65 &65082294923979546
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1068110303507838}
+  m_GameObject: {fileID: 1406860379663674}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.856306, y: 0.81234497, z: 0.68389237}
-  m_Center: {x: 0.0014832616, y: 0.40617225, z: -0.00041668117}
+  m_Size: {x: 2.857339, y: 0.9544525, z: 0.6862261}
+  m_Center: {x: -0.0025305748, y: 0.47825217, z: -0.0050608665}

@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using IMAV.Service;
 using IMAV.Model;
-using IMAV.Effect;
 
 namespace IMAV.Controller
 {
@@ -29,22 +26,23 @@ namespace IMAV.Controller
 			set { product = value; }
 		}
 
-        Vector3 localTop = Vector3.one;
+        Vector3 localTop = Vector3.zero;
         bool isChoosed = false;
         public bool Choosed
         {
             get { return isChoosed; }
             set { 
                 isChoosed = value; 
-                EnableOutline(isChoosed);
+                //EnableOutline(isChoosed);
             }
         }
 
-        List<Outline> outlines = new List<Outline>();
+        //List<Outline> outlines = new List<Outline>();
 
         private void Start()
         {
             DataUtility.SetObjectLayer(gameObject, SceneController.ProductLayer);
+            SetOutline();
         }
 
         void Update()
@@ -76,12 +74,12 @@ namespace IMAV.Controller
 				{
                     if (top < mr.bounds.max.y)
                         top = mr.bounds.max.y;
-                    if (mr.tag != "static")
-                    {
-                        Outline ot = mr.gameObject.AddComponent<Outline>();
-                        ot.enabled = false;
-                        outlines.Add(ot);
-                    }
+                    //if (mr.tag != "static")
+                    //{
+                    //    Outline ot = mr.gameObject.AddComponent<Outline>();
+                    //    ot.enabled = false;
+                    //    outlines.Add(ot);
+                    //}
 				}
 			}
             localTop = new Vector3(0, top - transform.position.y, 0);
@@ -92,16 +90,16 @@ namespace IMAV.Controller
             return transform.position + localTop;
         }
 
-        public void EnableOutline(bool flag)
-        {
-            if(outlines.Count == 0)
-            {
-                SetOutline();
-            }
-            for (int i = 0; i < outlines.Count; i++)
-            {
-                outlines[i].enabled = flag;
-            }
-        }
+        //public void EnableOutline(bool flag)
+        //{
+        //    if(outlines.Count == 0)
+        //    {
+        //        SetOutline();
+        //    }
+        //    for (int i = 0; i < outlines.Count; i++)
+        //    {
+        //        outlines[i].enabled = flag;
+        //    }
+        //}
     }
 }

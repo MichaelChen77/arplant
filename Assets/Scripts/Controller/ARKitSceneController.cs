@@ -65,7 +65,7 @@ namespace IMAV.Controller
                 switch (arcam.trackingState)
                 {
                     case ARTrackingState.ARTrackingStateNotAvailable: showTrackingReason(arcam.trackingReason); break;
-                    case ARTrackingState.ARTrackingStateNormal: showInform(ARConstantValue.AR_NORMAL, true); break;
+                    case ARTrackingState.ARTrackingStateNormal: showInform(ARConstantValue.AR_NORMAL); break;
                     case ARTrackingState.ARTrackingStateLimited: showTrackingReason(arcam.trackingReason); break;
                 }
             }
@@ -81,8 +81,8 @@ namespace IMAV.Controller
             {
                 case ARTrackingStateReason.ARTrackingStateReasonExcessiveMotion: showInform(ARConstantValue.AR_EXCESSIVEMOTION); break;
                 case ARTrackingStateReason.ARTrackingStateReasonInsufficientFeatures: showInform(ARConstantValue.AR_INSUFFICIENTFEATURES); break;
-                case ARTrackingStateReason.ARTrackingStateReasonInitializing: showInform(ARConstantValue.AR_INITIALIZING, true); break;
-                case ARTrackingStateReason.ARTrackingStateReasonNone: MediaController.Singleton.textInform.Hide(); break;
+                case ARTrackingStateReason.ARTrackingStateReasonInitializing: showInform(ARConstantValue.AR_INITIALIZING); break;
+                case ARTrackingStateReason.ARTrackingStateReasonNone: showInform(ARConstantValue.AR_FINDPLANE); break;
             }
         }
 

@@ -35,6 +35,8 @@ namespace IMAV.UI
                 LeanTween.moveY(informRect, targetHeight, moveTime).setOnComplete(HideInform);
                 showed = true;
             }
+            else if (mAutoHide)
+                HideInform();
         }
 
         public void ShowInform(string str, float delay)
