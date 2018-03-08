@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23464349361122492}
   - component: {fileID: 114234645493868034}
   m_Layer: 10
-  m_Name: ARTrackedPlane
+  m_Name: ARCoreTrackedPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 16f11da3beeaf498f8526286a295a38e, type: 2}
+  - {fileID: 2100000, guid: 92b1ca249edc047509db2c7bc05789ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

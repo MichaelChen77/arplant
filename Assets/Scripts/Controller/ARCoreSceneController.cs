@@ -11,8 +11,10 @@ namespace IMAV.Controller
     public class ARCoreSceneController : SceneController
     {
         public GameObject m_trackedPlanePrefab;
+        public bool showTrackedPlane = false;
         private List<TrackedPlane> m_allPlanes = new List<TrackedPlane>();
         private List<TrackedPlane> m_newPlanes = new List<TrackedPlane>();
+        List<ARCoreTrackedPlane> trackplanes = new List<ARCoreTrackedPlane>();
         const int LOST_TRACKING_SLEEP_TIMEOUT = 15;
         bool tracking = false;
 
@@ -45,9 +47,11 @@ namespace IMAV.Controller
             // Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
             for (int i = 0; i < m_newPlanes.Count; i++)
             {
-                GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity,
-                    transform);
-                planeObject.GetComponent<ARCoreTrackedPlane>().SetTrackedPlane(m_newPlanes[i]);
+                GameObject planeObject = Instantiate(m_trackedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
+                ARCoreTrackedPlane tp = planeObject.GetComponent<ARCoreTrackedPlane>();
+                tp.SetTrackedPlane(m_newPlanes[i]);
+                tp.CanShow(showTrackedPlane);
+                trackplanes.Add(tp);
             }
 
             Frame.GetAllPlanes(ref m_allPlanes);
@@ -109,6 +113,13 @@ namespace IMAV.Controller
 
         public override void ResetARSession()
         {
+            for (int i = trackplanes.Count - 1; i > -1; i--)
+            {
+                Destroy(trackplanes[i].gameObject);
+            }
+            trackplanes.Clear();
+            m_newPlanes.Clear();
+            m_allPlanes.Clear();
             Pause();
         }
 
@@ -140,6 +151,15 @@ namespace IMAV.Controller
             }
 
             SessionManager.Instance.OnApplicationPause(false);
+        }
+
+        public void ShowTrackPlane()
+        {
+            showTrackedPlane = !showTrackedPlane;
+            foreach(ARCoreTrackedPlane p in trackplanes)
+            {
+                p.CanShow(showTrackedPlane);
+            }
         }
     }
 }

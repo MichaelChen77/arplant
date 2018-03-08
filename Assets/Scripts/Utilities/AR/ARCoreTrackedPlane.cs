@@ -20,6 +20,8 @@ namespace IMAV.Util
 
         private MeshRenderer m_meshRenderer;
 
+        bool showflag = true;
+
         /// <summary>
         /// The Unity Awake() method.
         /// </summary>
@@ -34,26 +36,36 @@ namespace IMAV.Util
         /// </summary>
         private void Update()
         {
-            if (m_trackedPlane == null)
+            if (showflag)
             {
-                return;
-            }
-            else if (m_trackedPlane.SubsumedBy != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            else if (!m_trackedPlane.IsValid || Frame.TrackingState != FrameTrackingState.Tracking)
-            {
-                m_meshRenderer.enabled = false;
-                return;
-            }
+                if (m_trackedPlane == null)
+                {
+                    return;
+                }
+                else if (m_trackedPlane.SubsumedBy != null)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                else if (!m_trackedPlane.IsValid || Frame.TrackingState != FrameTrackingState.Tracking)
+                {
+                    m_meshRenderer.enabled = false;
+                    return;
+                }
 
-            m_meshRenderer.enabled = true;
-            if (m_trackedPlane.IsUpdated)
-            {
-                _UpdateMeshWithCurrentTrackedPlane();
+                m_meshRenderer.enabled = true;
+                if (m_trackedPlane.IsUpdated)
+                {
+                    _UpdateMeshWithCurrentTrackedPlane();
+                }
             }
+            else
+                m_meshRenderer.enabled = false;
+        }
+
+        public void CanShow(bool flag)
+        {
+            showflag = flag;
         }
 
         /// <summary>

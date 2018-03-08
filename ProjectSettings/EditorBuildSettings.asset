@@ -23,3 +23,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/UnityARKitPlugin/ARKitRemote/UnityARKitRemote.unity
     guid: 3ed73c0c9d4b76a418a0541c0cefd3ac
+  - enabled: 0
+    path: Assets/GoogleARCore/HelloARExample/Scenes/HelloAR.unity
+    guid: e6a6fa04348cb45c9b0221eb19c946da

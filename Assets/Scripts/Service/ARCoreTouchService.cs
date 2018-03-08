@@ -26,7 +26,8 @@ namespace IMAV.Service
         protected override void MoveTouch(Vector3 pos)
         {
             TrackableHit hit;
-            TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinBounds | TrackableHitFlag.PlaneWithinPolygon | TrackableHitFlag.PlaneWithinInfinity;
+            TrackableHitFlag raycastFilter = TrackableHitFlag.PlaneWithinPolygon;
+                //| TrackableHitFlag.PlaneWithinInfinity;
 
             if (Session.Raycast(Camera.main.ScreenPointToRay(pos), raycastFilter, out hit))
             {
@@ -37,6 +38,7 @@ namespace IMAV.Service
                 var anchor = Session.CreateAnchor(hit.Point, Quaternion.identity);
 
                 controller.transform.position = hit.Point;
+                controller.transform.parent = anchor.transform;
                 Attach(hit.Plane);
             }
         }
@@ -55,6 +57,11 @@ namespace IMAV.Service
         {
             m_AttachedPlane = plane;
             m_planeYOffset = controller.transform.position.y - plane.Position.y;
+        }
+
+        public override string ToString()
+        {
+            return controller.name + " " + m_AttachedPlane.Position.y + " , " + m_AttachedPlane.IsUpdated;
         }
     }
 }
