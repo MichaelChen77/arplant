@@ -23,12 +23,12 @@ namespace UnityEngine.XR.iOS
 			List<ARPlaneAnchorGameObject> arpags = unityARAnchorManager.GetCurrentPlaneAnchors();
 			foreach (ARPlaneAnchorGameObject p in arpags)
 			{
-				MeshRenderer render = p.gameObject.GetComponent<MeshRenderer>();
+                MeshRenderer render = p.gameObject.GetComponentInChildren<MeshRenderer>();
 				if (render != null)
-					render.enabled = showTrackedPlane ? gridMat : shadowMat;
+                    render.material = showTrackedPlane ? gridMat : shadowMat;
 			}
-			MeshRenderer prefabRender = planePrefab.GetComponent<MeshRenderer>();
-			prefabRender.enabled = showTrackedPlane ? gridMat : shadowMat;
+            MeshRenderer prefabRender = planePrefab.GetComponentInChildren<MeshRenderer>();
+            prefabRender.material = showTrackedPlane ? gridMat : shadowMat;
 		}
 
 		void OnDestroy()

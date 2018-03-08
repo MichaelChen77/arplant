@@ -14,9 +14,9 @@ MonoBehaviour:
   clientId: b3e0cc94a26c7b666c321553ff83d98c095b8d16
   clientSecret: 1380a211621386982358154843cbdc8ee20ce2f9
   redirectURI: https://m.everyplay.com/auth
-  iosSupportEnabled: 0
+  iosSupportEnabled: 1
   tvosSupportEnabled: 0
-  androidSupportEnabled: 1
+  androidSupportEnabled: 0
   standaloneSupportEnabled: 0
   testButtonsEnabled: 0
   earlyInitializerEnabled: 1
