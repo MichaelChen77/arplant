@@ -345,6 +345,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -478,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cac8edf84834043ac167deaeba16a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planePrefab: {fileID: 1983520619281468, guid: 696855730620a483c9ae4c242e312b28,
+  planePrefab: {fileID: 1798284387362580, guid: db371eb83e419ff46b56907089d737ec,
     type: 2}
 --- !u!114 &114274399462607550
 MonoBehaviour:

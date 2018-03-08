@@ -52,11 +52,11 @@ namespace IMAV.Service
 			};
 			// prioritize reults types
 			ARHitTestResultType[] resultTypes = {
-						ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent
+						ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent,
 						// if you want to use infinite planes use this:
 						//ARHitTestResultType.ARHitTestResultTypeExistingPlane,
-						//ARHitTestResultType.ARHitTestResultTypeHorizontalPlane,
-						//ARHitTestResultType.ARHitTestResultTypeFeaturePoint
+						ARHitTestResultType.ARHitTestResultTypeHorizontalPlane,
+						ARHitTestResultType.ARHitTestResultTypeFeaturePoint
 					};
 
 			foreach (ARHitTestResultType resultType in resultTypes)

@@ -11,7 +11,7 @@ namespace UnityEngine.XR.iOS
 		private Dictionary<string, ARPlaneAnchorGameObject> planeAnchorMap;
 
 
-        public UnityARAnchorManager ()
+		public UnityARAnchorManager ()
 		{
 			planeAnchorMap = new Dictionary<string,ARPlaneAnchorGameObject> ();
 			UnityARSessionNativeInterface.ARAnchorAddedEvent += AddAnchor;
@@ -50,14 +50,14 @@ namespace UnityEngine.XR.iOS
 			}
 		}
 
-        public void Destroy()
-        {
-            foreach (ARPlaneAnchorGameObject arpag in GetCurrentPlaneAnchors()) {
-                GameObject.Destroy (arpag.gameObject);
-            }
+		public void Destroy()
+		{
+			foreach (ARPlaneAnchorGameObject arpag in GetCurrentPlaneAnchors()) {
+				GameObject.Destroy (arpag.gameObject);
+			}
 
-            planeAnchorMap.Clear ();
-        }
+			planeAnchorMap.Clear ();
+		}
 
 		public List<ARPlaneAnchorGameObject> GetCurrentPlaneAnchors()
 		{

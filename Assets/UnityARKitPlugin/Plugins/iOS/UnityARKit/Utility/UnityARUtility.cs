@@ -39,11 +39,11 @@ namespace UnityEngine.XR.iOS
 			MeshFilter mf = plane.GetComponentInChildren<MeshFilter> ();
 
 			if (mf != null) {
-                //since our plane mesh is actually 10mx10m in the world, we scale it here by 0.1f
-                mf.gameObject.transform.localScale = new Vector3(arPlaneAnchor.extent.x * 0.1f ,arPlaneAnchor.extent.y * 0.1f ,arPlaneAnchor.extent.z * 0.1f );
+				//since our plane mesh is actually 10mx10m in the world, we scale it here by 0.1f
+				mf.gameObject.transform.localScale = new Vector3(arPlaneAnchor.extent.x * 0.1f ,arPlaneAnchor.extent.y * 0.1f ,arPlaneAnchor.extent.z * 0.1f );
 
-                //convert our center position to unity coords
-                mf.gameObject.transform.localPosition = new Vector3(arPlaneAnchor.center.x,arPlaneAnchor.center.y, -arPlaneAnchor.center.z);
+				//convert our center position to unity coords
+				mf.gameObject.transform.localPosition = new Vector3(arPlaneAnchor.center.x,arPlaneAnchor.center.y, -arPlaneAnchor.center.z);
 			}
 
 			return plane;
