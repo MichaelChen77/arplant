@@ -158,9 +158,9 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 2
     m_CustomResolution: -1
-    m_Strength: 0.437
+    m_Strength: 0.4
     m_Bias: 0
     m_NormalBias: 0.52
     m_NearPlane: 0.1
@@ -2346,6 +2346,82 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 909603140}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOnVar.sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114279042179339384, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 63b23b1283a7e4a6db4955da4287609c,
+        type: 3}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: constraint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114279042179339384, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114279042179339384, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114279042179339384, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOnVar.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOnVar.color.g
+      value: 0.26666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOnVar.color.b
+      value: 0.34901962
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOnVar.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOffVar.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOffVar.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOffVar.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOffVar.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114896330691221534, guid: 1212da8f595e4b04588dfa6292cc6d0f,
+        type: 2}
+      propertyPath: toggleOffVar.sprite
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1212da8f595e4b04588dfa6292cc6d0f, type: 2}
   m_IsPrefabParent: 0

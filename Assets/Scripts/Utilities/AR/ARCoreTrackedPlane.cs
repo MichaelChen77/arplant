@@ -20,6 +20,9 @@ namespace IMAV.Util
 
         private MeshRenderer m_meshRenderer;
 
+        public Material shadowMat;
+        public Material gridMat;
+
         bool showflag = true;
 
         /// <summary>
@@ -49,18 +52,18 @@ namespace IMAV.Util
                 }
                 else if (!m_trackedPlane.IsValid || Frame.TrackingState != FrameTrackingState.Tracking)
                 {
-                    m_meshRenderer.enabled = false;
+                    m_meshRenderer.material = shadowMat;
                     return;
                 }
 
-                m_meshRenderer.enabled = true;
+                m_meshRenderer.material = gridMat;
                 if (m_trackedPlane.IsUpdated)
                 {
                     _UpdateMeshWithCurrentTrackedPlane();
                 }
             }
             else
-                m_meshRenderer.enabled = false;
+                m_meshRenderer.material = shadowMat;
         }
 
         public void CanShow(bool flag)

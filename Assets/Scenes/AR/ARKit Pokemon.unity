@@ -170,7 +170,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: 3
+    m_Resolution: 2
     m_CustomResolution: -1
     m_Strength: 0.12
     m_Bias: 0
@@ -1744,14 +1744,14 @@ MonoBehaviour:
   transferTime: 0.3
   trigger: 0
   IsAnimated: 0
-  constraint: 1
+  constraint: 2
   toggleOnVar:
-    sprite: {fileID: 21300000, guid: b62ccb9bdec514d18bc384eca96cabd2, type: 3}
-    color: {r: 0, g: 0, b: 0, a: 0}
+    sprite: {fileID: 0}
+    color: {r: 1, g: 0.26666668, b: 0.34901962, a: 1}
     text: 
   toggleOffVar:
-    sprite: {fileID: 21300000, guid: 6c774a2df509b44a9b1f19933ba05505, type: 3}
-    color: {r: 0, g: 0, b: 0, a: 0}
+    sprite: {fileID: 0}
+    color: {r: 1, g: 1, b: 1, a: 1}
     text: 
 --- !u!114 &775006312
 MonoBehaviour:
@@ -1837,7 +1837,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6c774a2df509b44a9b1f19933ba05505, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63b23b1283a7e4a6db4955da4287609c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

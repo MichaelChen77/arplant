@@ -479,8 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cac8edf84834043ac167deaeba16a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shadowMat: {fileID: 2100000, guid: 16f11da3beeaf498f8526286a295a38e, type: 2}
+  gridMat: {fileID: 2100000, guid: 92b1ca249edc047509db2c7bc05789ef, type: 2}
   planePrefab: {fileID: 1798284387362580, guid: db371eb83e419ff46b56907089d737ec,
     type: 2}
+  showTrackedPlane: 0
 --- !u!114 &114274399462607550
 MonoBehaviour:
   m_ObjectHideFlags: 1

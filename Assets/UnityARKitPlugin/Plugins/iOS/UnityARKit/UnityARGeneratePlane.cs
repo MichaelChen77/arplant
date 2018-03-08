@@ -5,6 +5,8 @@ namespace UnityEngine.XR.iOS
 {
 	public class UnityARGeneratePlane : MonoBehaviour
 	{
+		public Material shadowMat;
+		public Material gridMat;
 		public GameObject planePrefab;
 		public bool showTrackedPlane = false;
 		private UnityARAnchorManager unityARAnchorManager;
@@ -23,10 +25,10 @@ namespace UnityEngine.XR.iOS
 			{
 				MeshRenderer render = p.gameObject.GetComponent<MeshRenderer>();
 				if (render != null)
-					render.enabled = showTrackedPlane;
+					render.enabled = showTrackedPlane ? gridMat : shadowMat;
 			}
 			MeshRenderer prefabRender = planePrefab.GetComponent<MeshRenderer>();
-			prefabRender.enabled = showTrackedPlane;
+			prefabRender.enabled = showTrackedPlane ? gridMat : shadowMat;
 		}
 
 		void OnDestroy()
