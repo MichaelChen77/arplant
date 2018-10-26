@@ -17,9 +17,15 @@ namespace UnityEngine.XR.iOS
 			UnityARUtility.InitializePlanePrefab (planePrefab);
 		}
 
-		public void ShowTrackPlane()
+        public void SwitchTrackPlane()
+        {
+            showTrackedPlane = !showTrackedPlane;
+			ShowTrackPlane (showTrackedPlane);
+        }
+
+		public void ShowTrackPlane(bool flag)
 		{
-			showTrackedPlane = !showTrackedPlane;
+            showTrackedPlane = flag;
 			List<ARPlaneAnchorGameObject> arpags = unityARAnchorManager.GetCurrentPlaneAnchors();
 			foreach (ARPlaneAnchorGameObject p in arpags)
 			{

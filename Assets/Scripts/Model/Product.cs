@@ -8,6 +8,7 @@ namespace IMAV.Model
 
         public long id { get; set; }
         public string sku { get; set; }
+//		public string keyword { get; set; }
         public string name { get; set; }
         public long attribute_set_id { get; set; }
         public double price { get; set; }
@@ -22,6 +23,10 @@ namespace IMAV.Model
         public List<double> tier_prices { get; set; }
         public List<MagentoAttribute> custom_attributes { get; set; }
 
+		public long category_id { get; set; }
+		public string category_name { get; set; }
+
+		public int queue;
         public Sprite icon;
         public GameObject model;
         bool isloaded = false;

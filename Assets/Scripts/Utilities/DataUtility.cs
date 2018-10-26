@@ -151,6 +151,24 @@ namespace IMAV
 #endif
         }
 
+		public static string GetSubCategoryPath()
+		{
+#if UNITY_EDITOR
+			return ProjectPath + "/TestSample/SubCats/";
+#else
+			return Application.persistentDataPath + "/SubCats/";
+#endif
+		}
+
+		public static string GetSubCategoryIconPath()
+		{
+			#if UNITY_EDITOR
+			return ProjectPath + "/TestSample/SubCats/Icons/";
+			#else
+			return Application.persistentDataPath + "/SubCats/Icons/";
+			#endif
+		}
+
         public static string GetProductPath()
         {
 #if UNITY_EDITOR
@@ -178,6 +196,32 @@ namespace IMAV
 #endif
         }
 
+//		public static void DeleteProductModelFile(string ProductName)
+//		{
+//			string path = "";
+//#if UNITY_EDITOR
+//			path = ProjectPath + "/TestSample/Products/Models/" + ProductName;
+//#else
+//			path = Application.persistentDataPath + "/Products/Models/" + ProductName;
+//#endif
+//			Debug.Log ("model file path = " + path);
+//			FileAttributes attr = File.GetAttributes(path);
+//			if (File.Exists (path)) {
+//				Debug.Log ("delete model name = " + ProductName);
+//				if (attr == FileAttributes.Directory) {
+//					Directory.Delete (path, true);
+//				} else {
+//					File.Delete (path);
+//				}
+////				File.Delete (path);
+//				Debug.Log ("delete successful");
+//			} else {
+//				Debug.Log ("model file path not exit ");
+//			}
+//		}
+
+
+
         public static string GetCategoryFile()
         {
 #if UNITY_EDITOR
@@ -186,6 +230,8 @@ namespace IMAV
             return Application.persistentDataPath + "/Cats/cats.json";
 #endif
         }
+
+
 
         public static void SetObjectColliderLayer(GameObject obj, int layer)
         {

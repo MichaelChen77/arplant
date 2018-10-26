@@ -34,7 +34,7 @@ namespace IMAV.UI
             currentObject = ResourceManager.Singleton.CurrentObject;
             if (currentObject != null)
             {
-                DataController.Singleton.GetProduct(currentObject.SKU, InitProduct);
+                DataController.Singleton.GetProduct(currentObject.SKU, 0, InitProduct);
                 base.Open();
             }
         }
@@ -94,7 +94,7 @@ namespace IMAV.UI
             loadingProductCount = product.product_links.Count;
             for (int i = 0; i < product.product_links.Count; i++)
             {
-                DataController.Singleton.GetProduct(product.product_links[i], AddProductItem);
+                DataController.Singleton.GetProduct(product.product_links[i], 0, AddProductItem);
             }
         }
 

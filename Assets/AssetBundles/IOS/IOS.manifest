@@ -1,70 +1,154 @@
 ManifestFileVersion: 0
-CRC: 345058415
+CRC: 4064902448
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: l1d1
-      Dependencies: {}
-    Info_1:
-      Name: nctr-08a-a
-      Dependencies: {}
-    Info_2:
-      Name: jk01a
-      Dependencies: {}
-    Info_3:
-      Name: anctr-05
-      Dependencies: {}
-    Info_4:
-      Name: pantrytallboy
-      Dependencies: {}
-    Info_5:
-      Name: l2d1
-      Dependencies: {}
-    Info_6:
-      Name: nctr-08a-b
-      Dependencies: {}
-    Info_7:
-      Name: nctr-08a-c
-      Dependencies: {}
-    Info_8:
-      Name: chair
-      Dependencies: {}
-    Info_9:
-      Name: duval
-      Dependencies: {}
-    Info_10:
-      Name: snctr-09a
-      Dependencies: {}
-    Info_11:
-      Name: dualtable
-      Dependencies: {}
-    Info_12:
       Name: bed
       Dependencies: {}
+    Info_1:
+      Name: bidet
+      Dependencies: {}
+    Info_2:
+      Name: kitchen_table
+      Dependencies: {}
+    Info_3:
+      Name: washbasin
+      Dependencies: {}
+    Info_4:
+      Name: armchair
+      Dependencies: {}
+    Info_5:
+      Name: chair
+      Dependencies: {}
+    Info_6:
+      Name: chair_tolix
+      Dependencies: {}
+    Info_7:
+      Name: fk_chair
+      Dependencies: {}
+    Info_8:
+      Name: glasstable
+      Dependencies: {}
+    Info_9:
+      Name: lounge chair
+      Dependencies: {}
+    Info_10:
+      Name: lounge ottoman
+      Dependencies: {}
+    Info_11:
+      Name: sofa
+      Dependencies: {}
+    Info_12:
+      Name: tumba_fur
+      Dependencies: {}
     Info_13:
-      Name: snctr-09b
+      Name: candlestick
       Dependencies: {}
     Info_14:
-      Name: sh4
+      Name: cup
       Dependencies: {}
     Info_15:
-      Name: angelstatue
+      Name: magiclamp
       Dependencies: {}
     Info_16:
-      Name: crt-01
+      Name: vase1
       Dependencies: {}
     Info_17:
-      Name: wardrobe
+      Name: vase2
       Dependencies: {}
     Info_18:
-      Name: w2d1-rfa
+      Name: vase3
       Dependencies: {}
     Info_19:
-      Name: sh2d2
+      Name: robot
       Dependencies: {}
     Info_20:
-      Name: jd-02
+      Name: blastoise
       Dependencies: {}
     Info_21:
-      Name: table_wood
+      Name: bulbasaur
+      Dependencies: {}
+    Info_22:
+      Name: butterfree
+      Dependencies: {}
+    Info_23:
+      Name: charizard
+      Dependencies: {}
+    Info_24:
+      Name: charmander
+      Dependencies: {}
+    Info_25:
+      Name: golbat
+      Dependencies: {}
+    Info_26:
+      Name: kakuna
+      Dependencies: {}
+    Info_27:
+      Name: ninetales
+      Dependencies: {}
+    Info_28:
+      Name: oddish
+      Dependencies: {}
+    Info_29:
+      Name: pidgeotto
+      Dependencies: {}
+    Info_30:
+      Name: pikachu
+      Dependencies: {}
+    Info_31:
+      Name: raichu
+      Dependencies: {}
+    Info_32:
+      Name: spearow
+      Dependencies: {}
+    Info_33:
+      Name: squirtle
+      Dependencies: {}
+    Info_34:
+      Name: transel
+      Dependencies: {}
+    Info_35:
+      Name: venusaur
+      Dependencies: {}
+    Info_36:
+      Name: vulpix
+      Dependencies: {}
+    Info_37:
+      Name: closet
+      Dependencies: {}
+    Info_38:
+      Name: couch
+      Dependencies: {}
+    Info_39:
+      Name: dresser
+      Dependencies: {}
+    Info_40:
+      Name: kitchen_chair
+      Dependencies: {}
+    Info_41:
+      Name: redfridge
+      Dependencies: {}
+    Info_42:
+      Name: stove
+      Dependencies: {}
+    Info_43:
+      Name: basketball
+      Dependencies: {}
+    Info_44:
+      Name: vase4
+      Dependencies: {}
+    Info_45:
+      Name: vase5
+      Dependencies: {}
+    Info_46:
+      Name: vase6
+      Dependencies: {}
+    Info_47:
+      Name: chess
+      Dependencies: {}
+    Info_48:
+      Name: football
+      Dependencies: {}
+    Info_49:
+      Name: merlions
       Dependencies: {}

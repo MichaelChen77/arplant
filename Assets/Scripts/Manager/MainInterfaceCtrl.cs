@@ -34,7 +34,7 @@ namespace IMAV
         public void GotoARScene()
         {
             Screen.orientation = ScreenOrientation.AutoRotation;
-            SceneManager.LoadSceneAsync("ARPlugin");
+			SceneManager.LoadSceneAsync("Scenes/NewUI/ARPlugin");
             //SceneManager.LoadSceneAsync("AR");
         }
     }

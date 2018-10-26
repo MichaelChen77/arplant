@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1112977317
+CRC: 3732880081
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4ed7be2962575500f72ff89ea3b1cd8c
+    Hash: 330f184aa903e55251d0c9988a4b45b5
   TypeTreeHash:
     serializedVersion: 2
-    Hash: f451c2fa900e9178a57db1d033fd31a7
+    Hash: cf3f348e2267d190e6df40cbb42919b5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,5 +28,5 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/BakedAOSamples_Marcus/FURN_Office Chair.prefab
+- Assets/Resources/Products/Furnitures/Livingrooms/Chair.prefab
 Dependencies: []

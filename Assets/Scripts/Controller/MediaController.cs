@@ -18,6 +18,7 @@ namespace IMAV.Controller
         public UITextInform textInform;
         public GameObject screenshotFlash;
         public AudioController audioController;
+        public GameObject squareObject;
 
         private static MediaController mSingleton;
         public static MediaController Singleton
@@ -99,12 +100,14 @@ namespace IMAV.Controller
             DataUtility.SetDirectory(thumbPath);
 
             string filename = "WhizHome_" + dt.ToString("yyMMdd_HHmmss") + ".png";
+			print ("CaptureScreen " + date + "/" + filename); 
             StartCoroutine(Screenshot(date + "/" + filename, createThumbnail, true, run));
         }
 
         IEnumerator Screenshot(string filepath, bool createThumbnail, bool showScreenshotHint, Action<string> run)
         {
             List<GameObject> uiObjects = FindGameObjectsInUILayer();
+            squareObject.SetActive(false);
 
             for (int i = 0; i < uiObjects.Count; i++)
             {
@@ -136,7 +139,7 @@ namespace IMAV.Controller
             }
             Camera.main.targetTexture = null;
             Destroy(RT);
-
+            squareObject.SetActive(true);
             if (run != null)
                 run(filepath);
         }
@@ -167,22 +170,45 @@ namespace IMAV.Controller
 
         void WalkSessions(string videofile)
         {
-            string[] dirs = System.IO.Directory.GetDirectories(DataUtility.GetSessionPath());
-            if (dirs != null)
-            {
-                foreach (string s in dirs)
-                {
-                    string[] files = System.IO.Directory.GetFiles(s);
-                    foreach (string f in files)
-                    {
-                        FileInfo file = new FileInfo(f);
-                        if (file.Extension == ".mp4")
-                        {
-                            File.Move(file.FullName, videofile);
-                        }
-                    }
-                }
-            }
+//            string[] dirs = System.IO.Directory.GetDirectories(DataUtility.GetSessionPath());
+//			print ("WalkSessions dirs size = " + dirs.Length);
+//			print ("WalkSessions dirs[0]= " + dirs[0]);
+//			if (dirs != null) {
+//				foreach (string s in dirs) {
+//					print ("WalkSessions s in dirs, s = " + s);
+//					string[] files = System.IO.Directory.GetFiles (s);
+//					foreach (string f in files) {
+//						FileInfo file = new FileInfo (f);
+//						if (file.Extension == ".mp4") {
+//							print ("WalkSessions file.FullName = " + file.FullName);
+//							print ("WalkSessions videofile = " + videofile);
+//							File.Move (file.FullName, videofile);
+//						}
+//					}
+//				}
+//			} else {
+//				print ("WalkSessions dirs = null");
+//			}
+
+			print ("WalkSessions Walking sessions");
+			string basePath = Application.temporaryCachePath;
+//			#if UNITY_ANDROID
+//			string[] sParts = basePath.Split('/');
+//			basePath = "/sdcard/Android/data/"+sParts[sParts.Length-2]+"/cache/sessions/";
+//			#elif UNITY_IOS
+			basePath = basePath.Substring (0,basePath.Length-15);
+			basePath += "/tmp/ReplayKit/session/";
+//			#endif
+			print ("WalkSessions basePath = " + basePath);
+			string[] dirs = System.IO.Directory.GetDirectories (basePath);
+			print ("WalkSessions dirs size = " + dirs.Length);
+			foreach (string s in dirs) {
+				print ("WalkSessions Found folder: " + s);
+				string[] files = System.IO.Directory.GetFiles (s);
+				print ("WalkSessions It contains the following files:");
+				foreach(string s2 in files)
+					Debug.Log (s2);
+			}
         }
 
         string ChangeJsonContent(string path, string fileName)
@@ -206,16 +232,20 @@ namespace IMAV.Controller
             curRecordName = date + "/" + fileName;
 
             PlayAudio(AudioEnum.StartRecord);
+			Debug.Log ("curRecordName = " + curRecordName);
             StartCoroutine(Screenshot(curRecordName + "_v$d.png", true, false, null));
         }
 
         public void StopRecordVideo(Action<string> run)
         {
             string videoName = DataUtility.GetScreenVideoPath() + curRecordName + ".mp4";
+			print ("StopRecordVideo video name = " + videoName);
             WalkSessions(videoName);
             PlayAudio(AudioEnum.Save);
             if (run != null)
                 run(curRecordName + "_v$d.png");
+			else 
+				print ("StopRecordVideo run = null");
         }
 
         public void PlayVideo(string str)
@@ -234,6 +264,9 @@ namespace IMAV.Controller
                 {
                     string source = DataUtility.GetScreenShotPath() + str;
                     string file = str.Substring(id + 1);
+//					print("SaveScreenShot img source = " + source + "\n");
+//					print("SaveScreenShot destination file = " + file + "\n");
+//					print("SaveScreenShot GallerySaver destination file = " + Path.Combine(GallerySaver.GetPicturesFolderPath(), file) + "\n");
                     GallerySaver.CopyToGallery(source, file);
                 }
             }

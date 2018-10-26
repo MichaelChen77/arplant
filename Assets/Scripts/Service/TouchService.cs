@@ -10,6 +10,12 @@ namespace IMAV.Service
         protected float touchTime = 0;
         protected bool beginTouch = false;
 
+		//test 
+		private Touch oldTouch1;
+		private Touch oldTouch2;
+		private double smallestScale = 0.3;
+		private double largestScale = 2.0;
+
         protected abstract void MoveTouch(Vector3 pos);
         public abstract void Start();
 
@@ -26,6 +32,41 @@ namespace IMAV.Service
                 controller.transform.Rotate(0, -deltaRot, 0);
             }
         }
+
+		protected virtual void processZoomInOut(Touch fing1, Touch fing2)
+		{
+			if (fing1.phase == TouchPhase.Moved || fing2.phase == TouchPhase.Moved)
+			{
+				float oldDistance = Vector2.Distance(fing1.position, fing2.position);
+				float newDistance = Vector2.Distance(fing1.position + fing1.deltaPosition, fing2.position + fing2.deltaPosition);
+
+				//两个距离之差，为正表示放大手势， 为负表示缩小手势
+				float offset = newDistance - oldDistance;
+
+				//放大因子， 一个像素按 0.01倍来算(500可调整)
+				float scaleFactor = offset / 500f;
+				Vector3 localScale = controller.transform.localScale;
+				Vector3 scale = new Vector3(localScale.x + scaleFactor * localScale.x,
+					localScale.y + scaleFactor * localScale.y, 
+					localScale.z + scaleFactor * localScale.z);
+
+				controller.transform.localScale = scale;
+//				最小缩放到 0.3 倍, 放大到 2 倍
+//				if (scale.x > smallestScale && scale.y > smallestScale && scale.z > smallestScale) {
+//					controller.transform.localScale = scale;
+//				}
+//				if (scale.x >= smallestScale * localScale.x && scale.x <= largestScale * localScale.x
+//				    && scale.y >= smallestScale * localScale.y && scale.y <= largestScale * localScale.y
+//				    && scale.z >= smallestScale * localScale.z && scale.z <= largestScale * localScale.z) {
+//					controller.transform.localScale = scale;
+//				} else if ((scale.x - smallestScale) < (largestScale - scale.x)) {
+//					controller.transform.localScale = smallestScale;
+//				} else {
+//					controller.transform.localScale = largestScale;
+//				}
+
+			}
+		}
 
         protected virtual void StationaryTouch()
         {
@@ -60,7 +101,27 @@ namespace IMAV.Service
             }
             else if (Input.touchCount == 2)
             {
-                processRotate(Input.GetTouch(0), Input.GetTouch(1));
+				var newTouch1 = Input.GetTouch(0);
+				var newTouch2 = Input.GetTouch(1);
+//                processRotate(Input.GetTouch(0), Input.GetTouch(1));
+				int caseIndex = -1;
+				float value = Vector2.Dot(newTouch1.deltaPosition, newTouch2.deltaPosition);
+				//value >= 0, rotate, value < 0, zoom in/out
+				if (value >= 0) {
+					caseIndex = 0;
+					processRotate (newTouch1, newTouch2);
+				} else {
+					caseIndex = 1;
+					processZoomInOut (newTouch1, newTouch2);
+				}
+//				switch (caseIndex) {
+//				case 0:
+//					processRotate (newTouch1, newTouch2);
+//					break;
+//				case 1:
+//					processZoomInOut (newTouch1, newTouch2);
+//					break;
+//				}
             }
         }
     }

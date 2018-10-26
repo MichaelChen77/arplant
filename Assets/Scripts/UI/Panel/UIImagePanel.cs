@@ -145,7 +145,11 @@ namespace IMAV.UI
         public void ShareFile()
         {
             string str = MediaController.Singleton.GetPath(swipe.CurrentPage);
-            MediaController.Singleton.ShareMedia(false, str);
+			string absstr = MediaController.Singleton.GetAbsolutePath (swipe.CurrentPage);
+			Debug.Log ("ShareFile path= " + str);
+//			Debug.Log ("ShareFile abspath= " + absstr);
+			MediaController.Singleton.ShareMedia(false, str);
+//			MediaController.Singleton.ShareMedia(true, absstr);
         }
 
         void ClearImage(Image img)
@@ -171,10 +175,16 @@ namespace IMAV.UI
             }
             else
             {
+				MediaController.Singleton.textInform.ShowInform("Image begin to Save", true, 1f);
+				string abspath = MediaController.Singleton.GetAbsolutePath(swipe.CurrentPage);
                 string path = MediaController.Singleton.GetPath(swipe.CurrentPage);
+				print ("SaveFile abs path = " + abspath + "\n");
+				print ("SaveFile saved path = " + path + "\n");
                 if (path != string.Empty)
                 {
-                    MediaController.Singleton.SaveScreenShot(path);
+					print ("SaveFile path is not null" + "\n");
+//                    MediaController.Singleton.SaveScreenShot(path);
+					BlankGalleryScreenshot.Instance.AddImageToGallery(abspath);
                     MediaController.Singleton.textInform.ShowInform("Image Saved", true, 1f);
                 }
             }
@@ -224,10 +234,12 @@ namespace IMAV.UI
         public void ShowDetails()
         {
             string path = MediaController.Singleton.GetAbsolutePath(swipe.CurrentPage);
-            if(path != string.Empty)
-            {
-                infoDlg.Open(path);
-            }
+			if (path != string.Empty) {
+				print ("path = " + path);
+				infoDlg.Open (path);
+			} else {
+				print ("path is empty");
+			}
         }
     }
 }

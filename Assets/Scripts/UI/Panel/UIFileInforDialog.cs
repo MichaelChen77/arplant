@@ -30,6 +30,11 @@ namespace IMAV.UI
             else
                 sizeStr = fileSize.ToString("f3") + " KB";
             detailText.text = sizeStr;
+
+			print ("Open f = " + f);
+			print ("Open time = " + f.CreationTime.ToLongTimeString() + "\n" + f.CreationTime.ToLongDateString());
+			print ("Open path = " + f.FullName);
+			print ("Open sizeStr = " + sizeStr);
         }
     }
 }

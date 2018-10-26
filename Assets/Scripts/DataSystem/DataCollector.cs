@@ -7,6 +7,7 @@ using IMAV.Model;
 public delegate void CategoryDownloadCallback(List<Category> categories);
 public delegate void CategoryProductDownloadCallback(long categoryId, List<CategoryProduct> cpList);
 public delegate void ProductDownloadCallback(Product p);
+public delegate void SubCategoryDownloadCallback(SubCategory sc);//test
 public delegate void ImageDownloadCallback(byte[] bytes);
 public delegate void TextureDownloadCallback(Texture2D texture);
 public delegate void AssetBundleDownloadCallback(string sku, System.Object[] objs);
@@ -23,6 +24,7 @@ namespace IMAV.Service
         ICollectorService collector;
         public CollectorServiceType collectorType;
         public bool useCache = true;
+
 
         private static DataCollector mSingleton;
         public static DataCollector Singleton
@@ -48,9 +50,17 @@ namespace IMAV.Service
 
         public void SetCollectorService()
         {
+			DataUtility.SetDirectory(DataUtility.GetCategoryPath());
+			DataUtility.SetDirectory(DataUtility.GetSubCategoryPath());
+//			DataUtility.SetDirectory(DataUtility.GetSubCategoryIconPath());
+			DataUtility.SetDirectory(DataUtility.GetProductPath());
+			DataUtility.SetDirectory(DataUtility.GetProductIconPath());
+			DataUtility.SetDirectory(DataUtility.GetProductModelPath());
             if(useCache)
             {
                 DataUtility.SetDirectory(DataUtility.GetCategoryPath());
+				DataUtility.SetDirectory(DataUtility.GetSubCategoryPath());
+//				DataUtility.SetDirectory(DataUtility.GetSubCategoryIconPath());
                 DataUtility.SetDirectory(DataUtility.GetProductPath());
                 DataUtility.SetDirectory(DataUtility.GetProductIconPath());
                 DataUtility.SetDirectory(DataUtility.GetProductModelPath());
@@ -76,6 +86,11 @@ namespace IMAV.Service
 			//}
         }
 
+		public void SwitchLocalAndWeb()
+		{
+			
+		}
+
         public void TopCategories(Action<string> callback)
         {
             StartCoroutine(collector.TopCategories(callback));
@@ -86,10 +101,33 @@ namespace IMAV.Service
             StartCoroutine(collector.GetProductsInCategory(categoryId, callback));
         }
 
+		public void GetProductsInSubCategory(string subCategoryName, Action<string> callback)
+		{
+			StartCoroutine(collector.GetProductsInSubCategory(subCategoryName, callback));
+		}
+
+//		//test
+//		public void GetSubCatAndProductsInCategory(long categoryId, Action<string> callback)
+//		{
+//			StartCoroutine(collector.GetSubCatAndProductsInCategory(categoryId, callback));
+//		}
+
+
         public void GetProductDetail(string sku, ProductDownloadCallback callback)
         {
             StartCoroutine(collector.GetProductDetail(sku, callback));
         }
+
+		public void GetSubCategoryProductDetail(long sub_id, string sku, ProductDownloadCallback callback)
+		{
+			StartCoroutine(collector.GetSubCategoryProductDetail(sub_id, sku, callback));
+		}
+
+		public void GetSubCategoryDetail(long sub_id, string sub_name, SubCategoryDownloadCallback callback)
+		{
+			StartCoroutine(collector.GetSubCategoryDetail(sub_id, sub_name, callback));
+		}
+
 
         public void GetProductImage(string sku, Action<Sprite> callback)
         {
@@ -109,8 +147,50 @@ namespace IMAV.Service
                     callback(sp);
                 }));
             }
-            
         }
+
+		public void GetSubCategoryProductImage(long sub_id, string sku, Action<Sprite> callback)
+		{
+			if (collectorType == CollectorServiceType.Local)
+			{
+				StartCoroutine(collector.GetSubCategoryProductTexture(sub_id, sku, (tex) =>
+					{
+						Sprite sp = DataUtility.CreateSprite(tex);
+						callback(sp);
+					}));
+			}
+			else
+			{
+				StartCoroutine(collector.GetSubCategoryProductImage(sub_id, sku, (bytes) =>
+					{
+						Sprite sp = DataUtility.CreateSprite(bytes);
+						callback(sp);
+					}));
+			}
+		}
+
+
+
+
+		public void GetSubCategoryImage(long sub_id, string sub_name, Action<Sprite> callback)
+		{
+			if (collectorType == CollectorServiceType.Local)
+			{
+				StartCoroutine(collector.GetSubCategoryTexture(sub_id, sub_name, (tex) =>
+					{
+						Sprite sp = DataUtility.CreateSprite(tex);
+						callback(sp);
+					}));
+			}
+			else
+			{
+				StartCoroutine(collector.GetSubCategoryImage(sub_id, sub_name, (bytes) =>
+					{
+						Sprite sp = DataUtility.CreateSprite(bytes);
+						callback(sp);
+					}));
+			}
+		}
 
         public void GetProductTexture(string sku, TextureDownloadCallback callback)
         {

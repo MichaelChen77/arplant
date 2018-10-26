@@ -12,6 +12,6 @@ namespace IMAV
         public const string AR_INSUFFICIENTFEATURES = "TRACKING LIMITED: Not enough surface detail\nTry pointing at a flat surface, or reset the session.";
         public const string AR_INITIALIZING = "Initializing AR Session";
         public const string AR_PLANEDETECTED = "SURFACE DETECTED";
-        public const string AR_FINDPLANE = "FIND A SURFACE TO PLACE AN OBJECT";
+        public const string AR_FINDPLANE = "DETECTING A SURFACE TO PLACE AN OBJECT";
     }
 }

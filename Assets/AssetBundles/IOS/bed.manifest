@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1060233135
+CRC: 2223935114
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bce6d2b6f0a4e81d5505d868ddf9f27d
+    Hash: 3aed791596c9412324fa80ecc20f37e8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 0555653f2087de0bd558e99ffc7b20f3
+    Hash: cf3f348e2267d190e6df40cbb42919b5
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,8 +27,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
-- Class: 108
-  Script: {instanceID: 0}
 Assets:
-- Assets/Prefab/WaitForAO/Bed.prefab
+- Assets/Resources/Products/Furnitures/Bedrooms/bed.prefab
 Dependencies: []

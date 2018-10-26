@@ -5,12 +5,16 @@ namespace IMAV.UI
     public class UIMenuPanel : UIControl
     {
         public GToggleButton controlButton;
+		//test
+		public GToggleButton SwitchWifiButton;
         public RectTransform productRect;
         RectTransform panelRect;
         public RectTransform PanelRect
         {
             get { return panelRect; }
         }
+
+
 
         bool isOpened = false;
         public bool IsOpened
@@ -57,5 +61,11 @@ namespace IMAV.UI
             }
             
         }
+
+		bool isWifiOn = false;
+		public void SwitchWifiButtonPress(){
+			SwitchWifiButton.setTrigger(!isWifiOn);
+			isWifiOn = !isWifiOn;
+		}
     }
 }
